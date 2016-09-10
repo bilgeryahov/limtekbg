@@ -1,8 +1,17 @@
 {
-    "name": "limtekbg",
-    "version": "1.0.0",
-    "keywords": ["util", "functional", "server", "client", "browser"],
-    "author": "Bilger Yahov",
-    "contributors": [],
-    "dependencies": {}
+  "name": "limtekbg",
+  "version": "1.0.0",
+  "keywords": [
+    "util",
+    "functional",
+    "server",
+    "client",
+    "browser"
+  ],
+  "author": "Bilger Yahov",
+  "contributors": [],
+  "dependencies": {},
+  "devDependencies": {
+    "gulp-sass": "^2.3.2"
+  }
 }
