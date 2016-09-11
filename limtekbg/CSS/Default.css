@@ -2,3 +2,6 @@
     Created on : Sep 10, 2016, 9:58:37 PM
     Author     : Bilger Yahov
 */
+body {
+  background-image: url("../images/watermark.png");
+  background-repeat: repeat; }
