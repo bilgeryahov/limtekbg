@@ -7,6 +7,9 @@
         <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css"/>
         <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css"/>
         <link rel="stylesheet" href="../CSS/Default.css"/>
+        <script src="../JS/Vendor/Mootools-Core-1.6.0.js"></script>
+        <script src="../JS/Vendor/Mootools-More-1.6.0.js"></script>
+        <script src="../JS/Functions.js"></script>
     </head>
     <body>
         <header>
@@ -15,9 +18,9 @@
                 <li><a href="#">Фирмата</a></li>
                 <li><a href="#">Доставки</a></li>
                 <li><a href="#">Контакти</a></li>
-                <li class="w3-dropdown-hover">
+                <li class="w3-dropdown-click" id="OpenOpenAble">
                 <a href="#">Продукти <i class="fa fa-caret-down"></i></a>
-                <div class="w3-dropdown-content w3-card-4">
+                <div class="w3-dropdown-content w3-card-4" id="OpenAble">
                     <a href="#">Нови машини</a>
                     <a href="#">Машини втора употреба</a>
                     <a href="#">Дискови брани</a>
@@ -29,5 +32,9 @@
                 </li>
             </ul>
         </header>
+        
+        <div id="main">
+            <img src="../images/logo.png" alt="Logo"/>
+        </div>
     </body>
 </html>
