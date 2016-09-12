@@ -4,42 +4,127 @@
 
 var MyFunctions = {
     
+  slideIndex: 1,
+    
   init: function(){
       
       var $self = this;
       
-      var $openOpenAble = $('OpenOpenAble');
-      
-      if(!$openOpenAble){
+      $prevImg = $('PrevImg');
+      if(!$prevImg){
           
-          console.error('MyFunctions.init: the $openOpenAble element is missing!');
+          console.error('MyFunctions.init: PrevImg element not found!');
           return;
       }
       
-      $openOpenAble.addEvent('click', function(){
-
-          $self.openNavigationElement();
+      $nextImg = $('NextImg');
+      if(!$nextImg){
+          
+          console.error('MyFunctions.init: NextImg element not found!');
+          return;
+      }
+      
+      $firImg = $('FirImg');
+      if(!$firImg){
+          
+          console.error('MyFunctions.init: FirImg element not found!');
+          return;
+      }
+      
+      $secImg = $('SecImg');
+      if(!$secImg){
+          
+          console.error('MyFunctions.init: SecImg element not found!');
+          return;
+      }
+      
+      $thirImg = $('ThirImg');
+      if(!$thirImg){
+          
+          console.error('MyFunctions.init: ThirImg element not found!');
+          return;
+      }
+      
+      $prevImg.addEvent('click', function(){
+          
+          $self.plusDivs(-1);
       });
+      
+      $nextImg.addEvent('click', function(){
+          
+          $self.plusDivs(1);
+      });
+      
+      $firImg.addEvent('click', function(){
+          
+          $self.currentDiv(1);
+      });
+      
+      $secImg.addEvent('click', function(){
+          
+          $self.currentDiv(2);
+      });
+      
+      $thirImg.addEvent('click', function(){
+          
+          $self.currentDiv(3);
+      });
+      
+      $self.showDivs($self.slideIndex);
   },
   
-  openNavigationElement: function(){
+  showDivs: function($number){
       
-      var $openAble = $('OpenAble');
+      var $self = this;
       
-      if(!$openAble){
+      var $mySlides = document.getElementsByClassName("mySlides");
+      if(!$mySlides){
           
-          console.error('MyFunctions.openNavigationElement: the $openAble element is missing!');
+          console.error('MyFunctions.showDivs: elements from class "mySlides" not found!');
           return;
       }
       
-      if($openAble.className.indexOf('w3-show') === -1){
+      var $numberedButtons = document.getElementsByClassName("demo");
+      if(!$numberedButtons){
           
-          $openAble.className += ' w3-show';
+          console.error('MyFunctions.showDivs: elements from class "demo" not found!');
+          return;
       }
-      else{
+      
+      if($number > $mySlides.length){
           
-          $openAble.className = $openAble.className.replace(' w3-show', '');
+          $self.slideIndex = 1;
       }
+      
+      if($number < 1){
+          
+          $self.slideIndex = $mySlides.length;
+      }
+      
+      for(var $i = 0; $i < $mySlides.length; $i++){
+          
+          $mySlides[$i].style.display = 'none';
+      }
+      
+      for(var $j = 0; $j < $numberedButtons.length; $j++){
+          
+          $numberedButtons[$j].className = $numberedButtons[$j].className.replace(' w3-red', '');
+      }
+      
+      $mySlides[$self.slideIndex - 1].style.display = 'block';
+      $numberedButtons[$self.slideIndex - 1].className += ' w3-red';
+  },
+  
+  plusDivs: function($number){
+      
+      var $self = this;
+      $self.showDivs($self.slideIndex += $number);
+  },
+  
+  currentDiv: function($number){
+      
+      var $self = this;
+      $self.showDivs($self.slideIndex = $number);
   }
 };
 

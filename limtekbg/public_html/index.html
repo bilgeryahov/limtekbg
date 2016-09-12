@@ -18,9 +18,9 @@
                 <li><a href="#">Фирмата</a></li>
                 <li><a href="#">Доставки</a></li>
                 <li><a href="#">Контакти</a></li>
-                <li class="w3-dropdown-click" id="OpenOpenAble">
+                <li class="w3-dropdown-hover">
                 <a href="#">Продукти <i class="fa fa-caret-down"></i></a>
-                <div class="w3-dropdown-content w3-card-4" id="OpenAble">
+                <div class="w3-dropdown-content w3-card-4">
                     <a href="#">Нови машини</a>
                     <a href="#">Машини втора употреба</a>
                     <a href="#">Дискови брани</a>
@@ -34,7 +34,24 @@
         </header>
         
         <div id="main">
-            <img src="../images/logo.png" alt="Logo"/>
+            
+            <img src="../images/logo.png" alt="Logo" style="visibility:hidden;"/>
+            
+            <div class="w3-content" style="max-width:800px">
+                <img class="mySlides w3-border w3-padding w3-round" src="../images/slide1.jpg" style="width:100%">
+                <img class="mySlides w3-border w3-padding w3-round" src="../images/slide2.jpg" style="width:100%">
+                <img class="mySlides w3-border w3-padding w3-round" src="../images/slide3.jpg" style="width:100%">
+            </div>
+            
+            <div class="w3-center">
+                <div class="w3-section">
+                    <button class="w3-btn w3-light-grey w3-border" id="PrevImg">&#60; Prev</button>
+                    <button class="w3-btn w3-light-grey w3-border" id="NextImg">Next &#62;</button>
+                </div>
+                <button class="w3-btn demo w3-light-grey w3-border" id="FirImg">1</button>
+                <button class="w3-btn demo w3-light-grey w3-border" id="SecImg">2</button>
+                <button class="w3-btn demo w3-light-grey w3-border" id="ThirImg">3</button>
+            </div>
         </div>
     </body>
 </html>
