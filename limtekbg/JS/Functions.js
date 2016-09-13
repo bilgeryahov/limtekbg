@@ -24,27 +24,6 @@ var MyFunctions = {
           return;
       }
       
-      $firImg = $('FirImg');
-      if(!$firImg){
-          
-          console.error('MyFunctions.init: FirImg element not found!');
-          return;
-      }
-      
-      $secImg = $('SecImg');
-      if(!$secImg){
-          
-          console.error('MyFunctions.init: SecImg element not found!');
-          return;
-      }
-      
-      $thirImg = $('ThirImg');
-      if(!$thirImg){
-          
-          console.error('MyFunctions.init: ThirImg element not found!');
-          return;
-      }
-      
       $prevImg.addEvent('click', function(){
           
           $self.plusDivs(-1);
@@ -53,21 +32,6 @@ var MyFunctions = {
       $nextImg.addEvent('click', function(){
           
           $self.plusDivs(1);
-      });
-      
-      $firImg.addEvent('click', function(){
-          
-          $self.currentDiv(1);
-      });
-      
-      $secImg.addEvent('click', function(){
-          
-          $self.currentDiv(2);
-      });
-      
-      $thirImg.addEvent('click', function(){
-          
-          $self.currentDiv(3);
       });
       
       $self.showDivs($self.slideIndex);
@@ -119,12 +83,6 @@ var MyFunctions = {
       
       var $self = this;
       $self.showDivs($self.slideIndex += $number);
-  },
-  
-  currentDiv: function($number){
-      
-      var $self = this;
-      $self.showDivs($self.slideIndex = $number);
   }
 };
 
