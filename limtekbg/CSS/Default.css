@@ -2,16 +2,3 @@
     Created on : Sep 10, 2016, 9:58:37 PM
     Author     : Bilger Yahov
 */
-body {
-  background-image: url("../images/watermark.png");
-  background-repeat: repeat;
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column; }
-  body header #CompanyName {
-    font-weight: bold;
-    font-size: 1.2rem; }
-  body #main {
-    flex: 1; }
-  body footer {
-    margin-top: 2rem; }
