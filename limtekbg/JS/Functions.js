@@ -4,7 +4,7 @@ var MyFunctions = {
     toggleNavigation: {},
     quote: {},
     listOfQuotes: [],
-    
+	
   init: function(){
       
       var $self = this;
