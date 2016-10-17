@@ -13,7 +13,7 @@ gulp.task('styles', function(){
 
 	gulp.src('SCSS/*scss')
 		.pipe(sass().on('error', sass.logError))
-		.pipe(gulp.dest('CSS/'));
+		.pipe(gulp.dest('public/CSS/'));
 });
 
 gulp.task('default', function(){
