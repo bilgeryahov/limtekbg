@@ -1,4 +1,4 @@
-var MyFunctions = {
+var FunctionsObj = {
     
     navDemo: {},
     toggleNavigation: {},
@@ -26,7 +26,7 @@ var MyFunctions = {
           
           console.error('MyFunctions.init(): Quote is not found!');
           return;
-      }
+      } 
 	  
       $self.listOfQuotes = [
         'Опит е името, което даваме на грешките си.',
@@ -75,5 +75,5 @@ var MyFunctions = {
 
 document.addEvent('domready', function(){
 
-	MyFunctions.init();
+	FunctionsObj.init();
 });

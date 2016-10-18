@@ -21,9 +21,38 @@ var FirebaseObj = {
 		$self.storageRef = $self.storage.ref();
 	},
 	
-	getFile: function(){
+	getProducts: function($products){
 		
 		var $self = this;
+		var $currRef = null;
+		
+		switch($products){
+			
+			case 'second_hand_machines':
+				$currRef = $self.storageRef.child('Products/' + $products + '.json');
+			break;
+			
+			case 'accumulators':
+				$currRef = $self.storageRef.child('Products/' + $products + '.json');
+			break;
+			
+			default:
+				console.error('FirebaseObj.getProducts(): No such category products!', $products);
+			break;
+		}
+		
+		if($currRef !== null){
+			
+			$currRef.getDownloadURL()
+			.then(function($url){
+			
+				console.log('FirebaseObj.getProducts(): Just got ', $url);
+			})
+			.catch(function($err){
+				
+				// TODO: Handle the exceptions.
+			});
+		}
 	}
 }
 

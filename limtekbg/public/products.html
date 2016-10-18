@@ -14,6 +14,7 @@
         <script src="./JS/Vendor/Mootools-More-1.6.0.js"></script>
         <script src="./JS/Functions.js"></script>
 		<script src="./JS/Firebase.js"></script>
+		<script src="./JS/Products.js"></script>
         <style>
             body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
             .w3-navbar,h1,button {font-family: "Montserrat", sans-serif}
@@ -50,13 +51,12 @@
             <p class="w3-large">Вашият надежден партньор!</p>
         </div>
         
-
 		<div class="w3-container" style="margin: 4rem auto;">
-			<ul class="w3-ul w3-card-4">
+			<ul class="w3-ul w3-card-4" style="cursor:pointer;">
 				<li class="w3-padding-16 w3-hover-light-grey">
 					<span class="w3-large">Нови машини</span><br>
 				</li>
-				<li class="w3-padding-16 w3-hover-light-grey">
+				<li id="SecondHandMachines" class="w3-padding-16 w3-hover-light-grey">
 					<span class="w3-large">Машини втора употреба</span><br>
 				</li>  
 				<li class="w3-padding-16 w3-hover-light-grey">
@@ -71,7 +71,7 @@
 				<li class="w3-padding-16 w3-hover-light-grey">
 					<span class="w3-large">Хидравлични маркучи и накрайници</span><br>
 				</li> 
-				<li class="w3-padding-16 w3-hover-light-grey">
+				<li id="Accumulators" class="w3-padding-16 w3-hover-light-grey">
 					<span class="w3-large">Акумулатори</span><br>
 				</li> 
 			</ul>
