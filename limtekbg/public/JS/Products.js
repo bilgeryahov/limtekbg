@@ -25,12 +25,11 @@ var ProductsObj = {
 		
 		$self.secondHandMachinesButt.addEvent('click', function(){
 			
-			FirebaseObj.getProducts('second_hand_machines');
-		});
+			
 		
 		$self.accumulatorsButt.addEvent('click', function(){
 			
-			FirebaseObj.getProducts('accumulators');
+			
 		});
 	}
 };
