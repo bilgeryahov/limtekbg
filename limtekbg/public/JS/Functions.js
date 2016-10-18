@@ -27,7 +27,7 @@ var MyFunctions = {
           console.error('MyFunctions.init(): Quote is not found!');
           return;
       }
-      
+	  
       $self.listOfQuotes = [
         'Опит е името, което даваме на грешките си.',
         'В днешно време хората знаят цената на всичко, но не знаят стойността на нищо.',

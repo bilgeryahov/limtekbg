@@ -19,24 +19,11 @@ var FirebaseObj = {
 		
 		$self.storage = firebase.storage();
 		$self.storageRef = $self.storage.ref();
-		
-		//$self.getFile();
 	},
 	
 	getFile: function(){
 		
 		var $self = this;
-		
-		var jsonFileRef = $self.storageRef.child('test/test.json');
-		
-		jsonFileRef.getDownloadURL().then(function(url){
-		
-			console.log('url ', url);
-		})
-		.catch(function(error){
-			
-			// TODO: Implement error.
-		});
 	}
 }
 
