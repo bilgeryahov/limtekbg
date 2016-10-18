@@ -3,6 +3,8 @@ var FirebaseObj = {
 	storage: {},
 	storageRef: {},
 	
+	database: {},
+	
 	init: function(){
 		
 		var $self = this;
@@ -17,8 +19,12 @@ var FirebaseObj = {
 		
 		firebase.initializeApp(config);
 		
+		// Initialize the storage.
 		$self.storage = firebase.storage();
 		$self.storageRef = $self.storage.ref();
+		
+		// Initialize the real-time database.
+		$self.database = firebase.database();
 	}
 }
 
