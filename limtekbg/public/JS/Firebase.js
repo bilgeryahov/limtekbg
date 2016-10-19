@@ -4,6 +4,7 @@ var FirebaseObj = {
 	storageRef: {},
 	
 	database: {},
+	databaseRef: {},
 	
 	init: function(){
 		
@@ -25,6 +26,26 @@ var FirebaseObj = {
 		
 		// Initialize the real-time database.
 		$self.database = firebase.database();
+		$self.databaseRef = $self.database.ref();
+	},
+	
+	getData: function($neededData){
+		
+		var $self = this;
+		
+		if(!TemplateProcessorObj){
+			
+			console.error('FirebaseObj.getData(): TemplateProcessorObj does not exist!');
+			return;
+		}
+		
+		$self.databaseRef.child('products/' + $neededData)
+		.once('value')
+		.then(function($snapshot){
+		
+			// Send this data to TemplateProcessorObj
+			TemplateProcessorObj.generateTemplate($snapshot.val());
+		});
 	}
 }
 
