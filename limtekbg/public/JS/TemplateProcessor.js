@@ -21,12 +21,9 @@ var TemplateProcessorObj = {
 		
 		var $self = this;
 		
-		var $compiled = Handlebars.compile($self.productTemplate.get('html'));
+		var $compiled = Handlebars.compile($self.productTemplate.get('html'));		
 		
-		var $data = $templateData[1];
-		
-		
-		$self.productPlaceholder.set('html', $compiled($data));
+		$self.productPlaceholder.set('html', $compiled({products: $templateData}));
 	}
 };
 
