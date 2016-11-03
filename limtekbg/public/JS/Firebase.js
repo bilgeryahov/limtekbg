@@ -46,11 +46,6 @@ var FirebaseObj = {
 			// Send this data to TemplateProcessorObj
 			TemplateProcessorObj.generateTemplate($snapshot.val());
 		});
-	},
-
-	signIn: function($email, $password){
-
-
 	}
 };
 
