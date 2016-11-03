@@ -13,3 +13,17 @@
 	max-width: 1366px;
 	margin: auto;
 }
+
+// Used for undersections (product under categories).
+.UnderSection{
+	list-style: none;
+	cursor: pointer;
+
+	li{
+		background-color: lightgrey;
+	}
+
+	li:hover{
+		background-color: darkgray;
+	}
+}

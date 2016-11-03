@@ -10,3 +10,11 @@
 .MainWrapper {
   max-width: 1366px;
   margin: auto; }
+
+.UnderSection {
+  list-style: none;
+  cursor: pointer; }
+  .UnderSection li {
+    background-color: lightgrey; }
+  .UnderSection li:hover {
+    background-color: darkgray; }
