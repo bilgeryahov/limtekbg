@@ -39,7 +39,7 @@ var FirebaseObj = {
 			return;
 		}
 
-		$self.databaseRef.child('products/' + $neededData)
+		$self.databaseRef.child('produkti/' + $neededData)
 		.once('value')
 		.then(function($snapshot){
 

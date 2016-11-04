@@ -12,14 +12,21 @@
 var ProductsObj = {
 
 	// Main buttons.
-	secondHandMachinesButt: {},
-	accumulatorsButt: {},
+	mashiniVtoraUpotrebaButt: {},
+	akumulatoriButt: {},
 	diskoviBraniButt: {},
 	kultivatoriButt:{},
 	plugoveButt: {},
 	hidravlichniMarkuchiButt: {},
 
 	// Under section buttons.
+	lagernoTqloButt: {},
+	diskoveButt: {},
+	s_prujinniOrganiButt: {},
+	lapiButt: {},
+	shilaButt: {},
+	lemejiButt: {},
+	zubiShilaButt: {},
 
 	// Undersections
 	diskoviBraniUnderSection: {},
@@ -44,18 +51,35 @@ var ProductsObj = {
 		var $self = this;
 
 		// Get the main buttons.
-		$self.secondHandMachinesButt = $('SecondHandMachines');
-		$self.accumulatorsButt = $('Accumulators');
+		$self.mashiniVtoraUpotrebaButt = $('MashiniVtoraUpotreba');
+		$self.akumulatoriButt = $('Akumulatori');
 		$self.diskoviBraniButt = $('DiskoviBrani');
 		$self.kultivatoriButt = $('Kultivatori');
 		$self.plugoveButt = $('Plugove');
 		$self.hidravlichniMarkuchiButt = $('HidravlichniMarkuchi');
 
 		// Go through one single defensive check for all the buttons.
-		if(!$self.secondHandMachinesButt || !$self.accumulatorsButt || !$self.diskoviBraniButt
+		if(!$self.mashiniVtoraUpotrebaButt || !$self.akumulatoriButt || !$self.diskoviBraniButt
 		|| !$self.kultivatoriButt || !$self.plugoveButt || !$self.hidravlichniMarkuchiButt){
 
 			console.error('ProductsObj.init(): One of the buttons for products does not exist!');
+			return;
+		}
+
+		// Get the under section buttons.
+		$self.lagernoTqloButt = $('LagernoTqlo');
+		$self.diskoveButt = $('Diskove');
+		$self.s_prujinniOrganiButt = $('S_prujinniOrgani');
+		$self.lapiButt = $('Lapi');
+		$self.shilaButt = $('Shila');
+		$self.lemejiButt = $('Lemeji');
+		$self.zubiShilaButt = $('ZubiShila');
+
+		// Go through one single defensive check for all the buttons.
+		if(!$self.lagernoTqloButt || !$self.diskoveButt || !$self.s_prujinniOrganiButt
+		|| !$self.lapiButt || !$self.shilaButt || !$self.lemejiButt || !$self.zubiShilaButt){
+
+			console.error('ProductsObj.init(): One of the undersection buttons for products does not exist!');
 			return;
 		}
 
@@ -96,14 +120,54 @@ var ProductsObj = {
 		});
 
 		//The ones that make the requests to the FireBase Database.
-		$self.secondHandMachinesButt.addEvent('click', function(){
+		$self.mashiniVtoraUpotrebaButt.addEvent('click', function(){
 
-			FirebaseObj.getData('second_hand_machines');
+			FirebaseObj.getData('mashini_vtora_upotreba');
 		});
 
-		$self.accumulatorsButt.addEvent('click', function(){
+		$self.akumulatoriButt.addEvent('click', function(){
 
-			FirebaseObj.getData('accumulators');
+			FirebaseObj.getData('akumulatori');
+		});
+
+		$self.hidravlichniMarkuchiButt.addEvent('click', function(){
+
+			FirebaseObj.getData('hidravlichni_markuchi_i_nakrainici');
+		});
+
+		$self.lagernoTqloButt.addEvent('click', function(){
+
+			FirebaseObj.getData('diskovi_brani/lagerno_tqlo');
+		});
+
+		$self.diskoveButt.addEvent('click', function(){
+
+			FirebaseObj.getData('diskovi_brani/diskove');
+		});
+
+		$self.s_prujinniOrganiButt.addEvent('click', function(){
+
+			FirebaseObj.getData('kultivatori/s_prujinni_organi');
+		});
+
+		$self.lapiButt.addEvent('click', function(){
+
+			FirebaseObj.getData('kultivatori/lapi');
+		});
+
+		$self.shilaButt.addEvent('click', function(){
+
+			FirebaseObj.getData('kultivatori/shila');
+		});
+
+		$self.lemejiButt.addEvent('click', function(){
+
+			FirebaseObj.getData('plugove/lemeji');
+		});
+
+		$self.zubiShilaButt.addEvent('click', function(){
+
+			FirebaseObj.getData('plugove/zubi_shila');
 		});
 	},
 
