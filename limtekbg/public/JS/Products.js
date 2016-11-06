@@ -40,7 +40,7 @@ var ProductsObj = {
 	 *
 	 * Some of the buttons open under sections instead of requiring data from FireBase.
 	 *
-	 * @Example: button "Accumulators" calls FirebaseObj.getData('accumulators');
+	 * @Example: button "Akumulatori" calls FirebaseObj.getData('akumulatori');
 	 * @Example: button "Kultivatori" opens "KultivatoriUnderSection".
 	 *
 	 * @return void
@@ -58,11 +58,11 @@ var ProductsObj = {
 		$self.plugoveButt = $('Plugove');
 		$self.hidravlichniMarkuchiButt = $('HidravlichniMarkuchi');
 
-		// Go through one single defensive check for all the buttons.
+		// Go through one single defensive check for all the main buttons.
 		if(!$self.mashiniVtoraUpotrebaButt || !$self.akumulatoriButt || !$self.diskoviBraniButt
 		|| !$self.kultivatoriButt || !$self.plugoveButt || !$self.hidravlichniMarkuchiButt){
 
-			console.error('ProductsObj.init(): One of the buttons for products does not exist!');
+			console.error('ProductsObj.init(): One of the main buttons for products does not exist!');
 			return;
 		}
 
@@ -75,7 +75,7 @@ var ProductsObj = {
 		$self.lemejiButt = $('Lemeji');
 		$self.zubiShilaButt = $('ZubiShila');
 
-		// Go through one single defensive check for all the buttons.
+		// Go through one single defensive check for all the undersection buttons.
 		if(!$self.lagernoTqloButt || !$self.diskoveButt || !$self.s_prujinniOrganiButt
 		|| !$self.lapiButt || !$self.shilaButt || !$self.lemejiButt || !$self.zubiShilaButt){
 
@@ -172,7 +172,7 @@ var ProductsObj = {
 	},
 
 	/**
-	 * Opens an under section for products (more buttons).
+	 * Opens an under section.
 	 *
 	 * @param $element
 	 *
