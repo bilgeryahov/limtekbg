@@ -39,6 +39,7 @@ var FirebaseObj = {
 			return;
 		}
 
+		// Call for data from Firebase, handle errors if any.
 		$self.databaseRef.child('produkti/' + $neededData)
 		.once('value')
 		.then(function($snapshot){
