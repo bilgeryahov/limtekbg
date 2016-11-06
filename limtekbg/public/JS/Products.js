@@ -12,6 +12,7 @@
 var ProductsObj = {
 
 	// Main buttons.
+	noviMashini: {},
 	mashiniVtoraUpotrebaButt: {},
 	akumulatoriButt: {},
 	diskoviBraniButt: {},
@@ -51,6 +52,7 @@ var ProductsObj = {
 		var $self = this;
 
 		// Get the main buttons.
+		$self.noviMashini = $('NoviMashini');
 		$self.mashiniVtoraUpotrebaButt = $('MashiniVtoraUpotreba');
 		$self.akumulatoriButt = $('Akumulatori');
 		$self.diskoviBraniButt = $('DiskoviBrani');
@@ -59,7 +61,7 @@ var ProductsObj = {
 		$self.hidravlichniMarkuchiButt = $('HidravlichniMarkuchi');
 
 		// Go through one single defensive check for all the main buttons.
-		if(!$self.mashiniVtoraUpotrebaButt || !$self.akumulatoriButt || !$self.diskoviBraniButt
+		if(!$self.noviMashini || !$self.mashiniVtoraUpotrebaButt || !$self.akumulatoriButt || !$self.diskoviBraniButt
 		|| !$self.kultivatoriButt || !$self.plugoveButt || !$self.hidravlichniMarkuchiButt){
 
 			console.error('ProductsObj.init(): One of the main buttons for products does not exist!');
@@ -120,6 +122,11 @@ var ProductsObj = {
 		});
 
 		//The ones that make the requests to the FireBase Database.
+		$self.noviMashini.addEvent('click', function(){
+
+			FirebaseObj.getData('novi_mashini');
+		});
+
 		$self.mashiniVtoraUpotrebaButt.addEvent('click', function(){
 
 			FirebaseObj.getData('mashini_vtora_upotreba');

@@ -45,6 +45,9 @@ var FirebaseObj = {
 
 			// Send this data to TemplateProcessorObj
 			TemplateProcessorObj.generateTemplate($snapshot.val());
+		}, function($error){
+
+			console.log(' FirebaseObj.getData(): ', $error);
 		});
 	}
 };
