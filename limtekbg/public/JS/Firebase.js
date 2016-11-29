@@ -10,7 +10,7 @@ var FirebaseObj = {
 
 		var $self = this;
 
-		var config = {
+		var $config = {
 			apiKey: "AIzaSyDiXx5uys83vk-0bKdyKEfbExpZzdoChZE",
 			authDomain: "limtek-fb748.firebaseapp.com",
 			databaseURL: "https://limtek-fb748.firebaseio.com",
@@ -18,7 +18,7 @@ var FirebaseObj = {
 			messagingSenderId: "876594439093"
 		};
 
-		firebase.initializeApp(config);
+		firebase.initializeApp($config);
 
 		// Initialize the storage.
 		$self.storage = firebase.storage();
