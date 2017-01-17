@@ -20,4 +20,5 @@
     background-color: darkgray; }
 
 .ProductDescription {
-  text-align: left; }
+  text-align: left;
+  list-style: square; }
