@@ -129,7 +129,11 @@
 						<li class="w3-padding-16"><b>Цена:</b><br/> {{price}}</li>
 						<li class="w3-padding-16" style="height: 8em; overflow-y: auto;">
 							<b>Описание:</b><br/>
-							{{description}}
+							<ul class="ProductDescription">
+								{{#each description}}
+								<li>{{this}}</li>
+								{{/each}}
+							</ul>
 						</li>
 						<li class="w3-light-grey w3-padding-24">
 							<button class="w3-btn w3-green w3-padding">Виж изображения</button>

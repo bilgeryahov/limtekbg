@@ -75,6 +75,26 @@ var TemplateProcessorObj = {
 		// Deal with the template (empty or full, you decide!).
 		var $compiled = Handlebars.compile($self.productTemplate.get('html'));
 
+		// Make sure that there is data for this category products.
+		if($templateData !== null) {
+
+			/*
+			 * The description attribute of each data element is separated by ';'
+			 * So this makes sure that each part of the description stands for itself.
+			 * By doing so, the list effect is accomplished in the front-end. So each
+			 * sentence in the description is a list element.
+			 */
+
+			$templateData.forEach(function($element){
+
+				if($element.hasOwnProperty('description')){
+
+					$description = $element['description'];
+					$element['description'] = $description.split(';');
+				}
+			});
+		}
+
 		$self.productPlaceholder.set('html', $compiled({products: $templateData}));
 	}
 };
