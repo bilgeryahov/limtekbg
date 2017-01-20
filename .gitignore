@@ -1,3 +1,5 @@
 /limtekbg/node_modules/
 /limtekbg/firebase-debug.log
 .idea/
+/limtekbg/public/CSS/*.css
+/limtekbg/public/JS/*js
