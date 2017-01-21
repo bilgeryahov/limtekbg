@@ -14,7 +14,7 @@ let sass  = require('gulp-sass');
 let babel = require('gulp-babel');
 
 // Compile JS ES6 to JS ES5.
-gulp.task('javascript_compiler',  function(){
+gulp.task('compile_javascript',  function(){
 
 	gulp.src('JS_ES6/*.js')
 		.pipe(babel())
@@ -22,7 +22,7 @@ gulp.task('javascript_compiler',  function(){
 });
 
 // Compile SCSS to CSS.
-gulp.task('css_compiler', function(){
+gulp.task('compile_css', function(){
 
 	gulp.src('SCSS/*scss')
 		.pipe(sass().on('error', sass.logError))
