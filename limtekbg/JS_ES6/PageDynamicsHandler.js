@@ -1,17 +1,15 @@
 /**
- * @file Functions.js
+ * @file PageDynamicsHandler.js
  *
- * FunctionsObj is used in every page to handle the navigation bar functionality
+ * Module, which is used in every page to handle the navigation bar functionality
  * and to change the quote at the bottom of the page.
- *
- * The pages that currently do not use this JavaScript file are:
- * -> administration.html
  *
  * @author Bilger Yahov <bayahov1@gmail.com>
  * @version 1.0.0
  * @copyright © 2016 Bilger Yahov, all rights reserved.
  */
-var FunctionsObj = {
+
+const PageDynamicsHandler = {
 
     navDemo: {},
     toggleNavigation: {},
@@ -19,22 +17,22 @@ var FunctionsObj = {
     listOfQuotes: [],
 
 	/**
-     * Initialize the main functionality. Get the elements from the DOM and attach the
+     * Initializes the main functionality. Gets the elements from the DOM and attaches the
      * corresponding events.
      *
-     * Whenever initializing change the quote.
+     * When initializing, changes the quote.
      *
      * @return void
      */
 
     init: function(){
 
-      var $self = this;
+      const $self = this;
 
       $self.toggleNavigation = $('ToggleNavigation');
       if(!$self.toggleNavigation){
 
-          console.error('FunctionsObj.init(): ToggleNavigation is not found!');
+          console.error('PageDynamicsHandler.init(): ToggleNavigation is not found!');
           return;
       }
 
@@ -46,7 +44,7 @@ var FunctionsObj = {
       $self.quote = $('Quote');
       if(!$self.quote){
 
-          console.error('FunctionsObj.init(): Quote is not found!');
+          console.error('PageDynamicsHandler.init(): Quote is not found!');
           return;
       }
 
@@ -65,19 +63,19 @@ var FunctionsObj = {
   },
 
 	/**
-     * Toggle the navigation bar.
+     * Toggles the navigation bar.
      *
      * @return void
      */
 
     toggleMenu: function(){
 
-      var $self = this;
+      const $self = this;
 
       $self.navDemo = $('NavDemo');
       if(!$self.navDemo){
 
-          console.error('FunctionsObj.toggleMenu(): NavDemo is not found!');
+          console.error('PageDynamicsHandler.toggleMenu(): NavDemo is not found!');
           return;
       }
 
@@ -92,16 +90,16 @@ var FunctionsObj = {
   },
 
 	/**
-     * Change the quote randomly.
+     * Changes the quote randomly.
      *
      * @return void
      */
 
     changeQuote: function(){
 
-      var $self = this;
+      const $self = this;
 
-      var $number = Math.floor((Math.random() * 7));
+      let $number = Math.floor((Math.random() * 7));
 
       $self.quote.innerHTML = $self.listOfQuotes[$number];
   }
@@ -109,5 +107,5 @@ var FunctionsObj = {
 
 document.addEvent('domready', function(){
 
-	FunctionsObj.init();
+    PageDynamicsHandler.init();
 });

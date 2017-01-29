@@ -1,14 +1,14 @@
 /**
  * @file TemplateProcessor.js
  *
- * This file is currently used only in products.html since only it deals
- * with products and templates.
+ * Module, which currently processes the templates.
  *
  * @author Bilger Yahov <bayahov1@gmail.com>
  * @version 1.0.0
  * @copyright © 2016 Bilger Yahov, all rights reserved.
  */
-var TemplateProcessorObj = {
+
+const TemplateProcessor = {
 
 	productPlaceholder: {},
 	productTemplate: {},
@@ -40,21 +40,21 @@ var TemplateProcessorObj = {
 
 	generateTemplate: function($templateData){
 
-		var $self = this;
+		const $self = this;
 
 		$self.productPlaceholder = $('ProductPlaceHolder');
 		$self.productTemplate = $('ProductTemplate');
 
 		if(!$self.productPlaceholder || !$self.productTemplate){
 
-			console.error('TemplateProcessorObj.generateTemplate(): ProductPlaceHolder and/or ProductTemplate not found!');
+			console.error('TemplateProcessor.generateTemplate(): ProductPlaceHolder and/or ProductTemplate not found!');
 			return;
 		}
 
 		$self.noDataNotifier = $('NoData');
 		if(!$self.noDataNotifier){
 
-			console.error('TemplateProcessorObj.generateTemplate(): no data notifier is missing!');
+			console.error('TemplateProcessor.generateTemplate(): no data notifier is missing!');
 			return;
 		}
 
@@ -73,7 +73,7 @@ var TemplateProcessorObj = {
 		}
 
 		// Deal with the template (empty or full, you decide!).
-		var $compiled = Handlebars.compile($self.productTemplate.get('html'));
+		let $compiled = Handlebars.compile($self.productTemplate.get('html'));
 
 		// Make sure that there is data for this category products.
 		if($templateData !== null) {
@@ -89,7 +89,7 @@ var TemplateProcessorObj = {
 
 				if($element.hasOwnProperty('description')){
 
-					$description = $element['description'];
+					let $description = $element['description'];
 					$element['description'] = $description.split(';');
 				}
 			});
@@ -101,5 +101,5 @@ var TemplateProcessorObj = {
 
 document.addEvent('domready', function(){
 
-	TemplateProcessorObj.init();
+	TemplateProcessor.init();
 });

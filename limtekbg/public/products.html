@@ -13,9 +13,9 @@
         <script src="./JS/Vendor/MooTools-Core-1.6.0.js"></script>
         <script src="./JS/Vendor/MooTools-More-1.6.0.js"></script>
 		<script src="./JS/Vendor/handlebars-v4.0.5.js"></script>
-        <script src="./JS/Functions.js"></script>
-		<script src="./JS/Firebase.js"></script>
-		<script src="./JS/Products.js"></script>
+        <script src="./JS/PageDynamicsHandler.js"></script>
+		<script src="./JS/FirebaseEngine.js"></script>
+		<script src="./JS/ProductsLoader.js"></script>
 		<script src="./JS/TemplateProcessor.js"></script>
         <style>
             body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
@@ -54,7 +54,7 @@
         </div>
 
 		<div class="MainWrapper">
-			<div class="w3-container" style="margin: 4rem auto;">
+			<div id="ProductCategoriesPlaceholder" class="w3-container" style="margin: 4rem auto;">
 				<ul class="w3-ul w3-card-4" style="cursor:pointer;">
 					<li id="NoviMashini" class="w3-padding-16 w3-hover-light-grey">
 						<span class="w3-large">Нови машини</span><br>
