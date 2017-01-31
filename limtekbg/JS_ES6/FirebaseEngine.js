@@ -46,7 +46,7 @@ const FirebaseEngine = {
 	},
 
     /**
-	 * Makes a GET request to the Firebase real - time database.
+	 * Makes a GET request to the Firebase Real Time database.
 	 *
      * @param $path - path to retrieve data from
      * @param $extra - extra parameters provided
@@ -89,27 +89,13 @@ const FirebaseEngine = {
 
 				if($extra.hasOwnProperty('shallow') && $extra['shallow'] === true){
 
-					// For constructing the products tree.
-					if($extra.hasOwnProperty('products_load') && $extra['products_load'] === true){
+					for(let $turnMember in $data){
 
-                        for(let $turnMember in $data){
+                        if($data.hasOwnProperty($turnMember)){
 
-                            if($data.hasOwnProperty($turnMember)){
-
-                                $data[$turnMember] = 'not_processed';
-                            }
+                            $data[$turnMember] = {};
                         }
-					}
-					else{
-
-                        for(let $turnMember in $data){
-
-                            if($data.hasOwnProperty($turnMember)){
-
-                                $data[$turnMember] = {};
-                            }
-                        }
-					}
+                    }
 				}
 
 				// Call the callback with the processed data and null for errors.
