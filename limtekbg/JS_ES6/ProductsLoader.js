@@ -23,6 +23,13 @@ const ProductsLoader = {
 			return;
 		}
 
+		// Make sure that the TemplateProcessor is present.
+        if(!TemplateProcessor){
+
+            console.error('ProductsLoader.init(): TemplateProcessor is not present!');
+            return;
+        }
+
 		$self.loadProducts();
 	},
 
@@ -119,8 +126,8 @@ const ProductsLoader = {
 			}
 		}
 
-		// Show me results.
-		console.log($self._productsTree);
+		// Call for generating the template for the tree.
+		TemplateProcessor.generateProductsTree($self._productsTree);
 	}
 };
 
