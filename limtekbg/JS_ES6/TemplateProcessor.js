@@ -10,73 +10,71 @@
 
 const TemplateProcessor = {
 
-	productPlaceholder: {},
-	productTemplate: {},
+    /**
+     * Initializes the main functionality.
+     * Makes the defensive checks for the external modules used.
+     *
+     * @return void
+     */
 
-	// Display when there is no data available.
-	noDataNotifier: {},
-
-	/**
-	 * Initializes the main functionality.
-	 *
-	 * @return void
-	 */
-
-	init: function(){
-
-
-	},
-
-	/**
-	 * Goes through a defensive check to make sure that everything needed is present.
-	 * Puts the template data inside the placeholder.
-	 *
-	 * If the template data is 'null' a notification is shown.
-	 *
-	 * @param $templateData
-	 *
-	 * @return void
-	 */
-
-	generateTemplate: function($templateData){
+	init(){
 
 		const $self = this;
 
-		$self.productPlaceholder = $('ProductPlaceHolder');
-		$self.productTemplate = $('ProductTemplate');
+		if(!Handlebars){
 
-		if(!$self.productPlaceholder || !$self.productTemplate){
+			console.error('TemplateProcessor.init(): Handlebars not found!');
+			return;
+		}
+	},
 
-			console.error('TemplateProcessor.generateTemplate(): ProductPlaceHolder and/or ProductTemplate not found!');
+    /**
+	 * Generates REAL PRODUCTS templates.
+	 *
+     * @param $data
+	 *
+	 * @return void
+     */
+
+	generateProductsForCategory($data){
+
+		const $self = this;
+
+		const $productPlaceholder = $('ProductPlaceholder');
+		const $productTemplate = $('ProductTemplate');
+
+		if(!$productPlaceholder || !$productTemplate){
+
+			console.error('TemplateProcessor.generateProductsForCategory(): ProductPlaceholder and/or ProductTemplate not found!');
 			return;
 		}
 
-		$self.noDataNotifier = $('NoData');
-		if(!$self.noDataNotifier){
+		const $noDataNotifier = $('NoData');
+		if(!$noDataNotifier){
 
-			console.error('TemplateProcessor.generateTemplate(): no data notifier is missing!');
+			console.error('TemplateProcessor.generateProductsForCategory(): no data notifier is missing!');
 			return;
 		}
 
 		// Make sure that at first the no data message is hidden!
-		if($self.noDataNotifier.className.indexOf('w3-hide') === -1){
+		if($noDataNotifier.className.indexOf('w3-hide') === -1){
 
 			// Hide it, ONLY IF it is not already hidden.
-			$self.noDataNotifier.className += ' w3-hide';
+			$noDataNotifier.className += ' w3-hide';
 		}
 
 		// Check if there is data to show.
-		if($templateData === null){
+		if($data === null){
 
 			// Well... if there is no data, show me the message.
-			$self.noDataNotifier.className = $self.noDataNotifier.className.replace(' w3-hide', '');
+			$noDataNotifier.className = $noDataNotifier.className.replace(' w3-hide', '');
 		}
 
 		// Deal with the template (empty or full, you decide!).
-		let $compiled = Handlebars.compile($self.productTemplate.get('html'));
+		let $compiled = Handlebars.compile($productTemplate.get('html'));
 
 		// Make sure that there is data for this category products.
-		if($templateData !== null) {
+		if($data !== null){
 
 			/*
 			 * The description attribute of each data element is separated by ';'
@@ -85,7 +83,7 @@ const TemplateProcessor = {
 			 * sentence in the description is a list element.
 			 */
 
-			$templateData.forEach(function($element){
+			$data.forEach(function($element){
 
 				if($element.hasOwnProperty('description')){
 
@@ -95,7 +93,73 @@ const TemplateProcessor = {
 			});
 		}
 
-		$self.productPlaceholder.set('html', $compiled({products: $templateData}));
+		$productPlaceholder.set('html', $compiled({products: $data}));
+	},
+
+    /**
+	 * Generates the products tree template. (Or sub-categories)
+	 *
+     * @param $data
+	 * @param $wait
+	 *
+	 * @return void
+     */
+
+	generateProductsTree($data, $wait){
+
+        const $self = this;
+
+        const $productCategoriesPlaceholder = $('ProductCategoriesPlaceholder');
+        const $productCategoriesTemplate = $('ProductCategoriesTemplate');
+
+        if(!$productCategoriesPlaceholder || !$productCategoriesTemplate){
+
+            console.error('TemplateProcessor.generateProductsTree(): ProductCategoriesPlaceholder' +
+				' and/or ProductCategoriesTemplate not found!');
+            return;
+        }
+
+        const $noDataNotifier = $('NoData');
+        if(!$noDataNotifier){
+
+            console.error('TemplateProcessor.generateProductsTree(): no data notifier is missing!');
+            return;
+        }
+
+        // Make sure that at first the no data message is hidden!
+        if($noDataNotifier.className.indexOf('w3-hide') === -1){
+
+            // Hide it, ONLY IF it is not already hidden.
+            $noDataNotifier.className += ' w3-hide';
+        }
+
+        // Check if there is data to show.
+        if($data === null){
+
+            // Well... if there is no data, show me the message.
+            $noDataNotifier.className = $noDataNotifier.className.replace(' w3-hide', '');
+        }
+
+        // Deal with the template (empty or full, you decide!).
+        let $compiled = Handlebars.compile($productCategoriesTemplate.get('html'));
+
+        /*
+         * We want to wait when loading the first products tree, so the user thinks
+         * we do very hard job. Thanks.
+         */
+
+        if($wait){
+
+            setTimeout(function(){
+
+                $productCategoriesPlaceholder.set('html', $compiled({categories: $data}));
+            }, 2000);
+
+            return;
+		}
+
+		// Here we load a sub-category.
+        $productCategoriesPlaceholder.set('html', $compiled({categories: $data}));
 	}
 };
 

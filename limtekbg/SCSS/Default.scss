@@ -9,22 +9,30 @@
 	margin: auto;
 }
 
-// Used for undersections (product under categories).
-.UnderSection{
-	list-style: none;
-	cursor: pointer;
-
-	li{
-		background-color: lightgrey;
-	}
-
-	li:hover{
-		background-color: darkgray;
-	}
+#NoData{
+	margin-bottom: 4em !important;
 }
+
+/*
+ * #ProductTemplate
+ */
 
 // For the product template make sure that the list items are aligned to left.
 .ProductDescription{
 	text-align: left;
 	list-style: square;
+}
+
+.LightGreenWhiteText{
+	color: white !important;
+}
+
+/*
+ * #ProductCategoriesTemplate
+ */
+
+.CategoryButton{
+	color: white !important;
+	padding: 1em;
+	font-size: 1em;
 }
