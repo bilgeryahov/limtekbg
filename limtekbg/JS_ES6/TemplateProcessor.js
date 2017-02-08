@@ -95,6 +95,16 @@ const TemplateProcessor = {
 		}
 
 		$productsPlaceholder.set('html', $compiled({products: $data}));
+
+        // Try to scroll.
+        new Fx.Scroll(window, {
+            offset: {
+                x: 0,
+                y: -90 // The offset from the top side.
+            },
+            duration: 1000,
+            wheelStops: false
+        }).toElement($productsPlaceholder);
 	},
 
     /**
