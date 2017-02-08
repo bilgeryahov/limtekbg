@@ -171,6 +171,9 @@ const ProductsLoader = {
 		 */
 
 		TemplateProcessor.generateProductsTree($self._productsTree, true);
+
+		// Disable the go back button.
+		$self.enableGoBackCategories(false);
 	},
 
     /**
@@ -298,9 +301,24 @@ const ProductsLoader = {
 		// Check if you need a Firebase call or you have sub-categories (which are already stored).
 		if($self._hasProductsList){
 
-			// Okay, no need for a DB call.
-			// Here we load a category content, so no waiting.
-			return TemplateProcessor.generateProductsTree($self._tempProductList, false);
+			/*
+			 * Okay, no need for a DB call.
+			 *
+			 * Here we load a category content, so no waiting. (second parameter)
+			 *
+			 * Display the go back button also.
+			 */
+
+			TemplateProcessor.generateProductsTree($self._tempProductList, false);
+
+			// Show the go back to main categories button.
+			$self.enableGoBackCategories(true);
+
+            // Do not show the products listed now, since you are focusing on sub-categories.
+            $self.enableProductsListed(false);
+
+            // Do not forget to stop here.
+			return;
 		}
 
 		/*
@@ -327,10 +345,117 @@ const ProductsLoader = {
                     return;
                 }
 
-                // If no data, the TemplateProcessor will show a message on the front-end.
+                // First make the products listed visible, since you are going to show real products.
+                $self.enableProductsListed(true);
+
+                /*
+                 * Attempt to show real products.
+                 * If no data, the TemplateProcessor will show a message on the front-end.
+                 */
+
 				return TemplateProcessor.generateProductsForCategory($data);
             }
 		)
+	},
+
+    /**
+	 * Loads the main categories.
+	 * Gets called from products.html.
+	 * The idea is to show back the main categories after showing sub-ones.
+	 *
+	 * @return void
+     */
+
+	loadMainCategories(){
+
+		const $self = this;
+
+		// Defensively check for the TemplateProcessor, since this function is called from outside.
+		if(!TemplateProcessor){
+
+			console.error('ProductsLoader.loadMainCategories(): TemplateProcessor is missing!');
+			return;
+		}
+
+		// Make sure that you have what to load.
+		if(Object.keys($self._productsTree).length !== 0 && $self._productsTree !== null
+			&& $self._productsTree !== undefined){
+
+			// Do not wait here, since we are just going back to main categories from sub-ones.
+			TemplateProcessor.generateProductsTree($self._productsTree, false);
+
+			// Do not show the go back button. No need.
+			$self.enableGoBackCategories(false);
+
+			// Do not show the products listed now. Let the user focus on the categories.
+			$self.enableProductsListed(false);
+		}
+	},
+
+    /**
+	 * Enables/Disables the go back to main categories button.
+	 *
+     * @param $enable
+	 *
+	 * @return void
+     */
+
+	enableGoBackCategories($enable){
+
+		const $self = this;
+
+		let $goBackCategories = $('GoBackCategories');
+		if(!$goBackCategories){
+
+			console.error('ProductsLoader.enableGoBackCatgories(): GoBackCategories not found!');
+			return;
+		}
+
+		if($enable){
+
+            $goBackCategories.className = $goBackCategories.className.replace(' w3-hide', '');
+        }
+		else {
+
+			// Hide if not hidden already.
+            if($goBackCategories.className.indexOf('w3-hide') === -1){
+
+                $goBackCategories.className += ' w3-hide';
+            }
+        }
+	},
+
+    /**
+	 * Enables/Disables the products listed.
+	 *
+     * @param $enable
+	 *
+	 * @return void
+     */
+
+	enableProductsListed($enable){
+
+		const $self = this;
+
+        const $productsPlaceholder = $('ProductsPlaceholder');
+
+        if(!$productsPlaceholder){
+
+            console.error('ProductsLoader.enableProductsListed(): ProductsPlaceholder not found!');
+            return;
+        }
+
+        if($enable){
+
+            $productsPlaceholder.className = $productsPlaceholder.className.replace(' w3-hide', '');
+        }
+        else {
+
+            if($productsPlaceholder.className.indexOf('w3-hide') === -1){
+
+                $productsPlaceholder.className += ' w3-hide';
+            }
+        }
 	}
 };
 
