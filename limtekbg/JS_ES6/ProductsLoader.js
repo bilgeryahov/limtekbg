@@ -215,6 +215,7 @@ const ProductsLoader = {
 			}
 
 			// Start constructing the path.
+			// ENDS WITH A SLASH!!!
 			$self._categoryToLoad += $key + '/products_list/';
 
 			// Check if you found what you are looking for.
@@ -470,7 +471,94 @@ const ProductsLoader = {
             return;
 		}
 
-		alert($self._categoryToLoad + '/' + $product);
+		// Make sure that Firebase Engine is present, since this function is called from outside.
+		if(!FirebaseEngine){
+
+            console.error('ProductsLoader.loadImagesForProduct(): FirebaseEngine is not present!');
+            return;
+		}
+
+		// First make a DB request to get the file names.
+		// _categoryToLoad has it's end slash!
+		// Always end your paths with a slash!!
+		let $path = 'products/' + $self._categoryToLoad + $product + '/';
+
+		let $extra = {};
+
+		FirebaseEngine.firebaseGET(
+			$path,
+			$extra,
+            function($error, $data){
+
+                // If errors, log and stop.
+                if ($error) {
+
+                    console.error($error);
+                    return;
+                }
+
+                // If no data, log and stop.
+                if (!$data) {
+
+                    console.log('ProductsLoader.loadImagesForProduct(): No data arrived for ' +
+                        $path);
+                    return;
+                }
+
+            	// Check if there are any images to load.
+				if(!$data.hasOwnProperty('images')){
+
+                	// No images found.
+					return $self.notifyNoProductImages();
+				}
+
+				// At this point we know that there are images to load.
+                let $imageURLs = [];
+
+				let $callForURL = function($index){
+
+					// First check if the item exists in the array.
+					if(!$data['images'][$index]){
+
+						// Enough.
+						return $self.generateImagesFromURLs($imageURLs);
+					}
+
+					// There is a slash at the end!
+					// Always end your paths with slashes!
+					FirebaseEngine.retrieveStorageItemURL($path +  $data['images'][$index] + '/', function($error, $data){
+
+						if($error){
+
+                            console.error($error);
+                            return;
+						}
+
+						// At this point we have one of the URLs.
+						if($data !== null && $data !== undefined){
+
+                            $imageURLs.push($data);
+						}
+
+						// Call for the next.
+						$callForURL($index+1);
+                    })
+                };
+
+				// Call for the first one.
+				$callForURL(0);
+            }
+		);
+	},
+
+	notifyNoProductImages(){
+
+		alert('No product images!');
+	},
+
+	generateImagesFromURLs($URLs){
+
+		console.log($URLs);
 	}
 };
 

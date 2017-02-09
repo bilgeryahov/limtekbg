@@ -10,11 +10,11 @@
 
 const FirebaseEngine = {
 
-	storage: {},
-	storageRef: {},
+	_storage: {},
+	_storageRef: {},
 
-	database: {},
-	databaseRef: {},
+	_database: {},
+	_databaseRef: {},
 
     /**
 	 * Initializes the Firebase engine.
@@ -37,12 +37,12 @@ const FirebaseEngine = {
 		firebase.initializeApp($config);
 
 		// Initialize the storage.
-		$self.storage = firebase.storage();
-		$self.storageRef = $self.storage.ref();
+		$self._storage = firebase.storage();
+		$self._storageRef = $self._storage.ref();
 
 		// Initialize the real-time database.
-		$self.database = firebase.database();
-		$self.databaseRef = $self.database.ref();
+		$self._database = firebase.database();
+		$self._databaseRef = $self._database.ref();
 	},
 
     /**
@@ -115,6 +115,27 @@ const FirebaseEngine = {
 
 		// Fire the XHR request.
 		$request.send();
+	},
+
+	retrieveStorageItemURL($path, $callback){
+
+		const $self= this;
+
+		let $itemRef = $self._storageRef.child($path);
+
+		$itemRef.getDownloadURL()
+			.then(function($URL){
+
+				// Call the callback with the URL and null for errors.
+				return $callback(null, $URL);
+            })
+			.catch(function($error){
+
+				console.error('FirebaseEngine.downloadStorageItem(): ' + $error.code);
+
+				// Call the callback with the error code and null for URL.
+				return $callback('Data for ' + $path + ' did not arrive because an error!', null);
+            });
 	}
 };
 
