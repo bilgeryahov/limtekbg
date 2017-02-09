@@ -456,6 +456,21 @@ const ProductsLoader = {
                 $productsPlaceholder.className += ' w3-hide';
             }
         }
+	},
+
+	loadImagesForProduct($product){
+
+		const $self = this;
+
+		// Make sure that there is something inside the category to load.
+		if($self._categoryToLoad === '' || $self._categoryToLoad === undefined ||
+			$self._categoryToLoad === null){
+
+            console.error('ProductsLoader.loadImagesForProduct(): category to load not found!');
+            return;
+		}
+
+		alert($self._categoryToLoad + '/' + $product);
 	}
 };
 

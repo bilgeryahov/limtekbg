@@ -109,7 +109,10 @@
 							</ul>
 						</li>
 						<li class="w3-light-grey w3-padding-24">
-							<button class="w3-btn w3-light-green w3-padding LightGreenWhiteText">Виж изображения</button>
+							<button id="{{@key}}" class="w3-btn w3-light-green w3-padding LightGreenWhiteText"
+							onclick="showProductImages(this.id)">
+								Виж изображения
+							</button>
 						</li>
 					</ul>
 				</div>
@@ -146,6 +149,16 @@
 				ProductsLoader.loadMainCategories();
             }
 		</script>
+	<script>
+		function showProductImages($product){
+            if(!ProductsLoader){
+                console.error('ProductsHTML.showProductImages(): ProductsLoader is missing!');
+                return;
+            }
+
+            ProductsLoader.loadImagesForProduct($product);
+        }
+	</script>
 
 </body>
 </html>
