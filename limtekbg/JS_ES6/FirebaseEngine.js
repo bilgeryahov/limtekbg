@@ -117,6 +117,15 @@ const FirebaseEngine = {
 		$request.send();
 	},
 
+    /**
+	 * Retrieves URL for a specific storage item.
+	 *
+     * @param $path
+     * @param $callback
+	 *
+	 * @return void
+     */
+
 	retrieveStorageItemURL($path, $callback){
 
 		const $self= this;

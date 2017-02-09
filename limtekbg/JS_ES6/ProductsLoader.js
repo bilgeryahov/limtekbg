@@ -459,6 +459,14 @@ const ProductsLoader = {
         }
 	},
 
+    /**
+	 * Gets the image URLs for a product.
+	 *
+     * @param $product
+	 *
+	 * @return void
+     */
+
 	loadImagesForProduct($product){
 
 		const $self = this;
