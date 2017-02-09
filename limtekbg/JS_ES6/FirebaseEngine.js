@@ -78,6 +78,8 @@ const FirebaseEngine = {
 			method: 'GET',
 			onSuccess: function($data){
 
+				// If the data arrived is null, the function returns null as data as well.
+
 				// Parse the data to a JSON object.
 				$data = JSON.parse($data);
 

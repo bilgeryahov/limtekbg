@@ -25,7 +25,7 @@ const PageDynamicsHandler = {
      * @return void
      */
 
-    init: function(){
+    init(){
 
       const $self = this;
 
@@ -68,7 +68,7 @@ const PageDynamicsHandler = {
      * @return void
      */
 
-    toggleMenu: function(){
+    toggleMenu(){
 
       const $self = this;
 
@@ -95,7 +95,7 @@ const PageDynamicsHandler = {
      * @return void
      */
 
-    changeQuote: function(){
+    changeQuote(){
 
       const $self = this;
 
