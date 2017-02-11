@@ -8,567 +8,627 @@
  * @copyright © 2016 - 2017 Bilger Yahov, all rights reserved.
  */
 
-const ProductsLoader = {
+const ProductsLoader = (function(){
 
-	// The general products tree, set when the page loads.
-	_productsTree: {},
+	/*
+	 * Encapsulate the logic.
+	 */
 
-	// Category which needs to be loaded after user clicks.
-	_categoryToLoad: '',
+	const Logic = {
 
-	// Decide if the category has been found in the tree.
-	_categoryToLoadFound: false,
+        // The general products tree, set when the page loads.
+        _productsTree: {},
 
-	// If it has products list (if it has sub-categories).
-	_hasProductsList: false,
+        // Category which needs to be loaded after user clicks.
+        _categoryToLoad: '',
 
-	// Store the products list here (the sub-categories if any).
-	_tempProductList: {},
+        // Decide if the category has been found in the tree.
+        _categoryToLoadFound: false,
 
-    /**
-	 * Initializes the main functionality.
-	 * Makes the defensive checks for the external modules used.
-	 *
-	 * @return void
-     */
+        // If it has products list (if it has sub-categories).
+        _hasProductsList: false,
 
-	init(){
+        // Store the products list here (the sub-categories if any).
+        _tempProductList: {},
 
-		const $self = this;
+        /**
+         * Initializes the main functionality.
+         * Makes the defensive checks for the external modules used.
+         *
+         * @return void
+         */
 
-		// Make sure that FirebaseEngine is present.
-		if(!FirebaseEngine){
+        init(){
 
-			console.error('ProductsLoader.init(): FirebaseEngine is not present!');
-			return;
-		}
+            const $self = this;
 
-		// Make sure that the TemplateProcessor is present.
-        if(!TemplateProcessor){
+            // Make sure that FirebaseEngine is present.
+            if(!FirebaseEngine){
 
-            console.error('ProductsLoader.init(): TemplateProcessor is not present!');
-            return;
-        }
+                console.error('ProductsLoader.init(): FirebaseEngine is not present!');
+                return;
+            }
 
-        // Get me the products tree.
-		$self.loadProducts();
-	},
+            // Make sure that the TemplateProcessor is present.
+            if(!TemplateProcessor){
 
-    /**
-	 * Loads all the products from the database. The idea
-	 * is to construct the products tree.
-	 *
-	 * @return void
-     */
+                console.error('ProductsLoader.init(): TemplateProcessor is not present!');
+                return;
+            }
 
-	loadProducts(){
+            // Get me the products tree.
+            $self.loadProducts();
+        },
 
-		const $self = this;
+        /**
+         * Loads all the products from the database. The idea
+         * is to construct the products tree.
+         *
+         * @return void
+         */
 
-		// Get me all products from the main end-point.
-		let $path = 'products/';
-		let $extra = {
+        loadProducts(){
 
-		};
+            const $self = this;
 
-		FirebaseEngine.firebaseGET(
-			$path,
-			$extra,
-			function($error, $data){
+            // Get me all products from the main end-point.
+            let $path = 'products/';
+            let $extra = {
 
-				// If errors, log and stop.
-				if($error){
+            };
 
-					console.error($error);
-					return;
-				}
+            FirebaseEngine.firebaseGET(
+                $path,
+                $extra,
+                function($error, $data){
 
-				// If no data, log and stop.
-				if(!$data){
+                    // If errors, log and stop.
+                    if($error){
 
-					console.log('ProductsLoader.loadProducts(): No data arrived for ' +
-						$path);
-					return;
-				}
-
-				/*
-				 * At this point we have all the products from the database.
-				 * Now it's time to construct the products tree.
-				 */
-
-				$self._productsTree = $data;
-				$self.constructProductsTree();
-			}
-		);
-	},
-
-    /**
-	 * Constructs the products tree based on the information it got from
-	 * the Firebase Real Time Databse.
-	 * Cleans up all the product categories which are filled in with real products.
-	 * Leaves only the ones which have sub categories inside.
-	 *
-	 * @return void
-     */
-
-	constructProductsTree(){
-
-		const $self = this;
-
-		// Actually to make sure that there is info in the products tree.
-		if(typeOf($self._productsTree) !== 'object'){
-
-			console.error('ProductsLoader.constructProductsTree(): The _productsTree must be' +
-				' an object');
-			return;
-		}
-
-		let $traverse = function($object){
-
-			// Check if this object has 'products_list' attribute.
-			if(!$object.hasOwnProperty('products_list')){
-
-				// If it does not, this means that we do not have to perform clean-up.
-				return;
-			}
-
-			// Make sure that you clean up when you find a real product, not a sub category inside 'products_list'.
-            for(let $member in $object['products_list']){
-
-                if($object['products_list'].hasOwnProperty($member)){
-
-                	// If it does not have 'diplay_name' it is a real product.
-                    if(!$object['products_list'][$member].hasOwnProperty('display_name')){
-
-                    	// Reset and return.
-                        delete $object['products_list'];
+                        console.error($error);
                         return;
                     }
-                }
-            }
 
-            // We have found sub-categories. Let's process them.
-            Object.keys($object['products_list']).forEach(function($subCategory){
+                    // If no data, log and stop.
+                    if(!$data){
 
-            	// Recursivelly calls itself.
-            	$traverse($object['products_list'][$subCategory]);
-            });
-        };
-
-		// Start for the entire products tree.
-		for(let $member in $self._productsTree){
-
-			if($self._productsTree.hasOwnProperty($member)){
-
-				$traverse($self._productsTree[$member]);
-			}
-		}
-
-		/*
-		 * Call for generating the first (main) products tree.
-		 * Pass true for the second parameter, since we want
-		 * the user to think that we are smart. Thanks.
-		 */
-
-		TemplateProcessor.generateProductsTree($self._productsTree, true);
-
-		// Disable the go back button.
-		$self.enableGoBackCategories(false);
-	},
-
-    /**
-	 * Constructs the path for a given category by traversing the products tree.
-	 * Makes sure that if there are sub-categories, they get saved.
-	 *
-     * @param $category
-	 *
-	 * @return void
-     */
-
-	constructCategoryPath($category){
-
-		/*
-		 * Check for this category in the products tree.
-		 * -> If it does not have 'products_list' attribute
-		 * it means that you can make a GET request, to
-		 * fetch the products for it.
-		 *
-		 * -> If it does have 'products_list' attribute
-		 * it means that it has sub categories which need to be shown.
-		 */
-
-		const $self = this;
-
-		// Refresh all the attributes that are going to be used.
-		$self._categoryToLoad = '';
-		$self._categoryToLoadFound = false;
-		$self._hasProductsList = false;
-		$self._tempProductList = {};
-
-        let $traverse = function($object, $key){
-
-            // Check if there is something already found.
-        	if($self._categoryToLoadFound){
-
-                // If yes, stop the process.
-        		return;
-			}
-
-			// Start constructing the path.
-			// ENDS WITH A SLASH!!!
-			$self._categoryToLoad += $key + '/products_list/';
-
-			// Check if you found what you are looking for.
-			if($key === $category){
-
-				// Say that you have found something.
-				$self._categoryToLoadFound = true;
-
-                // Check if this has products list
-                if($object.hasOwnProperty('products_list')){
-
-                	// Need the later to decide if there is a need for a Firebase DB call.
-                    $self._hasProductsList = true;
-                    $self._tempProductList = $object['products_list'];
-                }
-			}
-			else{
-
-				/*
-				 * You haven't found what you are looking for, check if you can
-				 * at least traverse this one.
-				 */
-
-				if($object.hasOwnProperty('products_list')){
+                        console.log('ProductsLoader.loadProducts(): No data arrived for ' +
+                            $path);
+                        return;
+                    }
 
 					/*
-					 * You can traverse it, since it has 'products_list' attribute.
-					 * This means that it has sub categories.
+					 * At this point we have all the products from the database.
+					 * Now it's time to construct the products tree.
 					 */
 
-                    Object.keys($object['products_list']).forEach(function($subCategory){
-
-                        // Recursivelly calls itself.
-                        $traverse($object['products_list'][$subCategory], $subCategory);
-                    });
-				}
-
-                // Make sure that you remove parts from the path, ONLY if you haven't found anything.
-                if(!$self._categoryToLoadFound){
-
-                    $self._categoryToLoad = $self._categoryToLoad.substring(0, $self._categoryToLoad.length-('/products_list/'.length));
-                    $self._categoryToLoad = $self._categoryToLoad.substring(0, $self._categoryToLoad.length - $key.length);
+                    $self._productsTree = $data;
+                    $self.constructProductsTree();
                 }
-			}
-        };
+            );
+        },
 
-        // Start for the entire products tree.
-        for(let $member in $self._productsTree){
+        /**
+         * Constructs the products tree based on the information it got from
+         * the Firebase Real Time Databse.
+         * Cleans up all the product categories which are filled in with real products.
+         * Leaves only the ones which have sub categories inside.
+         *
+         * @return void
+         */
 
-        	// Check if there is something already found.
-            if($self._categoryToLoadFound){
+        constructProductsTree(){
 
-            	// If yes, stop the process.
-                break;
+            const $self = this;
+
+            // Actually to make sure that there is info in the products tree.
+            if(typeOf($self._productsTree) !== 'object'){
+
+                console.error('ProductsLoader.constructProductsTree(): The _productsTree must be' +
+                    ' an object');
+                return;
             }
 
-            if($self._productsTree.hasOwnProperty($member)){
+            let $traverse = function($object){
 
-            	// Traverse the category.
-                $traverse($self._productsTree[$member], $member);
+                // Check if this object has 'products_list' attribute.
+                if(!$object.hasOwnProperty('products_list')){
+
+                    // If it does not, this means that we do not have to perform clean-up.
+                    return;
+                }
+
+                // Make sure that you clean up when you find a real product, not a sub category inside 'products_list'.
+                for(let $member in $object['products_list']){
+
+                    if($object['products_list'].hasOwnProperty($member)){
+
+                        // If it does not have 'diplay_name' it is a real product.
+                        if(!$object['products_list'][$member].hasOwnProperty('display_name')){
+
+                            // Reset and return.
+                            delete $object['products_list'];
+                            return;
+                        }
+                    }
+                }
+
+                // We have found sub-categories. Let's process them.
+                Object.keys($object['products_list']).forEach(function($subCategory){
+
+                    // Recursivelly calls itself.
+                    $traverse($object['products_list'][$subCategory]);
+                });
+            };
+
+            // Start for the entire products tree.
+            for(let $member in $self._productsTree){
+
+                if($self._productsTree.hasOwnProperty($member)){
+
+                    $traverse($self._productsTree[$member]);
+                }
             }
-        }
-
-        // At this point we consider that we have found the category in the tree.
-        if($self._categoryToLoad !== '' || $self._categoryToLoad !== undefined || $self._categoryToLoad !== null){
-
-        	// Show me the content for this category. Sub-categories or real proructs.
-            $self.loadCategoryContent();
-		}
-	},
-
-    /**
-	 * Loads the content of a category or sub-category.
-	 * Depending on if it has sub-categories or not, decides to make
-	 * a DB request or not.
-	 *
-     * @return {*}
-     */
-
-	loadCategoryContent(){
-
-		const $self = this;
-
-		// Check if you need a Firebase call or you have sub-categories (which are already stored).
-		if($self._hasProductsList){
 
 			/*
-			 * Okay, no need for a DB call.
-			 *
-			 * Here we load a category content, so no waiting. (second parameter)
-			 *
-			 * Display the go back button also.
+			 * Call for generating the first (main) products tree.
+			 * Pass true for the second parameter, since we want
+			 * the user to think that we are smart. Thanks.
 			 */
 
-			TemplateProcessor.generateProductsTree($self._tempProductList, false);
+            TemplateProcessor.generateProductsTree($self._productsTree, true);
 
-			// Show the go back to main categories button.
-			$self.enableGoBackCategories(true);
+            // Disable the go back button.
+            $self.enableGoBackCategories(false);
+        },
 
-            // Do not show the products listed now, since you are focusing on sub-categories.
-            $self.enableProductsListed(false);
+        /**
+         * Constructs the path for a given category by traversing the products tree.
+         * Makes sure that if there are sub-categories, they get saved.
+         *
+         * @param $category
+         *
+         * @return void
+         */
 
-            // Do not forget to stop here.
-			return;
-		}
+        constructCategoryPath($category){
 
-		/*
-		 * We load real products from the DB.
-		 * At this point we are sure that there is a category in
-		 * the attribute below. (We make sure for that in the caller function).
-		 */
+			/*
+			 * Check for this category in the products tree.
+			 * -> If it does not have 'products_list' attribute
+			 * it means that you can make a GET request, to
+			 * fetch the products for it.
+			 *
+			 * -> If it does have 'products_list' attribute
+			 * it means that it has sub categories which need to be shown.
+			 */
 
-		let $path = 'products/' + $self._categoryToLoad;
+            const $self = this;
 
-		// No extra parameters.
-		let $extra = {};
+            // Refresh all the attributes that are going to be used.
+            $self._categoryToLoad = '';
+            $self._categoryToLoadFound = false;
+            $self._hasProductsList = false;
+            $self._tempProductList = {};
 
-		// Fire the request.
-		FirebaseEngine.firebaseGET(
-			$path,
-			$extra,
-            function($error, $data){
+            let $traverse = function($object, $key){
 
-                // If errors, log and stop.
-                if($error){
+                // Check if there is something already found.
+                if($self._categoryToLoadFound){
 
-                    console.error($error);
+                    // If yes, stop the process.
                     return;
                 }
 
-                // First make the products listed visible, since you are going to show real products.
-                $self.enableProductsListed(true);
+                // Start constructing the path.
+                // ENDS WITH A SLASH!!!
+                $self._categoryToLoad += $key + '/products_list/';
 
-                /*
-                 * Attempt to show real products.
-                 * If no data, the TemplateProcessor will show a message on the front-end.
-                 */
+                // Check if you found what you are looking for.
+                if($key === $category){
 
-				return TemplateProcessor.generateProductsForCategory($data);
-            }
-		)
-	},
+                    // Say that you have found something.
+                    $self._categoryToLoadFound = true;
 
-    /**
-	 * Loads the main categories.
-	 * Gets called from products.html.
-	 * The idea is to show back the main categories after showing sub-ones.
-	 *
-	 * @return void
-     */
+                    // Check if this has products list
+                    if($object.hasOwnProperty('products_list')){
 
-	loadMainCategories(){
+                        // Need the later to decide if there is a need for a Firebase DB call.
+                        $self._hasProductsList = true;
+                        $self._tempProductList = $object['products_list'];
+                    }
+                }
+                else{
 
-		const $self = this;
+					/*
+					 * You haven't found what you are looking for, check if you can
+					 * at least traverse this one.
+					 */
 
-		// Defensively check for the TemplateProcessor, since this function is called from outside.
-		if(!TemplateProcessor){
+                    if($object.hasOwnProperty('products_list')){
 
-			console.error('ProductsLoader.loadMainCategories(): TemplateProcessor is missing!');
-			return;
-		}
+						/*
+						 * You can traverse it, since it has 'products_list' attribute.
+						 * This means that it has sub categories.
+						 */
 
-		// Make sure that you have what to load.
-		if(Object.keys($self._productsTree).length !== 0 && $self._productsTree !== null
-			&& $self._productsTree !== undefined){
+                        Object.keys($object['products_list']).forEach(function($subCategory){
 
-			// Do not wait here, since we are just going back to main categories from sub-ones.
-			TemplateProcessor.generateProductsTree($self._productsTree, false);
+                            // Recursivelly calls itself.
+                            $traverse($object['products_list'][$subCategory], $subCategory);
+                        });
+                    }
 
-			// Do not show the go back button. No need.
-			$self.enableGoBackCategories(false);
+                    // Make sure that you remove parts from the path, ONLY if you haven't found anything.
+                    if(!$self._categoryToLoadFound){
 
-			// Do not show the products listed now. Let the user focus on the categories.
-			$self.enableProductsListed(false);
-		}
-	},
+                        $self._categoryToLoad = $self._categoryToLoad.substring(0, $self._categoryToLoad.length-('/products_list/'.length));
+                        $self._categoryToLoad = $self._categoryToLoad.substring(0, $self._categoryToLoad.length - $key.length);
+                    }
+                }
+            };
 
-    /**
-	 * Enables/Disables the go back to main categories button.
-	 *
-     * @param $enable
-	 *
-	 * @return void
-     */
+            // Start for the entire products tree.
+            for(let $member in $self._productsTree){
 
-	enableGoBackCategories($enable){
+                // Check if there is something already found.
+                if($self._categoryToLoadFound){
 
-		const $self = this;
-
-		let $goBackCategories = $('GoBackCategories');
-		if(!$goBackCategories){
-
-			console.error('ProductsLoader.enableGoBackCatgories(): GoBackCategories not found!');
-			return;
-		}
-
-		if($enable){
-
-            $goBackCategories.className = $goBackCategories.className.replace(' w3-hide', '');
-        }
-		else {
-
-			// Hide if not hidden already.
-            if($goBackCategories.className.indexOf('w3-hide') === -1){
-
-                $goBackCategories.className += ' w3-hide';
-            }
-        }
-	},
-
-    /**
-	 * Enables/Disables the products listed.
-	 *
-     * @param $enable
-	 *
-	 * @return void
-     */
-
-	enableProductsListed($enable){
-
-		const $self = this;
-
-        const $productsPlaceholder = $('ProductsPlaceholder');
-
-        if(!$productsPlaceholder){
-
-            console.error('ProductsLoader.enableProductsListed(): ProductsPlaceholder not found!');
-            return;
-        }
-
-        if($enable){
-
-            $productsPlaceholder.className = $productsPlaceholder.className.replace(' w3-hide', '');
-        }
-        else {
-
-            if($productsPlaceholder.className.indexOf('w3-hide') === -1){
-
-                $productsPlaceholder.className += ' w3-hide';
-            }
-        }
-	},
-
-    /**
-	 * Gets the image URLs for a product.
-	 *
-     * @param $product
-	 *
-	 * @return void
-     */
-
-	loadImagesForProduct($product){
-
-		const $self = this;
-
-		// Make sure that there is something inside the category to load.
-		if($self._categoryToLoad === '' || $self._categoryToLoad === undefined ||
-			$self._categoryToLoad === null){
-
-            console.error('ProductsLoader.loadImagesForProduct(): category to load not found!');
-            return;
-		}
-
-		// Make sure that Firebase Engine is present, since this function is called from outside.
-		if(!FirebaseEngine){
-
-            console.error('ProductsLoader.loadImagesForProduct(): FirebaseEngine is not present!');
-            return;
-		}
-
-		// First make a DB request to get the file names.
-		// _categoryToLoad has it's end slash!
-		// Always end your paths with a slash!!
-		let $path = 'products/' + $self._categoryToLoad + $product + '/';
-
-		let $extra = {};
-
-		FirebaseEngine.firebaseGET(
-			$path,
-			$extra,
-            function($error, $data){
-
-                // If errors, log and stop.
-                if ($error) {
-
-                    console.error($error);
-                    return;
+                    // If yes, stop the process.
+                    break;
                 }
 
-                // If no data, log and stop.
-                if (!$data) {
+                if($self._productsTree.hasOwnProperty($member)){
 
-                    console.log('ProductsLoader.loadImagesForProduct(): No data arrived for ' +
-                        $path);
-                    return;
+                    // Traverse the category.
+                    $traverse($self._productsTree[$member], $member);
                 }
-
-            	// Check if there are any images to load.
-				if(!$data.hasOwnProperty('images')){
-
-                	// No images found.
-					return $self.notifyNoProductImages();
-				}
-
-				// At this point we know that there are images to load.
-                let $imageURLs = [];
-
-				let $callForURL = function($index){
-
-					// First check if the item exists in the array.
-					if(!$data['images'][$index]){
-
-						// Enough.
-						return $self.generateImagesFromURLs($imageURLs);
-					}
-
-					// There is a slash at the end!
-					// Always end your paths with slashes!
-					FirebaseEngine.retrieveStorageItemURL($path +  $data['images'][$index] + '/', function($error, $data){
-
-						if($error){
-
-                            console.error($error);
-                            return;
-						}
-
-						// At this point we have one of the URLs.
-						if($data !== null && $data !== undefined){
-
-                            $imageURLs.push($data);
-						}
-
-						// Call for the next.
-						$callForURL($index+1);
-                    })
-                };
-
-				// Call for the first one.
-				$callForURL(0);
             }
-		);
-	},
 
-	notifyNoProductImages(){
+            // At this point we consider that we have found the category in the tree.
+            if($self._categoryToLoad !== '' || $self._categoryToLoad !== undefined || $self._categoryToLoad !== null){
 
-		alert('No product images!');
-	},
+                // Show me the content for this category. Sub-categories or real proructs.
+                $self.loadCategoryContent();
+            }
+        },
 
-	generateImagesFromURLs($URLs){
+        /**
+         * Loads the content of a category or sub-category.
+         * Depending on if it has sub-categories or not, decides to make
+         * a DB request or not.
+         *
+         * @return {*}
+         */
 
-		console.log($URLs);
+        loadCategoryContent(){
+
+            const $self = this;
+
+            // Check if you need a Firebase call or you have sub-categories (which are already stored).
+            if($self._hasProductsList){
+
+				/*
+				 * Okay, no need for a DB call.
+				 *
+				 * Here we load a category content, so no waiting. (second parameter)
+				 *
+				 * Display the go back button also.
+				 */
+
+                TemplateProcessor.generateProductsTree($self._tempProductList, false);
+
+                // Show the go back to main categories button.
+                $self.enableGoBackCategories(true);
+
+                // Do not show the products listed now, since you are focusing on sub-categories.
+                $self.enableProductsListed(false);
+
+                // Do not forget to stop here.
+                return;
+            }
+
+			/*
+			 * We load real products from the DB.
+			 * At this point we are sure that there is a category in
+			 * the attribute below. (We make sure for that in the caller function).
+			 */
+
+            let $path = 'products/' + $self._categoryToLoad;
+
+            // No extra parameters.
+            let $extra = {};
+
+            // Fire the request.
+            FirebaseEngine.firebaseGET(
+                $path,
+                $extra,
+                function($error, $data){
+
+                    // If errors, log and stop.
+                    if($error){
+
+                        console.error($error);
+                        return;
+                    }
+
+                    // First make the products listed visible, since you are going to show real products.
+                    $self.enableProductsListed(true);
+
+					/*
+					 * Attempt to show real products.
+					 * If no data, the TemplateProcessor will show a message on the front-end.
+					 */
+
+                    return TemplateProcessor.generateProductsForCategory($data);
+                }
+            )
+        },
+
+        /**
+         * Loads the main categories.
+         * Gets called from products.html.
+         * The idea is to show back the main categories after showing sub-ones.
+         *
+         * @return void
+         */
+
+        loadMainCategories(){
+
+            const $self = this;
+
+            // Defensively check for the TemplateProcessor, since this function is called from outside.
+            if(!TemplateProcessor){
+
+                console.error('ProductsLoader.loadMainCategories(): TemplateProcessor is missing!');
+                return;
+            }
+
+            // Make sure that you have what to load.
+            if(Object.keys($self._productsTree).length !== 0 && $self._productsTree !== null
+                && $self._productsTree !== undefined){
+
+                // Do not wait here, since we are just going back to main categories from sub-ones.
+                TemplateProcessor.generateProductsTree($self._productsTree, false);
+
+                // Do not show the go back button. No need.
+                $self.enableGoBackCategories(false);
+
+                // Do not show the products listed now. Let the user focus on the categories.
+                $self.enableProductsListed(false);
+            }
+        },
+
+        /**
+         * Enables/Disables the go back to main categories button.
+         *
+         * @param $enable
+         *
+         * @return void
+         */
+
+        enableGoBackCategories($enable){
+
+            const $self = this;
+
+            let $goBackCategories = $('GoBackCategories');
+            if(!$goBackCategories){
+
+                console.error('ProductsLoader.enableGoBackCatgories(): GoBackCategories not found!');
+                return;
+            }
+
+            if($enable){
+
+                $goBackCategories.className = $goBackCategories.className.replace(' w3-hide', '');
+            }
+            else {
+
+                // Hide if not hidden already.
+                if($goBackCategories.className.indexOf('w3-hide') === -1){
+
+                    $goBackCategories.className += ' w3-hide';
+                }
+            }
+        },
+
+        /**
+         * Enables/Disables the products listed.
+         *
+         * @param $enable
+         *
+         * @return void
+         */
+
+        enableProductsListed($enable){
+
+            const $self = this;
+
+            const $productsPlaceholder = $('ProductsPlaceholder');
+
+            if(!$productsPlaceholder){
+
+                console.error('ProductsLoader.enableProductsListed(): ProductsPlaceholder not found!');
+                return;
+            }
+
+            if($enable){
+
+                $productsPlaceholder.className = $productsPlaceholder.className.replace(' w3-hide', '');
+            }
+            else {
+
+                if($productsPlaceholder.className.indexOf('w3-hide') === -1){
+
+                    $productsPlaceholder.className += ' w3-hide';
+                }
+            }
+        },
+
+        /**
+         * Gets the image URLs for a product.
+         *
+         * @param $product
+         *
+         * @return void
+         */
+
+        loadImagesForProduct($product){
+
+            const $self = this;
+
+            // Make sure that there is something inside the category to load.
+            if($self._categoryToLoad === '' || $self._categoryToLoad === undefined ||
+                $self._categoryToLoad === null){
+
+                console.error('ProductsLoader.loadImagesForProduct(): category to load not found!');
+                return;
+            }
+
+            // Make sure that Firebase Engine is present, since this function is called from outside.
+            if(!FirebaseEngine){
+
+                console.error('ProductsLoader.loadImagesForProduct(): FirebaseEngine is not present!');
+                return;
+            }
+
+            // First make a DB request to get the file names.
+            // _categoryToLoad has it's end slash!
+            // Always end your paths with a slash!!
+            let $path = 'products/' + $self._categoryToLoad + $product + '/';
+
+            let $extra = {};
+
+            FirebaseEngine.firebaseGET(
+                $path,
+                $extra,
+                function($error, $data){
+
+                    // If errors, log and stop.
+                    if ($error) {
+
+                        console.error($error);
+                        return;
+                    }
+
+                    // If no data, log and stop.
+                    if (!$data) {
+
+                        console.log('ProductsLoader.loadImagesForProduct(): No data arrived for ' +
+                            $path);
+                        return;
+                    }
+
+                    // Check if there are any images to load.
+                    if(!$data.hasOwnProperty('images')){
+
+                        // No images found.
+                        return $self.notifyNoProductImages();
+                    }
+
+                    // At this point we know that there are images to load.
+                    let $imageURLs = [];
+
+                    let $callForURL = function($index){
+
+                        // First check if the item exists in the array.
+                        if(!$data['images'][$index]){
+
+                            // Enough.
+                            return $self.generateImagesFromURLs($imageURLs);
+                        }
+
+                        // There is a slash at the end!
+                        // Always end your paths with slashes!
+                        FirebaseEngine.retrieveStorageItemURL($path +  $data['images'][$index] + '/', function($error, $data){
+
+                            if($error){
+
+                                console.error($error);
+                                return;
+                            }
+
+                            // At this point we have one of the URLs.
+                            if($data !== null && $data !== undefined){
+
+                                $imageURLs.push($data);
+                            }
+
+                            // Call for the next.
+                            $callForURL($index+1);
+                        })
+                    };
+
+                    // Call for the first one.
+                    $callForURL(0);
+                }
+            );
+        },
+
+        notifyNoProductImages(){
+
+            alert('No product images!');
+        },
+
+        generateImagesFromURLs($URLs){
+
+            console.log($URLs);
+        }
+	};
+
+	return{
+
+		init(){
+
+			Logic.init();
+		},
+
+        loadProducts(){
+
+			Logic.loadProducts();
+        },
+
+        constructCategoryPath($category){
+
+        	Logic.constructCategoryPath($category);
+		},
+
+		loadCategoryContent(){
+
+        	Logic.loadCategoryContent();
+		},
+
+		loadMainCategories(){
+
+			Logic.loadMainCategories();
+		},
+
+		enableGoBackCategories($enable){
+
+			Logic.enableGoBackCategories($enable);
+		},
+
+		enableProductsListed($enable){
+
+			Logic.enableProductsListed($enable);
+		},
+
+		loadImagesForProduct($product){
+
+			Logic.loadImagesForProduct($product);
+		},
+
+		notifyNoProductImages(){
+
+			Logic.notifyNoProductImages();
+		},
+
+		generateImagesFromURLs($URLs){
+
+			Logic.generateImagesFromURLs($URLs);
+		}
 	}
-};
+})();
 
 document.addEvent('domready', function(){
 
