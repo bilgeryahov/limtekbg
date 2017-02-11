@@ -17,6 +17,7 @@
 		<script src="./JS/FirebaseEngine.js"></script>
 		<script src="./JS/ProductsLoader.js"></script>
 		<script src="./JS/TemplateProcessor.js"></script>
+		<script src="./JS/ProductsPageController.js"></script>
         <style>
             body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
             .w3-navbar,h1,button {font-family: "Montserrat", sans-serif}
@@ -55,7 +56,7 @@
 		<div class="MainWrapper">
 			<div id="GoBackCategories" class="w3-container w3-hide" style="margin: 2em auto 0">
 				<button class="w3-btn-block w3-light-green w3-hover-green CategoryButton"
-						onclick="showMainCategories()">
+						onclick="ProductsPageController.showMainCategories()">
 					Покажи основни категории
 				</button>
 			</div>
@@ -110,7 +111,7 @@
 						</li>
 						<li class="w3-light-grey w3-padding-24">
 							<button id="{{@key}}" class="w3-btn w3-light-green w3-padding LightGreenWhiteText"
-							onclick="showProductImages(this.id)">
+							onclick="ProductsPageController.showProductImages(this.id)">
 								Виж изображения
 							</button>
 						</li>
@@ -122,43 +123,11 @@
 		<script id="ProductCategoriesTemplate" type="text/x-handlebars-template">
 			{{#each categories}}
 				<button id="button_{{@key}}" class="w3-btn-block w3-light-green w3-hover-green CategoryButton"
-					onclick="actionCategoryButton(this)">
+					onclick="ProductsPageController.actionCategoryButton(this)">
 					{{display_name}}
 				</button>
 			{{/each}}
 		</script>
-
-		<script>
-			function actionCategoryButton($button){
-			    if(!ProductsLoader){
-			        console.error('ProductsHTML.actionCategoryButton(): ProductsLoader is missing!');
-			        return;
-				}
-
-				var $category = $button.id.replace('button_','');
-				ProductsLoader.constructCategoryPath($category);
-            }
-		</script>
-
-		<script>
-			function showMainCategories(){
-				if(!ProductsLoader){
-					console.error('ProductsHTML.showMainCategories(): ProductsLoader is missing!');
-					return;
-				}
-				ProductsLoader.loadMainCategories();
-            }
-		</script>
-	<script>
-		function showProductImages($product){
-            if(!ProductsLoader){
-                console.error('ProductsHTML.showProductImages(): ProductsLoader is missing!');
-                return;
-            }
-
-            ProductsLoader.loadImagesForProduct($product);
-        }
-	</script>
 
 </body>
 </html>
