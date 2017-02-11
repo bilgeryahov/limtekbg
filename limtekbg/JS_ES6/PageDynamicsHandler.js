@@ -9,101 +9,122 @@
  * @copyright © 2016 Bilger Yahov, all rights reserved.
  */
 
-const PageDynamicsHandler = {
+const PageDynamicsHandler = (function(){
 
-    navDemo: {},
-    toggleNavigation: {},
-    quote: {},
-    listOfQuotes: [],
+    const Logic = {
 
-	/**
-     * Initializes the main functionality. Gets the elements from the DOM and attaches the
-     * corresponding events.
-     *
-     * When initializing, changes the quote.
-     *
-     * @return void
-     */
+        _navDemo: {},
+        _toggleNavigation: {},
+        _quote: {},
+        _listOfQuotes: [],
 
-    init(){
+        /**
+         * Initializes the main functionality. Gets the elements from the DOM and attaches the
+         * corresponding events.
+         *
+         * When initializing, changes the quote.
+         *
+         * @return void
+         */
 
-      const $self = this;
+        init(){
 
-      $self.toggleNavigation = $('ToggleNavigation');
-      if(!$self.toggleNavigation){
+            const $self = this;
 
-          console.error('PageDynamicsHandler.init(): ToggleNavigation is not found!');
-          return;
-      }
+            $self._toggleNavigation = $('ToggleNavigation');
+            if(!$self._toggleNavigation){
 
-      $self.toggleNavigation.addEvent('click', function(){
+                console.error('PageDynamicsHandler.init(): ToggleNavigation is not found!');
+                return;
+            }
 
-         $self.toggleMenu();
-      });
+            $self._toggleNavigation.addEvent('click', function(){
 
-      $self.quote = $('Quote');
-      if(!$self.quote){
+                $self.toggleMenu();
+            });
 
-          console.error('PageDynamicsHandler.init(): Quote is not found!');
-          return;
-      }
+            $self._quote = $('Quote');
+            if(!$self._quote){
 
-      $self.listOfQuotes = [
-        'Опит е името, което даваме на грешките си.',
-        'В днешно време хората знаят цената на всичко, но не знаят стойността на нищо.',
-        'Модно е това, което носим самите ние. Не е модно онова, което носят другите хора.',
-        'Винаги прощавайте на враговете си - за тях няма нищо по-дразнещо от това.',
-        'Не е страшно, че грешим. Страшното е, че повтаряме грешките си.',
-        'Нищо, което си струва да бъде научено, не може да бъде преподадено',
-        'Истината рядко е чиста и никога проста.'
-      ];
+                console.error('PageDynamicsHandler.init(): Quote is not found!');
+                return;
+            }
 
-      // Call the function to change the quote.
-      $self.changeQuote();
-  },
+            $self._listOfQuotes = [
+                'Опит е името, което даваме на грешките си.',
+                'В днешно време хората знаят цената на всичко, но не знаят стойността на нищо.',
+                'Модно е това, което носим самите ние. Не е модно онова, което носят другите хора.',
+                'Винаги прощавайте на враговете си - за тях няма нищо по-дразнещо от това.',
+                'Не е страшно, че грешим. Страшното е, че повтаряме грешките си.',
+                'Нищо, което си струва да бъде научено, не може да бъде преподадено',
+                'Истината рядко е чиста и никога проста.'
+            ];
 
-	/**
-     * Toggles the navigation bar.
-     *
-     * @return void
-     */
+            // Call the function to change the quote.
+            $self.changeQuote();
+        },
 
-    toggleMenu(){
+        /**
+         * Toggles the navigation bar.
+         *
+         * @return void
+         */
 
-      const $self = this;
+        toggleMenu(){
 
-      $self.navDemo = $('NavDemo');
-      if(!$self.navDemo){
+            const $self = this;
 
-          console.error('PageDynamicsHandler.toggleMenu(): NavDemo is not found!');
-          return;
-      }
+            $self._navDemo = $('NavDemo');
+            if(!$self._navDemo){
 
-      if($self.navDemo.className.indexOf('w3-show') === -1){
+                console.error('PageDynamicsHandler.toggleMenu(): NavDemo is not found!');
+                return;
+            }
 
-          $self.navDemo.className += ' w3-show';
-      }
-      else{
+            if($self._navDemo.className.indexOf('w3-show') === -1){
 
-          $self.navDemo.className = $self.navDemo.className.replace(' w3-show', '');
-      }
-  },
+                $self._navDemo.className += ' w3-show';
+            }
+            else{
 
-	/**
-     * Changes the quote randomly.
-     *
-     * @return void
-     */
+                $self._navDemo.className = $self._navDemo.className.replace(' w3-show', '');
+            }
+        },
 
-    changeQuote(){
+        /**
+         * Changes the quote randomly.
+         *
+         * @return void
+         */
 
-      const $self = this;
+        changeQuote(){
 
-      let $number = Math.floor((Math.random() * 7));
+            const $self = this;
 
-      $self.quote.innerHTML = $self.listOfQuotes[$number];
-  }
-};
+            let $number = Math.floor((Math.random() * 7));
+
+            $self._quote.innerHTML = $self._listOfQuotes[$number];
+        }
+    };
+
+    return{
+
+        init(){
+
+            Logic.init();
+        },
+
+        toggleMenu(){
+
+            Logic.toggleMenu();
+        },
+
+        changeQuote(){
+
+            Logic.changeQuote();
+        }
+    }
+})();
 
 document.addEvent('domready', function(){
 
