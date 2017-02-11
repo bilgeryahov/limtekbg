@@ -5,7 +5,7 @@
  *
  * @author Bilger Yahov <bayahov1@gmail.com>
  * @version 1.0.0
- * @copyright © 2016 Bilger Yahov, all rights reserved.
+ * @copyright © 2016 - 2017 Bilger Yahov, all rights reserved.
  */
 
 const ProductsPageController = (function () {
