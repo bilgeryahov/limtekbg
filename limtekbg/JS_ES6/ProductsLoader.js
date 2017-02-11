@@ -1,7 +1,9 @@
 /**
  * @file ProductsLoader.js
  *
- * Module which loads the product categories from the database.
+ * Module which deals with the functionality of the Products page.
+ *
+ * Tough story.
  *
  * @author Bilger Yahov <bayahov1@gmail.com>
  * @version 1.0.0
@@ -72,7 +74,8 @@ const ProductsLoader = (function(){
             const $self = this;
 
             // Get me all products from the main end-point.
-            let $path = 'products/';
+            let $pathNodes = ['products'];
+            let $path = DevelopmentHelpers.constructPath($pathNodes);
             let $extra = {
 
             };
@@ -86,6 +89,9 @@ const ProductsLoader = (function(){
                     if($error){
 
                         console.error($error);
+
+                        // TODO: Notify the user that product categories cannot be fetched.
+
                         return;
                     }
 
@@ -94,6 +100,9 @@ const ProductsLoader = (function(){
 
                         console.log('ProductsLoader.loadProducts(): No data arrived for ' +
                             $path);
+
+                        // TODO: Notify the user that product categories are not present.
+
                         return;
                     }
 
@@ -220,9 +229,9 @@ const ProductsLoader = (function(){
                     return;
                 }
 
-                // Start constructing the path.
-                // ENDS WITH A SLASH!!!
-                $self._categoryToLoad += $key + '/products_list/';
+                let $pathNodes = [$key, 'products_list'];
+                let $path = DevelopmentHelpers.constructPath($pathNodes);
+                $self._categoryToLoad += $path;
 
                 // Check if you found what you are looking for.
                 if($key === $category){
@@ -262,8 +271,7 @@ const ProductsLoader = (function(){
                     // Make sure that you remove parts from the path, ONLY if you haven't found anything.
                     if(!$self._categoryToLoadFound){
 
-                        $self._categoryToLoad = $self._categoryToLoad.substring(0, $self._categoryToLoad.length-('/products_list/'.length));
-                        $self._categoryToLoad = $self._categoryToLoad.substring(0, $self._categoryToLoad.length - $key.length);
+                        $self._categoryToLoad = $self._categoryToLoad.substring(0, $self._categoryToLoad.length-($path.length));
                     }
                 }
             };
@@ -334,7 +342,8 @@ const ProductsLoader = (function(){
 			 * the attribute below. (We make sure for that in the caller function).
 			 */
 
-            let $path = 'products/' + $self._categoryToLoad;
+			let $pathNodes = ['products', $self._categoryToLoad];
+			let $path = DevelopmentHelpers.constructPath($pathNodes);
 
             // No extra parameters.
             let $extra = {};
@@ -349,6 +358,9 @@ const ProductsLoader = (function(){
                     if($error){
 
                         console.error($error);
+
+                        // TODO: Notify the user that products for this category cannot be fetched.
+
                         return;
                     }
 
@@ -367,7 +379,6 @@ const ProductsLoader = (function(){
 
         /**
          * Loads the main categories.
-         * Gets called from products.html.
          * The idea is to show back the main categories after showing sub-ones.
          *
          * @return void
@@ -376,13 +387,6 @@ const ProductsLoader = (function(){
         loadMainCategories(){
 
             const $self = this;
-
-            // Defensively check for the TemplateProcessor, since this function is called from outside.
-            if(!TemplateProcessor){
-
-                console.error('ProductsLoader.loadMainCategories(): TemplateProcessor is missing!');
-                return;
-            }
 
             // Make sure that you have what to load.
             if(Object.keys($self._productsTree).length !== 0 && $self._productsTree !== null
@@ -485,17 +489,9 @@ const ProductsLoader = (function(){
                 return;
             }
 
-            // Make sure that Firebase Engine is present, since this function is called from outside.
-            if(!FirebaseEngine){
-
-                console.error('ProductsLoader.loadImagesForProduct(): FirebaseEngine is not present!');
-                return;
-            }
-
-            // First make a DB request to get the file names.
-            // _categoryToLoad has it's end slash!
-            // Always end your paths with a slash!!
-            let $path = 'products/' + $self._categoryToLoad + $product + '/';
+            // Make a DB request to get the image names.
+            let $pathNodes = ['products', $self._categoryToLoad, $product];
+            let $path = DevelopmentHelpers.constructPath($pathNodes);
 
             let $extra = {};
 
@@ -508,6 +504,9 @@ const ProductsLoader = (function(){
                     if ($error) {
 
                         console.error($error);
+
+                        // TODO: Notify the user that product images cannot be fetched.
+
                         return;
                     }
 
@@ -516,6 +515,9 @@ const ProductsLoader = (function(){
 
                         console.log('ProductsLoader.loadImagesForProduct(): No data arrived for ' +
                             $path);
+
+                        // TODO: Notify the user that product images cannot be fetched.
+
                         return;
                     }
 
@@ -538,13 +540,16 @@ const ProductsLoader = (function(){
                             return $self.generateImagesFromURLs($imageURLs);
                         }
 
-                        // There is a slash at the end!
-                        // Always end your paths with slashes!
-                        FirebaseEngine.retrieveStorageItemURL($path +  $data['images'][$index] + '/', function($error, $data){
+                        let $storagePathNodes = [$path, $data['images'][$index]];
+                        let $storagePath = DevelopmentHelpers.constructPath($storagePathNodes);
+                        FirebaseEngine.retrieveStorageItemURL($storagePath, function($error, $data){
 
                             if($error){
 
                                 console.error($error);
+
+                                // TODO: Notify the user that product images cannot be fetched.
+
                                 return;
                             }
 
