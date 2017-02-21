@@ -184,6 +184,37 @@ const TemplateProcessor = {
 	},
 
     /**
+	 * Makes sure that the modal with product images is shown
+	 * instantly when the "Виж изображения" button is clicked.
+	 *
+	 * @return void
+     */
+
+	generateProductImagesLoadingState(){
+
+        const $self = this;
+
+        // Make the regular defensive checks.
+        const $productImagesPlaceholder = $('ProductImagesPlaceholder');
+        const $productImagesTemplate    = $('ProductImagesTemplate');
+
+        if(!$productImagesPlaceholder || !$productImagesTemplate){
+
+            console.error('TemplateProcessor.generateProductImagesLoadingState(): ProductImagesPlaceholder or' +
+                'ProductImagesTemplate is missing.');
+            return;
+        }
+
+        let $compiled = Handlebars.compile($productImagesTemplate.get('html'));
+
+        // Show the modal.
+        ProductsPageController.enableProductImagesModal(true);
+
+        // First show loading message for one second.
+        $productImagesPlaceholder.set('html', $compiled({loading: true}));
+    },
+
+    /**
      * Generates the modal with images (if any) for a
      * particular product.
      *
@@ -209,55 +240,46 @@ const TemplateProcessor = {
 
         let $compiled = Handlebars.compile($productImagesTemplate.get('html'));
 
-		// Show the modal.
-		ProductsPageController.enableProductImagesModal(true);
+        // Check if there is data.
+        if($data === null || $data === undefined || Object.keys($data).length ===0 || $data.length === 0){
 
-		// First show loading message for one second.
-        $productImagesPlaceholder.set('html', $compiled({loading: true}));
+            // No data.
+            $productImagesPlaceholder.set('html', $compiled({no_images: true}));
+            return;
+        }
 
-        setTimeout(function(){
+		/*
+		 * There is data. The data is an array (hopefully) with
+		 * image URLs. The idea here is to make a slide show.
+		 * So what needs to be done is the following:
+		 * If there are more than 1 image, make sure that
+		 * only the first one (0th in the array) will be visible
+		 * at first.
+		 */
 
-            // Check if there is data.
-            if($data === null || $data === undefined || Object.keys($data).length ===0 || $data.length === 0){
+        // Let's first create the object to hold.
+        let $holdURLs = {};
 
-                // No data.
-                $productImagesPlaceholder.set('html', $compiled({no_images: true}));
-                return;
+        $data.forEach(function($element, $index){
+
+            if($index === 0){
+
+                $holdURLs[$index] = {
+                    display: 'block',
+                    URL: $element
+                };
             }
+            else{
 
-            /*
-             * There is data. The data is an array (hopefully) with
-             * image URLs. The idea here is to make a slide show.
-             * So what needs to be done is the following:
-             * If there are more than 1 image, make sure that
-             * only the first one (0th in the array) will be visible
-             * at first.
-             */
+                $holdURLs[$index] = {
+                    display: 'none',
+                    URL: $element
+                };
+            }
+        });
 
-            // Let's first create the object to hold.
-			let $holdURLs = {};
-
-			$data.forEach(function($element, $index){
-
-				if($index === 0){
-
-                    $holdURLs[$index] = {
-                    	display: 'block',
-						URL: $element
-					};
-				}
-				else{
-
-                    $holdURLs[$index] = {
-                        display: 'none',
-                        URL: $element
-                    };
-				}
-            });
-
-			// Pass the newly created object
-            $productImagesPlaceholder.set('html', $compiled({images: $holdURLs}));
-        }, 1000);
+        // Pass the newly created object
+        $productImagesPlaceholder.set('html', $compiled({images: $holdURLs}));
 	}
 };
 

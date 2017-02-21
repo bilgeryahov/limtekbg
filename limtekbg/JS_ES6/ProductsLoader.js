@@ -499,6 +499,9 @@ const ProductsLoader = (function(){
                 return;
             }
 
+            // Show the modal first and then go on.
+            TemplateProcessor.generateProductImagesLoadingState();
+
             // Make a DB request to get the image names.
             let $pathNodes = ['products', $self._categoryToLoad, $product];
             let $path = DevelopmentHelpers.constructPath($pathNodes);
@@ -514,10 +517,7 @@ const ProductsLoader = (function(){
                     if ($error) {
 
                         console.error($error);
-
-                        // TODO: Notify the user that product images cannot be fetched because an error.
-
-                        return;
+                        return $self.notifyNoProductImages();
                     }
 
                     // If no data, log and stop.
@@ -525,8 +525,6 @@ const ProductsLoader = (function(){
 
                         console.log('ProductsLoader.loadImagesForProduct(): No data arrived for ' +
                             $path);
-
-                        // TODO: Notify the user that product images did not arrive.
 
                         // No images found.
                         return $self.notifyNoProductImages();
@@ -558,10 +556,7 @@ const ProductsLoader = (function(){
                             if($error){
 
                                 console.error($error);
-
-                                // TODO: Notify the user that product images cannot be fetched because an error.
-
-                                return;
+                                return $self.notifyNoProductImages();
                             }
 
                             // At this point we have one of the URLs.
