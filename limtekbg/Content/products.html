@@ -116,7 +116,7 @@
 					{{#if images}}
 						<div class="w3-content w3-display-container" style="max-width:800px">
 							{{#each images}}
-								<img class="mySlides" src="{{this}}" style="width:100%">
+								<img class="mySlides" src="{{URL}}" style="width:50%; margin:auto; display: {{display}}">
 							{{/each}}
 						</div>
 					{{/if}}
@@ -128,6 +128,7 @@
 						</p>
 					{{/if}}
 
+                    <br/>
 				</div>
 				<footer class="w3-container w3-green">
 					<p>Благодарим Ви, че избрахте нас!</p>

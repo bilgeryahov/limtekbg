@@ -225,8 +225,38 @@ const TemplateProcessor = {
                 return;
             }
 
-            // There is data.
-            $productImagesPlaceholder.set('html', $compiled({images: $data}));
+            /*
+             * There is data. The data is an array (hopefully) with
+             * image URLs. The idea here is to make a slide show.
+             * So what needs to be done is the following:
+             * If there are more than 1 image, make sure that
+             * only the first one (0th in the array) will be visible
+             * at first.
+             */
+
+            // Let's first create the object to hold.
+			let $holdURLs = {};
+
+			$data.forEach(function($element, $index){
+
+				if($index === 0){
+
+                    $holdURLs[$index] = {
+                    	display: 'block',
+						URL: $element
+					};
+				}
+				else{
+
+                    $holdURLs[$index] = {
+                        display: 'none',
+                        URL: $element
+                    };
+				}
+            });
+
+			// Pass the newly created object
+            $productImagesPlaceholder.set('html', $compiled({images: $holdURLs}));
         }, 1000);
 	}
 };
