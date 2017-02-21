@@ -505,7 +505,7 @@ const ProductsLoader = (function(){
 
                         console.error($error);
 
-                        // TODO: Notify the user that product images cannot be fetched.
+                        // TODO: Notify the user that product images cannot be fetched because an error.
 
                         return;
                     }
@@ -516,9 +516,10 @@ const ProductsLoader = (function(){
                         console.log('ProductsLoader.loadImagesForProduct(): No data arrived for ' +
                             $path);
 
-                        // TODO: Notify the user that product images cannot be fetched.
+                        // TODO: Notify the user that product images did not arrive.
 
-                        return;
+                        // No images found.
+                        return $self.notifyNoProductImages();
                     }
 
                     // Check if there are any images to load.
@@ -548,7 +549,7 @@ const ProductsLoader = (function(){
 
                                 console.error($error);
 
-                                // TODO: Notify the user that product images cannot be fetched.
+                                // TODO: Notify the user that product images cannot be fetched because an error.
 
                                 return;
                             }
