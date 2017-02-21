@@ -118,7 +118,13 @@
 							{{#each images}}
 								<img class="mySlides" src="{{URL}}" style="width:50%; margin:auto; display: {{display}}">
 							{{/each}}
-						</div>
+                            <div class="w3-center">
+                                <button class="w3-btn w3-green"
+                                        onclick="ProductsPageController.plusModalImages(-1)">Назад</button>
+                                <button class="w3-btn w3-green"
+                                        onclick="ProductsPageController.plusModalImages(1)">Напред</button>
+                            </div>
+                        </div>
 					{{/if}}
 
 					{{#if no_images}}

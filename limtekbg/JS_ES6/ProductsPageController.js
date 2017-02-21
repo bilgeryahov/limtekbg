@@ -16,6 +16,8 @@ const ProductsPageController = (function () {
 
     const Logic = {
 
+        _slideIndex: 1,
+
         /**
          * Initializes the main functionality.
          *
@@ -67,6 +69,43 @@ const ProductsPageController = (function () {
             }
 
             $productImagesModal.style.display = 'none';
+        },
+
+        showModalImages($number){
+
+            const $self = this;
+
+            let $images = document.getElementsByClassName('mySlides');
+
+            if(!$images){
+
+                console.error('ProductsPageController.showModalImages(): mySlides images were not found!');
+                return;
+            }
+
+            if($number > $images.length){
+
+                $self._slideIndex = 1
+            }
+
+            if($number < 1){
+
+                $self._slideIndex = $images.length;
+            }
+
+            for(let $i = 0; $i < $images.length; $i++){
+
+                $images[$i].style.display = 'none';
+            }
+
+            $images[$self._slideIndex-1].style.display = 'block';
+        },
+
+        plusModalImages($number){
+
+            const $self = this;
+
+            $self.showModalImages($self._slideIndex += $number);
         }
     };
 
@@ -95,6 +134,11 @@ const ProductsPageController = (function () {
         enableProductImagesModal($enable){
 
             Logic.enableProductImagesModal($enable);
+        },
+
+        plusModalImages($number){
+
+            Logic.plusModalImages($number);
         }
     }
 })();
