@@ -8,280 +8,314 @@
  * @copyright © 2016 - 2017 Bilger Yahov, all rights reserved.
  */
 
-const TemplateProcessor = {
+const TemplateProcessor = (function(){
 
-    /**
-     * Initializes the main functionality.
-     * Makes the defensive checks for the external modules used.
-     *
-     * @return void
-     */
+	/*
+	 * Encapsulate the logic.
+	 */
 
-	init(){
+   const Logic = {
 
-		const $self = this;
+       /**
+        * Initializes the main functionality.
+        * Makes the defensive checks for the external modules used.
+        *
+        * @return void
+        */
 
-		if(!Handlebars){
+       init(){
 
-			console.error('TemplateProcessor.init(): Handlebars not found!');
-			return;
-		}
+           const $self = this;
 
-		if(!ProductsPageController){
+           if(!Handlebars){
 
-			console.error('TemplateProcessor.init(): ProductsPageController not found!');
-			return;
-		}
-	},
+               console.error('TemplateProcessor.init(): Handlebars not found!');
+               return;
+           }
 
-    /**
-	 * Generates REAL PRODUCTS templates.
-	 *
-     * @param $data
-	 *
-	 * @return void
-     */
+           if(!ProductsPageController){
 
-	generateProductsForCategory($data){
+               console.error('TemplateProcessor.init(): ProductsPageController not found!');
+               return;
+           }
+       },
 
-		const $self = this;
+       /**
+        * Generates REAL PRODUCTS templates.
+        *
+        * @param $data
+        *
+        * @return void
+        */
 
-		const $productsPlaceholder = $('ProductsPlaceholder');
-		const $productsTemplate = $('ProductsTemplate');
+       generateProductsForCategory($data){
 
-		if(!$productsPlaceholder || !$productsTemplate){
+           const $self = this;
 
-			console.error('TemplateProcessor.generateProductsForCategory(): ProductsPlaceholder and/or ' +
-				'ProductsTemplate not found!');
-			return;
-		}
+           const $productsPlaceholder = $('ProductsPlaceholder');
+           const $productsTemplate = $('ProductsTemplate');
 
-		const $noDataNotifier = $('NoData');
-		if(!$noDataNotifier){
+           if(!$productsPlaceholder || !$productsTemplate){
 
-			console.error('TemplateProcessor.generateProductsForCategory(): no data notifier is missing!');
-			return;
-		}
+               console.error('TemplateProcessor.generateProductsForCategory(): ProductsPlaceholder and/or ' +
+                   'ProductsTemplate not found!');
+               return;
+           }
 
-		// Make sure that at first the no data message is hidden!
-		if($noDataNotifier.className.indexOf('w3-hide') === -1){
+           const $noDataNotifier = $('NoData');
+           if(!$noDataNotifier){
 
-			// Hide it, ONLY IF it is not already hidden.
-			$noDataNotifier.className += ' w3-hide';
-		}
+               console.error('TemplateProcessor.generateProductsForCategory(): no data notifier is missing!');
+               return;
+           }
 
-		// Check if there is data to show.
-		if($data === null){
+           // Make sure that at first the no data message is hidden!
+           if($noDataNotifier.className.indexOf('w3-hide') === -1){
 
-			// Well... if there is no data, show me the message.
-			$noDataNotifier.className = $noDataNotifier.className.replace(' w3-hide', '');
-		}
+               // Hide it, ONLY IF it is not already hidden.
+               $noDataNotifier.className += ' w3-hide';
+           }
 
-		// Deal with the template (empty or full, you decide!).
-		let $compiled = Handlebars.compile($productsTemplate.get('html'));
+           // Check if there is data to show.
+           if($data === null){
 
-		// Make sure that there is data for this category products.
-		if($data !== null){
+               // Well... if there is no data, show me the message.
+               $noDataNotifier.className = $noDataNotifier.className.replace(' w3-hide', '');
+           }
 
-			/*
-			 * The description attribute of each data element is separated by ';'
-			 * So this makes sure that each part of the description stands for itself.
-			 * By doing so, the list effect is accomplished in the front-end. So each
-			 * sentence in the description is a list element.
-			 */
+           // Deal with the template (empty or full, you decide!).
+           let $compiled = Handlebars.compile($productsTemplate.get('html'));
 
-			$data.forEach(function($element){
+           // Make sure that there is data for this category products.
+           if($data !== null){
 
-				if($element.hasOwnProperty('description')){
+			   /*
+				* The description attribute of each data element is separated by ';'
+				* So this makes sure that each part of the description stands for itself.
+				* By doing so, the list effect is accomplished in the front-end. So each
+				* sentence in the description is a list element.
+				*/
 
-					let $description = $element['description'];
-					$element['description'] = $description.split(';');
-				}
-			});
-		}
+               $data.forEach(function($element){
 
-		$productsPlaceholder.set('html', $compiled({products: $data}));
+                   if($element.hasOwnProperty('description')){
 
-        // Try to scroll.
-        new Fx.Scroll(window, {
-            offset: {
-                x: 0,
-                y: -90 // The offset from the top side.
-            },
-            duration: 1000,
-            wheelStops: false
-        }).toElement($productsPlaceholder);
-	},
+                       let $description = $element['description'];
+                       $element['description'] = $description.split(';');
+                   }
+               });
+           }
 
-    /**
-	 * Generates the products tree template. (Or sub-categories)
-	 *
-     * @param $data
-	 * @param $wait
-	 *
-	 * @return void
-     */
+           $productsPlaceholder.set('html', $compiled({products: $data}));
 
-	generateProductsTree($data, $wait){
+           // Try to scroll.
+           new Fx.Scroll(window, {
+               offset: {
+                   x: 0,
+                   y: -90 // The offset from the top side.
+               },
+               duration: 1000,
+               wheelStops: false
+           }).toElement($productsPlaceholder);
+       },
 
-        const $self = this;
+       /**
+        * Generates the products tree template. (Or sub-categories)
+        *
+        * @param $data
+        * @param $wait
+        *
+        * @return void
+        */
 
-        const $productCategoriesPlaceholder = $('ProductCategoriesPlaceholder');
-        const $productCategoriesTemplate = $('ProductCategoriesTemplate');
+       generateProductsTree($data, $wait){
 
-        if(!$productCategoriesPlaceholder || !$productCategoriesTemplate){
+           const $self = this;
 
-            console.error('TemplateProcessor.generateProductsTree(): ProductCategoriesPlaceholder' +
-				' and/or ProductCategoriesTemplate not found!');
-            return;
-        }
+           const $productCategoriesPlaceholder = $('ProductCategoriesPlaceholder');
+           const $productCategoriesTemplate = $('ProductCategoriesTemplate');
 
-        const $noDataNotifier = $('NoData');
-        if(!$noDataNotifier){
+           if(!$productCategoriesPlaceholder || !$productCategoriesTemplate){
 
-            console.error('TemplateProcessor.generateProductsTree(): no data notifier is missing!');
-            return;
-        }
+               console.error('TemplateProcessor.generateProductsTree(): ProductCategoriesPlaceholder' +
+                   ' and/or ProductCategoriesTemplate not found!');
+               return;
+           }
 
-        /*
-         * Usually the no data notifier should not be needed here.
-         */
+           const $noDataNotifier = $('NoData');
+           if(!$noDataNotifier){
 
-        // Make sure that at first the no data message is hidden!
-        if($noDataNotifier.className.indexOf('w3-hide') === -1){
+               console.error('TemplateProcessor.generateProductsTree(): no data notifier is missing!');
+               return;
+           }
 
-            // Hide it, ONLY IF it is not already hidden.
-            $noDataNotifier.className += ' w3-hide';
-        }
+		   /*
+			* Usually the no data notifier should not be needed here.
+			*/
 
-        // Check if there is data to show.
-        if($data === null){
+           // Make sure that at first the no data message is hidden!
+           if($noDataNotifier.className.indexOf('w3-hide') === -1){
 
-            // Well... if there is no data, show me the message.
-            $noDataNotifier.className = $noDataNotifier.className.replace(' w3-hide', '');
-        }
+               // Hide it, ONLY IF it is not already hidden.
+               $noDataNotifier.className += ' w3-hide';
+           }
 
-        // Deal with the template (empty or full, you decide!).
-        let $compiled = Handlebars.compile($productCategoriesTemplate.get('html'));
+           // Check if there is data to show.
+           if($data === null){
 
-        /*
-         * We want to wait when loading the first products tree, so the user thinks
-         * we do very hard job. Thanks.
-         */
+               // Well... if there is no data, show me the message.
+               $noDataNotifier.className = $noDataNotifier.className.replace(' w3-hide', '');
+           }
 
-        if($wait){
+           // Deal with the template (empty or full, you decide!).
+           let $compiled = Handlebars.compile($productCategoriesTemplate.get('html'));
 
-            setTimeout(function(){
+		   /*
+			* We want to wait when loading the first products tree, so the user thinks
+			* we do very hard job. Thanks.
+			*/
 
-                $productCategoriesPlaceholder.set('html', $compiled({categories: $data}));
-            }, 2000);
+           if($wait){
 
-            return;
-		}
+               setTimeout(function(){
 
-		// Here we load a sub-category.
-        $productCategoriesPlaceholder.set('html', $compiled({categories: $data}));
-	},
+                   $productCategoriesPlaceholder.set('html', $compiled({categories: $data}));
+               }, 2000);
 
-    /**
-	 * Makes sure that the modal with product images is shown
-	 * instantly when the "Виж изображения" button is clicked.
-	 *
-	 * @return void
-     */
+               return;
+           }
 
-	generateProductImagesLoadingState(){
+           // Here we load a sub-category.
+           $productCategoriesPlaceholder.set('html', $compiled({categories: $data}));
+       },
 
-        const $self = this;
+       /**
+        * Makes sure that the modal with product images is shown
+        * instantly when the "Виж изображения" button is clicked.
+        *
+        * @return void
+        */
 
-        // Make the regular defensive checks.
-        const $productImagesPlaceholder = $('ProductImagesPlaceholder');
-        const $productImagesTemplate    = $('ProductImagesTemplate');
+       generateProductImagesLoadingState(){
 
-        if(!$productImagesPlaceholder || !$productImagesTemplate){
+           const $self = this;
 
-            console.error('TemplateProcessor.generateProductImagesLoadingState(): ProductImagesPlaceholder or' +
-                'ProductImagesTemplate is missing.');
-            return;
-        }
+           // Make the regular defensive checks.
+           const $productImagesPlaceholder = $('ProductImagesPlaceholder');
+           const $productImagesTemplate    = $('ProductImagesTemplate');
 
-        let $compiled = Handlebars.compile($productImagesTemplate.get('html'));
+           if(!$productImagesPlaceholder || !$productImagesTemplate){
 
-        // Show the modal.
-        ProductsPageController.enableProductImagesModal(true);
+               console.error('TemplateProcessor.generateProductImagesLoadingState(): ProductImagesPlaceholder or' +
+                   'ProductImagesTemplate is missing.');
+               return;
+           }
 
-        // First show loading message for one second.
-        $productImagesPlaceholder.set('html', $compiled({loading: true}));
-    },
+           let $compiled = Handlebars.compile($productImagesTemplate.get('html'));
 
-    /**
-     * Generates the modal with images (if any) for a
-     * particular product.
-     *
-     * @param $data
-     *
-     * @return void
-     */
+           // Show the modal.
+           ProductsPageController.enableProductImagesModal(true);
 
-	generateProductImages($data){
+           // First show loading message for one second.
+           $productImagesPlaceholder.set('html', $compiled({loading: true}));
+       },
 
-		const $self = this;
+       /**
+        * Generates the modal with images (if any) for a
+        * particular product.
+        *
+        * @param $data
+        *
+        * @return void
+        */
 
-		// Make the regular defensive checks.
-		const $productImagesPlaceholder = $('ProductImagesPlaceholder');
-		const $productImagesTemplate    = $('ProductImagesTemplate');
+       generateProductImages($data){
 
-		if(!$productImagesPlaceholder || !$productImagesTemplate){
+           const $self = this;
 
-			console.error('TemplateProcessor.generateProductImages(): ProductImagesPlaceholder or' +
-				'ProductImagesTemplate is missing.');
-			return;
-		}
+           // Make the regular defensive checks.
+           const $productImagesPlaceholder = $('ProductImagesPlaceholder');
+           const $productImagesTemplate    = $('ProductImagesTemplate');
 
-        let $compiled = Handlebars.compile($productImagesTemplate.get('html'));
+           if(!$productImagesPlaceholder || !$productImagesTemplate){
 
-        // Check if there is data.
-        if($data === null || $data === undefined || Object.keys($data).length ===0 || $data.length === 0){
+               console.error('TemplateProcessor.generateProductImages(): ProductImagesPlaceholder or' +
+                   'ProductImagesTemplate is missing.');
+               return;
+           }
 
-            // No data.
-            $productImagesPlaceholder.set('html', $compiled({no_images: true}));
-            return;
-        }
+           let $compiled = Handlebars.compile($productImagesTemplate.get('html'));
 
-		/*
-		 * There is data. The data is an array (hopefully) with
-		 * image URLs. The idea here is to make a slide show.
-		 * So what needs to be done is the following:
-		 * If there are more than 1 image, make sure that
-		 * only the first one (0th in the array) will be visible
-		 * at first.
-		 */
+           // Check if there is data.
+           if($data === null || $data === undefined || Object.keys($data).length ===0 || $data.length === 0){
 
-        // Let's first create the object to hold.
-        let $holdURLs = {};
+               // No data.
+               $productImagesPlaceholder.set('html', $compiled({no_images: true}));
+               return;
+           }
 
-        $data.forEach(function($element, $index){
+		   /*
+			* There is data. The data is an array (hopefully) with
+			* image URLs. The idea here is to make a slide show.
+			* So what needs to be done is the following:
+			* If there are more than 1 image, make sure that
+			* only the first one (0th in the array) will be visible
+			* at first.
+			*/
 
-            if($index === 0){
+           // Let's first create the object to hold.
+           let $holdURLs = {};
 
-                $holdURLs[$index] = {
-                    display: 'block',
-                    URL: $element
-                };
-            }
-            else{
+           $data.forEach(function($element, $index){
 
-                $holdURLs[$index] = {
-                    display: 'none',
-                    URL: $element
-                };
-            }
-        });
+               if($index === 0){
 
-        // Pass the newly created object
-        $productImagesPlaceholder.set('html', $compiled({images: $holdURLs}));
-	}
-};
+                   $holdURLs[$index] = {
+                       display: 'block',
+                       URL: $element
+                   };
+               }
+               else{
+
+                   $holdURLs[$index] = {
+                       display: 'none',
+                       URL: $element
+                   };
+               }
+           });
+
+           // Pass the newly created object
+           $productImagesPlaceholder.set('html', $compiled({images: $holdURLs}));
+       }
+   };
+
+   return{
+
+	   init(){
+		   Logic.init();
+	   },
+
+       generateProductsForCategory($data){
+
+		   Logic.generateProductsForCategory($data);
+	   },
+
+       generateProductsTree($data, $wait){
+
+		   Logic.generateProductsTree($data, $wait);
+	   },
+
+       generateProductImagesLoadingState(){
+
+		   Logic.generateProductImagesLoadingState();
+	   },
+
+       generateProductImages($data){
+
+		   Logic.generateProductImages($data);
+	   }
+   }
+})();
 
 document.addEvent('domready', function(){
 
