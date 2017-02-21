@@ -345,6 +345,16 @@ const ProductsLoader = (function(){
 			let $pathNodes = ['products', $self._categoryToLoad];
 			let $path = DevelopmentHelpers.constructPath($pathNodes);
 
+			/*
+			 * Interesting things happens here with constructing the path.
+			 * Since the $self._categoryToLoad is also constructed with
+			 * DevelopmentHelpers.constructPath, it also ends with a '/'.
+			 * So when the path above gets constructed it adds one more '/'
+			 * at the end.
+			 *
+			 * TODO: Fix at some point.
+			 */
+
             // No extra parameters.
             let $extra = {};
 
