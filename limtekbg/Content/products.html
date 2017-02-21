@@ -55,6 +55,10 @@
         </div>
 
 		<div class="MainWrapper">
+
+			<div id="ProductImagesPlaceholder" class="w3-modal">
+			</div>
+
 			<div id="GoBackCategories" class="w3-container w3-hide" style="margin: 2em auto 0">
 				<button class="w3-btn-block w3-light-green w3-hover-green CategoryButton"
 						onclick="ProductsPageController.showMainCategories()">
@@ -95,6 +99,41 @@
 			</p>
 			<p>Poetry by: Bilger Yahov <br/> All cats and dogs reserved.</p>
         </footer>
+
+		<script id="ProductImagesTemplate" type="text/x-handlebars-template">
+			<div class="w3-modal-content">
+				<header class="w3-container w3-green">
+					<span onclick="ProductsPageController.enableProductImagesModal(false)"
+							  class="w3-closebtn">&times;</span>
+					<h2>Изображения</h2>
+				</header>
+				<div class="w3-container">
+
+					{{#if loading}}
+						<p>Моля изчакайте докато заредим изображенията...</p>
+					{{/if}}
+
+					{{#if images}}
+						<div class="w3-content w3-display-container" style="max-width:800px">
+							{{#each images}}
+								<img class="mySlides" src="{{this}}" style="width:100%">
+							{{/each}}
+						</div>
+					{{/if}}
+
+					{{#if no_images}}
+						<p>
+							Не можахме да изтеглим изображения за този продукт.
+							Съжаляваме за безпокойството.
+						</p>
+					{{/if}}
+
+				</div>
+				<footer class="w3-container w3-green">
+					<p>Благодарим Ви, че избрахте нас!</p>
+				</footer>
+			</div>
+		</script>
 
 		<script id="ProductsTemplate" type="text/x-handlebars-template">
 			{{#each products}}

@@ -581,14 +581,30 @@ const ProductsLoader = (function(){
             );
         },
 
+        /**
+         * Calls a function that notifies the User that
+         * there are no images for this product.
+         *
+         * @return function
+         */
+
         notifyNoProductImages(){
 
-            alert('No product images!');
+            return TemplateProcessor.generateProductImages({});
         },
+
+        /**
+         * Sends the URLs of the fetched images to the
+         * TemplateProcessor.
+         *
+         * @param $URLs
+         *
+         * @return fuunction
+         */
 
         generateImagesFromURLs($URLs){
 
-            console.log($URLs);
+            return TemplateProcessor.generateProductImages($URLs);
         }
 	};
 

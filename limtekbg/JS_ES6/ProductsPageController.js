@@ -47,6 +47,26 @@ const ProductsPageController = (function () {
         showProductImages($product){
 
             ProductsLoader.loadImagesForProduct($product);
+        },
+
+        enableProductImagesModal($enable){
+
+            let $productImagesModal = $('ProductImagesPlaceholder');
+
+            if(!$productImagesModal){
+
+                console.error('ProductsPageController.enableProductImagesModal(): the ProductImagesPlaceholder is' +
+                    'missing!');
+                return;
+            }
+
+            if($enable){
+
+                $productImagesModal.style.display = 'block';
+                return;
+            }
+
+            $productImagesModal.style.display = 'none';
         }
     };
 
@@ -70,6 +90,11 @@ const ProductsPageController = (function () {
         showProductImages($product){
 
             Logic.showProductImages($product)
+        },
+
+        enableProductImagesModal($enable){
+
+            Logic.enableProductImagesModal($enable);
         }
     }
 })();

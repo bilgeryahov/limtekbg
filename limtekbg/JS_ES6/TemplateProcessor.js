@@ -26,6 +26,12 @@ const TemplateProcessor = {
 			console.error('TemplateProcessor.init(): Handlebars not found!');
 			return;
 		}
+
+		if(!ProductsPageController){
+
+			console.error('TemplateProcessor.init(): ProductsPageController not found!');
+			return;
+		}
 	},
 
     /**
@@ -175,6 +181,53 @@ const TemplateProcessor = {
 
 		// Here we load a sub-category.
         $productCategoriesPlaceholder.set('html', $compiled({categories: $data}));
+	},
+
+    /**
+     * Generates the modal with images (if any) for a
+     * particular product.
+     *
+     * @param $data
+     *
+     * @return void
+     */
+
+	generateProductImages($data){
+
+		const $self = this;
+
+		// Make the regular defensive checks.
+		const $productImagesPlaceholder = $('ProductImagesPlaceholder');
+		const $productImagesTemplate    = $('ProductImagesTemplate');
+
+		if(!$productImagesPlaceholder || !$productImagesTemplate){
+
+			console.error('TemplateProcessor.generateProductImages(): ProductImagesPlaceholder or' +
+				'ProductImagesTemplate is missing.');
+			return;
+		}
+
+        let $compiled = Handlebars.compile($productImagesTemplate.get('html'));
+
+		// Show the modal.
+		ProductsPageController.enableProductImagesModal(true);
+
+		// First show loading message for one second.
+        $productImagesPlaceholder.set('html', $compiled({loading: true}));
+
+        setTimeout(function(){
+
+            // Check if there is data.
+            if($data === null || $data === undefined || Object.keys($data).length ===0 || $data.length === 0){
+
+                // No data.
+                $productImagesPlaceholder.set('html', $compiled({no_images: true}));
+                return;
+            }
+
+            // There is data.
+            $productImagesPlaceholder.set('html', $compiled({images: $data}));
+        }, 1000);
 	}
 };
 
