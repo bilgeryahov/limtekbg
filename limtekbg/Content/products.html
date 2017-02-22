@@ -67,10 +67,6 @@
 			</div>
 
 			<div id="ProductCategoriesPlaceholder" class="w3-container" style="margin: 2em auto 4em;">
-				<div class="w3-panel w3-light-green" style="color: white !important;">
-					<h3>Зареждане на категории продукти...</h3>
-					<p>Моля изчакайте докато заредим категориите с продукти.</p>
-				</div>
 			</div>
 
 			<div id = "ProductsPlaceholder" class="w3-row-padding w3-container">
@@ -168,12 +164,20 @@
 		</script>
 
 		<script id="ProductCategoriesTemplate" type="text/x-handlebars-template">
-			{{#each categories}}
+			{{#if loading}}
+				<div class="w3-panel w3-light-green" style="color: white !important;">
+					<h3>Зареждане на категории продукти...</h3>
+					<p>Моля изчакайте докато заредим категориите с продукти.</p>
+				</div>
+			{{/if}}
+			{{#if categories}}
+				{{#each categories}}
 				<button id="button_{{@key}}" class="w3-btn-block w3-light-green w3-hover-green CategoryButton"
-					onclick="ProductsPageController.actionCategoryButton(this)">
+						onclick="ProductsPageController.actionCategoryButton(this)">
 					{{display_name}}
 				</button>
-			{{/each}}
+				{{/each}}
+			{{/if}}
 		</script>
 
 </body>

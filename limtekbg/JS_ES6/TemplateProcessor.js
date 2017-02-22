@@ -102,15 +102,40 @@ const TemplateProcessor = (function(){
        },
 
        /**
-        * Generates the products tree template. (Or sub-categories)
-        *
-        * @param $data
-        * @param $wait
+        * Makes sure that the user is informed whenever the
+        * products tree is being loaded and waiting is required.
         *
         * @return void
         */
 
-       generateProductsTree($data, $wait){
+       generateProductsTreeLoadingState(){
+
+           const $self = this;
+
+           const $productCategoriesPlaceholder = $('ProductCategoriesPlaceholder');
+           const $productCategoriesTemplate = $('ProductCategoriesTemplate');
+
+           if(!$productCategoriesPlaceholder || !$productCategoriesTemplate){
+
+               console.error('TemplateProcessor.generateProductsTreeLoadingState(): ProductCategoriesPlaceholder' +
+                   ' and/or ProductCategoriesTemplate not found!');
+               return;
+           }
+
+           let $compiled = Handlebars.compile($productCategoriesTemplate.get('html'));
+
+           $productCategoriesPlaceholder.set('html', $compiled({loading: true}));
+       },
+
+       /**
+        * Generates the products tree template. (Or sub-categories)
+        *
+        * @param $data
+        *
+        * @return void
+        */
+
+       generateProductsTree($data){
 
            const $self = this;
 
@@ -133,22 +158,6 @@ const TemplateProcessor = (function(){
                return;
            }
 
-           /*
-            * We want to wait when loading the first products tree, so the user thinks
-            * we do very hard job. Thanks.
-            */
-
-           if($wait){
-
-               setTimeout(function(){
-
-                   $productCategoriesPlaceholder.set('html', $compiled({categories: $data}));
-               }, 2000);
-
-               return;
-           }
-
-           // Here we load a sub-category.
            $productCategoriesPlaceholder.set('html', $compiled({categories: $data}));
        },
 
@@ -263,9 +272,14 @@ const TemplateProcessor = (function(){
 		   Logic.generateProductsForCategory($data);
 	   },
 
-       generateProductsTree($data, $wait){
+       generateProductsTreeLoadingState(){
 
-		   Logic.generateProductsTree($data, $wait);
+           Logic.generateProductsTreeLoadingState();
+       },
+
+       generateProductsTree($data){
+
+		   Logic.generateProductsTree($data);
 	   },
 
        generateProductImagesLoadingState(){

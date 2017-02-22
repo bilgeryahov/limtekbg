@@ -73,6 +73,9 @@ const ProductsLoader = (function(){
 
             const $self = this;
 
+            // First show the user that the products tree is being constructed.
+            TemplateProcessor.generateProductsTreeLoadingState();
+
             // Get me all products from the main end-point.
             let $pathNodes = ['products'];
             let $path = DevelopmentHelpers.constructPath($pathNodes);
@@ -181,11 +184,9 @@ const ProductsLoader = (function(){
 
 			/*
 			 * Call for generating the first (main) products tree.
-			 * Pass true for the second parameter, since we want
-			 * the user to think that we are smart. Thanks.
 			 */
 
-            TemplateProcessor.generateProductsTree($self._productsTree, true);
+            TemplateProcessor.generateProductsTree($self._productsTree);
 
             // Disable the go back button.
             $self.enableGoBackCategories(false);
@@ -319,12 +320,10 @@ const ProductsLoader = (function(){
 				/*
 				 * Okay, no need for a DB call.
 				 *
-				 * Here we load a category content, so no waiting. (second parameter)
-				 *
 				 * Display the go back button also.
 				 */
 
-                TemplateProcessor.generateProductsTree($self._tempProductList, false);
+                TemplateProcessor.generateProductsTree($self._tempProductList);
 
                 // Show the go back to main categories button.
                 $self.enableGoBackCategories(true);
@@ -402,8 +401,7 @@ const ProductsLoader = (function(){
             if(Object.keys($self._productsTree).length !== 0 && $self._productsTree !== null
                 && $self._productsTree !== undefined){
 
-                // Do not wait here, since we are just going back to main categories from sub-ones.
-                TemplateProcessor.generateProductsTree($self._productsTree, false);
+                TemplateProcessor.generateProductsTree($self._productsTree);
 
                 // Do not show the go back button. No need.
                 $self.enableGoBackCategories(false);
