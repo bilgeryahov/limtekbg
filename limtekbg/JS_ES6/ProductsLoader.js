@@ -186,10 +186,7 @@ const ProductsLoader = (function(){
 			 * Call for generating the first (main) products tree.
 			 */
 
-            TemplateProcessor.generateProductsTree($self._productsTree);
-
-            // Disable the go back button.
-            $self.enableGoBackCategories(false);
+            TemplateProcessor.generateProductsTree($self._productsTree, false);
         },
 
         /**
@@ -319,14 +316,10 @@ const ProductsLoader = (function(){
 
 				/*
 				 * Okay, no need for a DB call.
-				 *
-				 * Display the go back button also.
+				 * Displaying a sub tree.
 				 */
 
-                TemplateProcessor.generateProductsTree($self._tempProductList);
-
-                // Show the go back to main categories button.
-                $self.enableGoBackCategories(true);
+                TemplateProcessor.generateProductsTree($self._tempProductList, true);
 
                 // Do not show the products listed now, since you are focusing on sub-categories.
                 $self.enableProductsListed(false);
@@ -401,46 +394,11 @@ const ProductsLoader = (function(){
             if(Object.keys($self._productsTree).length !== 0 && $self._productsTree !== null
                 && $self._productsTree !== undefined){
 
-                TemplateProcessor.generateProductsTree($self._productsTree);
-
-                // Do not show the go back button. No need.
-                $self.enableGoBackCategories(false);
+                // Loading main tree (second parameter should be false).
+                TemplateProcessor.generateProductsTree($self._productsTree, false);
 
                 // Do not show the products listed now. Let the user focus on the categories.
                 $self.enableProductsListed(false);
-            }
-        },
-
-        /**
-         * Enables/Disables the go back to main categories button.
-         *
-         * @param $enable
-         *
-         * @return void
-         */
-
-        enableGoBackCategories($enable){
-
-            const $self = this;
-
-            let $goBackCategories = $('GoBackCategories');
-            if(!$goBackCategories){
-
-                console.error('ProductsLoader.enableGoBackCatgories(): GoBackCategories not found!');
-                return;
-            }
-
-            if($enable){
-
-                $goBackCategories.className = $goBackCategories.className.replace(' w3-hide', '');
-            }
-            else {
-
-                // Hide if not hidden already.
-                if($goBackCategories.className.indexOf('w3-hide') === -1){
-
-                    $goBackCategories.className += ' w3-hide';
-                }
             }
         },
 

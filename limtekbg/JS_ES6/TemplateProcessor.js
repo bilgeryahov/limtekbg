@@ -129,13 +129,15 @@ const TemplateProcessor = (function(){
 
        /**
         * Generates the products tree template. (Or sub-categories)
+        * If generating a sub tree, "Go back" button should be shown.
         *
         * @param $data
+        * @param $isSubTree
         *
         * @return void
         */
 
-       generateProductsTree($data){
+       generateProductsTree($data, $isSubTree){
 
            const $self = this;
 
@@ -158,7 +160,13 @@ const TemplateProcessor = (function(){
                return;
            }
 
-           $productCategoriesPlaceholder.set('html', $compiled({categories: $data}));
+           if($isSubTree){
+
+               $productCategoriesPlaceholder.set('html', $compiled({categories: $data, go_back: true}));
+               return;
+           }
+
+           $productCategoriesPlaceholder.set('html', $compiled({categories: $data, go_back: false}));
        },
 
        /**
@@ -277,9 +285,9 @@ const TemplateProcessor = (function(){
            Logic.generateProductsTreeLoadingState();
        },
 
-       generateProductsTree($data){
+       generateProductsTree($data, $isSubTree){
 
-		   Logic.generateProductsTree($data);
+		   Logic.generateProductsTree($data, $isSubTree);
 	   },
 
        generateProductImagesLoadingState(){

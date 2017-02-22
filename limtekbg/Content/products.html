@@ -59,13 +59,6 @@
 			<div id="ProductImagesPlaceholder" class="w3-modal">
 			</div>
 
-			<div id="GoBackCategories" class="w3-container w3-hide" style="margin: 2em auto 0">
-				<button class="w3-btn-block w3-light-green w3-hover-green CategoryButton"
-						onclick="ProductsPageController.showMainCategories()">
-					Покажи основни категории
-				</button>
-			</div>
-
 			<div id="ProductCategoriesPlaceholder" class="w3-container" style="margin: 2em auto 4em;">
 			</div>
 
@@ -164,6 +157,14 @@
 		</script>
 
 		<script id="ProductCategoriesTemplate" type="text/x-handlebars-template">
+			{{#if go_back}}
+				<div class="w3-container" style="margin: 2em auto">
+					<button class="w3-btn-block w3-light-green w3-hover-green CategoryButton"
+							onclick="ProductsPageController.showMainCategories()">
+						Покажи основни категории
+					</button>
+				</div>
+			{{/if}}
 			{{#if loading}}
 				<div class="w3-panel w3-light-green" style="color: white !important;">
 					<h3>Зареждане на категории продукти...</h3>
