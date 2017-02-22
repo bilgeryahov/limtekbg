@@ -17,24 +17,24 @@ let run_sequence = require('run-sequence');
 // Compile JS ES6 to JS ES5.
 gulp.task('compile_javascript',  function(){
 
-	gulp.src('JS_ES6/*.js')
+	gulp.src('./JS_ES6/*.js')
 		.pipe(babel())
-		.pipe(gulp.dest('../../../Deploy/LimtekBG/JS/'));
+		.pipe(gulp.dest('./Deploy/JS/'));
 });
 
 // Compile SCSS to CSS.
 gulp.task('compile_css', function(){
 
-	gulp.src('SCSS/*scss')
+	gulp.src('./SCSS/*scss')
 		.pipe(sass().on('error', sass.logError))
-		.pipe(gulp.dest('../../../Deploy/LimtekBG/CSS/'));
+		.pipe(gulp.dest('./Deploy/CSS/'));
 });
 
 // Copy static files.
 gulp.task('copy_content', function(){
 
 	return gulp.src('./Content/**')
-		.pipe(gulp.dest('../../../Deploy/LimtekBG/'));
+		.pipe(gulp.dest('./Deploy/'));
 });
 
 // Deploy locally.
