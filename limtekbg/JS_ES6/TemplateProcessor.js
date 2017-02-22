@@ -62,6 +62,9 @@ const TemplateProcessor = (function(){
                return;
            }
 
+           // Make sure that the real products template is visible.
+           $productsPlaceholder.className = $productsPlaceholder.className.replace(' w3-hide', '');
+
            let $compiled = Handlebars.compile($productsTemplate.get('html'));
 
            // Check if there is data to show.
@@ -131,6 +134,10 @@ const TemplateProcessor = (function(){
         * Generates the products tree template. (Or sub-categories)
         * If generating a sub tree, "Go back" button should be shown.
         *
+        * When generating products tree make sure that
+        * the actual products are hidden, so the user can concentrate
+        * on the tree - categories.
+        *
         * @param $data
         * @param $isSubTree
         *
@@ -149,6 +156,20 @@ const TemplateProcessor = (function(){
                console.error('TemplateProcessor.generateProductsTree(): ProductCategoriesPlaceholder' +
                    ' and/or ProductCategoriesTemplate not found!');
                return;
+           }
+
+           const $productsPlaceholder = $('ProductsPlaceholder');
+
+           if(!$productsPlaceholder){
+
+               console.error('TemplateProcessor.generateProductsTree(): ProductsPlaceholder not found!');
+               return;
+           }
+
+           // Make sure that the actual products are hidden.
+           if($productsPlaceholder.className.indexOf('w3-hide') === -1){
+
+               $productsPlaceholder.className += ' w3-hide';
            }
 
            let $compiled = Handlebars.compile($productCategoriesTemplate.get('html'));

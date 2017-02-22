@@ -321,9 +321,6 @@ const ProductsLoader = (function(){
 
                 TemplateProcessor.generateProductsTree($self._tempProductList, true);
 
-                // Do not show the products listed now, since you are focusing on sub-categories.
-                $self.enableProductsListed(false);
-
                 // Do not forget to stop here.
                 return;
             }
@@ -366,9 +363,6 @@ const ProductsLoader = (function(){
                         return;
                     }
 
-                    // First make the products listed visible, since you are going to show real products.
-                    $self.enableProductsListed(true);
-
 					/*
 					 * Attempt to show real products.
 					 * If no data, the TemplateProcessor will show a message on the front-end.
@@ -396,42 +390,6 @@ const ProductsLoader = (function(){
 
                 // Loading main tree (second parameter should be false).
                 TemplateProcessor.generateProductsTree($self._productsTree, false);
-
-                // Do not show the products listed now. Let the user focus on the categories.
-                $self.enableProductsListed(false);
-            }
-        },
-
-        /**
-         * Enables/Disables the products listed.
-         *
-         * @param $enable
-         *
-         * @return void
-         */
-
-        enableProductsListed($enable){
-
-            const $self = this;
-
-            const $productsPlaceholder = $('ProductsPlaceholder');
-
-            if(!$productsPlaceholder){
-
-                console.error('ProductsLoader.enableProductsListed(): ProductsPlaceholder not found!');
-                return;
-            }
-
-            if($enable){
-
-                $productsPlaceholder.className = $productsPlaceholder.className.replace(' w3-hide', '');
-            }
-            else {
-
-                if($productsPlaceholder.className.indexOf('w3-hide') === -1){
-
-                    $productsPlaceholder.className += ' w3-hide';
-                }
             }
         },
 
@@ -584,16 +542,6 @@ const ProductsLoader = (function(){
 		loadMainCategories(){
 
 			Logic.loadMainCategories();
-		},
-
-		enableGoBackCategories($enable){
-
-			Logic.enableGoBackCategories($enable);
-		},
-
-		enableProductsListed($enable){
-
-			Logic.enableProductsListed($enable);
 		},
 
 		loadImagesForProduct($product){
