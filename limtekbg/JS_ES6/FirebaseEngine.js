@@ -54,6 +54,9 @@ const FirebaseEngine = (function(){
         /**
          * Makes a GET request to the Firebase Real Time database.
          *
+         * @important - if data arrived is null, the function returns null
+         * as well
+         *
          * @param $path - path to retrieve data from
          * @param $extra - extra parameters provided
          * @param $callback - execute after completing the request

@@ -62,39 +62,21 @@ const TemplateProcessor = (function(){
                return;
            }
 
-           const $noDataNotifier = $('NoData');
-           if(!$noDataNotifier){
-
-               console.error('TemplateProcessor.generateProductsForCategory(): no data notifier is missing!');
-               return;
-           }
-
-           // Make sure that at first the no data message is hidden!
-           if($noDataNotifier.className.indexOf('w3-hide') === -1){
-
-               // Hide it, ONLY IF it is not already hidden.
-               $noDataNotifier.className += ' w3-hide';
-           }
+           let $compiled = Handlebars.compile($productsTemplate.get('html'));
 
            // Check if there is data to show.
            if($data === null){
 
-               // Well... if there is no data, show me the message.
-               $noDataNotifier.className = $noDataNotifier.className.replace(' w3-hide', '');
+               $productsPlaceholder.set('html', $compiled({no_products: true}));
            }
+           else{
 
-           // Deal with the template (empty or full, you decide!).
-           let $compiled = Handlebars.compile($productsTemplate.get('html'));
-
-           // Make sure that there is data for this category products.
-           if($data !== null){
-
-			   /*
-				* The description attribute of each data element is separated by ';'
-				* So this makes sure that each part of the description stands for itself.
-				* By doing so, the list effect is accomplished in the front-end. So each
-				* sentence in the description is a list element.
-				*/
+               /*
+                * The description attribute of each data element is separated by ';'
+                * So this makes sure that each part of the description stands for itself.
+                * By doing so, the list effect is accomplished in the front-end. So each
+                * sentence in the description is a list element.
+                */
 
                $data.forEach(function($element){
 
@@ -104,9 +86,9 @@ const TemplateProcessor = (function(){
                        $element['description'] = $description.split(';');
                    }
                });
-           }
 
-           $productsPlaceholder.set('html', $compiled({products: $data}));
+               $productsPlaceholder.set('html', $compiled({products: $data}));
+           }
 
            // Try to scroll.
            new Fx.Scroll(window, {
@@ -142,38 +124,19 @@ const TemplateProcessor = (function(){
                return;
            }
 
-           const $noDataNotifier = $('NoData');
-           if(!$noDataNotifier){
+           let $compiled = Handlebars.compile($productCategoriesTemplate.get('html'));
 
-               console.error('TemplateProcessor.generateProductsTree(): no data notifier is missing!');
+           if(!$data){
+
+               console.error('TemplateProcessor.generateProductsTree(): No data for generating' +
+                   ' a products tree!');
                return;
            }
 
-		   /*
-			* Usually the no data notifier should not be needed here.
-			*/
-
-           // Make sure that at first the no data message is hidden!
-           if($noDataNotifier.className.indexOf('w3-hide') === -1){
-
-               // Hide it, ONLY IF it is not already hidden.
-               $noDataNotifier.className += ' w3-hide';
-           }
-
-           // Check if there is data to show.
-           if($data === null){
-
-               // Well... if there is no data, show me the message.
-               $noDataNotifier.className = $noDataNotifier.className.replace(' w3-hide', '');
-           }
-
-           // Deal with the template (empty or full, you decide!).
-           let $compiled = Handlebars.compile($productCategoriesTemplate.get('html'));
-
-		   /*
-			* We want to wait when loading the first products tree, so the user thinks
-			* we do very hard job. Thanks.
-			*/
+           /*
+            * We want to wait when loading the first products tree, so the user thinks
+            * we do very hard job. Thanks.
+            */
 
            if($wait){
 

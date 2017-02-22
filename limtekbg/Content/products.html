@@ -76,10 +76,6 @@
 			<div id = "ProductsPlaceholder" class="w3-row-padding w3-container">
 			</div>
 
-			<div id="NoData" class="w3-panel w3-content w3-pale-red w3-leftbar w3-border w3-border-red w3-hide">
-				<h2>Няма данни</h2>
-				<p>Няма данни за избраната категория продукти. Съжаляваме за безпокойството!</p>
-			</div>
 		</div>
 
        <div class="w3-container w3-black w3-center w3-opacity w3-padding-64" style="margin-top:1rem;">
@@ -108,11 +104,9 @@
 					<h2>Изображения</h2>
 				</header>
 				<div class="w3-container">
-
 					{{#if loading}}
 						<p>Моля изчакайте докато заредим изображенията...</p>
 					{{/if}}
-
 					{{#if images}}
 						<div class="w3-content w3-display-container" style="max-width:800px">
 							{{#each images}}
@@ -126,14 +120,12 @@
                             </div>
                         </div>
 					{{/if}}
-
 					{{#if no_images}}
 						<p>
 							Не можахме да изтеглим изображения за този продукт.
 							Съжаляваме за безпокойството.
 						</p>
 					{{/if}}
-
                     <br/>
 				</div>
 				<footer class="w3-container w3-green">
@@ -143,7 +135,8 @@
 		</script>
 
 		<script id="ProductsTemplate" type="text/x-handlebars-template">
-			{{#each products}}
+			{{#if products}}
+				{{#each products}}
 				<div class="w3-third w3-margin-bottom">
 					<ul class="w3-ul w3-border w3-center w3-hover-shadow">
 						<li class="w3-light-green w3-large w3-padding-32 LightGreenWhiteText">{{name}}</li>
@@ -158,13 +151,20 @@
 						</li>
 						<li class="w3-light-grey w3-padding-24">
 							<button id="{{@key}}" class="w3-btn w3-light-green w3-padding LightGreenWhiteText"
-							onclick="ProductsPageController.showProductImages(this.id)">
+									onclick="ProductsPageController.showProductImages(this.id)">
 								Виж изображения
 							</button>
 						</li>
 					</ul>
 				</div>
-			{{/each}}
+				{{/each}}
+			{{/if}}
+			{{#if no_products}}
+				<div class="w3-panel w3-content w3-pale-red w3-leftbar w3-border w3-border-red">
+					<h2>Няма данни</h2>
+					<p>Няма данни за избраната категория продукти. Съжаляваме за безпокойството!</p>
+				</div>
+			{{/if}}
 		</script>
 
 		<script id="ProductCategoriesTemplate" type="text/x-handlebars-template">
