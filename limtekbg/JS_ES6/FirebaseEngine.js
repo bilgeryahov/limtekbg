@@ -22,6 +22,9 @@ const FirebaseEngine = (function(){
         _database: {},
         _databaseRef: {},
 
+        _auth: {},
+        _currentUser: null,
+
         /**
          * Initializes the Firebase engine.
          *
@@ -34,7 +37,8 @@ const FirebaseEngine = (function(){
 
             let $config = {
                 databaseURL: "https://limtek-fb748.firebaseio.com",
-                storageBucket: "limtek-fb748.appspot.com"
+                storageBucket: "limtek-fb748.appspot.com",
+                apiKey: "api_key_goes_here"
             };
 
             firebase.initializeApp($config);
@@ -46,6 +50,26 @@ const FirebaseEngine = (function(){
             // Initialize the real-time database.
             $self._database = firebase.database();
             $self._databaseRef = $self._database.ref();
+
+            // Initialize the Auth object.
+            $self._auth = firebase.auth();
+
+            $self._auth.onAuthStateChanged(function($currentUser){
+
+                if($currentUser){
+
+                    $self._currentUser = $currentUser;
+                    return;
+                }
+
+                $self._currentUser = null;
+            });
+        },
+
+        getCurrentUser(){
+
+            const $self = this;
+            return $self._currentUser;
         },
 
         /**
@@ -169,6 +193,11 @@ const FirebaseEngine = (function(){
         retrieveStorageItemURL($path, $callback){
 
         	Logic.retrieveStorageItemURL($path, $callback);
+        },
+
+        getCurrentUser(){
+
+            return Logic.getCurrentUser();
         }
 	}
 })();
