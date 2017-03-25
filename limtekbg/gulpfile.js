@@ -68,13 +68,21 @@ gulp.task('remove_live_api_key', function(){
         .pipe(gulp.dest('./'));
 });
 
+// After Firebase deploys, make sure that you perform applying the dev api key again.
 gulp.task('firebase_deploy', function(){
 
 	return exec('firebase deploy', function(err, stdout, stderr){
 
+		if(err){
+
+			console.error(err);
+			return;
+		}
+
 		console.log(stdout);
 		console.log(stderr);
-		console.log(err);
+
+		return run_sequence('apply_development_api_key', 'compile_javascript', 'remove_development_api_key');
     });
 });
 
