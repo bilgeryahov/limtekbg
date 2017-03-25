@@ -38,8 +38,7 @@ const FirebaseEngine = (function(){
             let $config = {
                 databaseURL: "https://limtek-fb748.firebaseio.com",
                 storageBucket: "limtek-fb748.appspot.com",
-                apiKey: "AIzaSyDUrc5jFy0-nyj3OnaK9dZLeduClf9g598",
-                authDomain: "limtek-fb748.firebaseapp.com",
+                apiKey: "api_key_goes_here"
             };
 
             firebase.initializeApp($config);
