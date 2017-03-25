@@ -14,7 +14,13 @@ const AministrationController = (function () {
 
         init(){
 
-            alert('AdministrationController is initialized!');
+            if(!FirebaseEngine){
+
+                console.error('AdministrationController.init() FirebaseEngine is not present!');
+                return;
+            }
+
+            alert(FirebaseEngine.getCurrentUser());
         }
     };
 
