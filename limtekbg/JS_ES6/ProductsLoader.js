@@ -150,26 +150,24 @@ const ProductsLoader = (function(){
                     return;
                 }
 
-                // Make sure that you clean up when you find a real product, not a sub category inside 'products_list'.
-                for(let $member in $object['products_list']){
+                /*
+                 * Get the first element.
+                 * If it does not have 'display_name' property, delete it.
+                 * Usually there are only sub-categories or only products.
+                 */
 
-                    if($object['products_list'].hasOwnProperty($member)){
+                if(!Object.keys($object['products_list'])[0].hasOwnProperty('display_name')){
 
-                        // If it does not have 'diplay_name' it is a real product.
-                        if(!$object['products_list'][$member].hasOwnProperty('display_name')){
-
-                            // Reset and return.
-                            delete $object['products_list'];
-                            return;
-                        }
-                    }
+                    // Reset and return.
+                    delete $object['products_list'];
+                    return;
                 }
 
                 // We have found sub-categories. Let's process them.
                 Object.keys($object['products_list']).forEach(function($subCategory){
 
                     // Recursivelly calls itself.
-                    $traverse($object['products_list'][$subCategory]);
+                    return $traverse($object['products_list'][$subCategory]);
                 });
             };
 
@@ -262,7 +260,7 @@ const ProductsLoader = (function(){
                         Object.keys($object['products_list']).forEach(function($subCategory){
 
                             // Recursivelly calls itself.
-                            $traverse($object['products_list'][$subCategory], $subCategory);
+                            return $traverse($object['products_list'][$subCategory], $subCategory);
                         });
                     }
 
