@@ -15,6 +15,7 @@ const babel = require('gulp-babel');
 const run_sequence = require('run-sequence');
 const replace = require('gulp-replace');
 const exec = require('child_process').exec;
+const cofigFileLimtek = require('./configFileLimtek.json');
 
 // Compile JS ES6 to JS ES5.
 gulp.task('compile_javascript',  function(){
@@ -42,28 +43,28 @@ gulp.task('copy_content', function(){
 gulp.task('apply_development_api_key', function(){
 
 	return gulp.src('./JS_ES6/FirebaseEngine.js', {base: './'})
-		.pipe(replace('api_key_goes_here', 'AIzaSyDV0mt85i0AFHU06uW-VmEwr20ebKPBd14'))
+		.pipe(replace(cofigFileLimtek.api_key_default, cofigFileLimtek.api_key_development))
 		.pipe(gulp.dest('./'));
 });
 
 gulp.task('remove_development_api_key', function(){
 
     return gulp.src('./JS_ES6/FirebaseEngine.js', {base: './'})
-        .pipe(replace('AIzaSyDV0mt85i0AFHU06uW-VmEwr20ebKPBd14', 'api_key_goes_here'))
+        .pipe(replace(cofigFileLimtek.api_key_development, cofigFileLimtek.api_key_default))
         .pipe(gulp.dest('./'));
 });
 
 gulp.task('apply_live_api_key', function(){
 
     return gulp.src('./JS_ES6/FirebaseEngine.js', {base: './'})
-        .pipe(replace('api_key_goes_here', 'AIzaSyBSeUAE2adT-G2lSRREJhLuNAT5iv5v6HA'))
+        .pipe(replace(cofigFileLimtek.api_key_default, cofigFileLimtek.api_key_live))
         .pipe(gulp.dest('./'));
 });
 
 gulp.task('remove_live_api_key', function(){
 
     return gulp.src('./JS_ES6/FirebaseEngine.js', {base: './'})
-        .pipe(replace('AIzaSyBSeUAE2adT-G2lSRREJhLuNAT5iv5v6HA', 'api_key_goes_here'))
+        .pipe(replace(cofigFileLimtek.api_key_live, cofigFileLimtek.api_key_default))
         .pipe(gulp.dest('./'));
 });
 
