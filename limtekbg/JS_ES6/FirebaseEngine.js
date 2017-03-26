@@ -24,6 +24,9 @@ const FirebaseEngine = (function(){
 
         _auth: {},
         _currentUser: null,
+        _currentUserFlag: {},
+        _loginError: null,
+        _loginErrorFlag: {},
 
         /**
          * Initializes the Firebase engine.
@@ -54,11 +57,30 @@ const FirebaseEngine = (function(){
             // Initialize the Auth object.
             $self._auth = firebase.auth();
 
+            /*
+             * For each of the app's pages that need information about the signed-in user,
+             * we attach an observer to the global authentication object.
+             * This observer gets called whenever the user's sign-in state changes.
+             */
+
+            $self._currentUserFlag = new Element('span', {
+                styles:{
+                    display: 'none'
+                }
+            });
+
+            $self._loginErrorFlag = new Element('span', {
+                styles:{
+                    display: 'none'
+                }
+            });
+
             $self._auth.onAuthStateChanged(function($currentUser){
 
                 if($currentUser){
 
                     $self._currentUser = $currentUser;
+                    $self._currentUserFlag.fireEvent('present');
                     return;
                 }
 
@@ -66,10 +88,82 @@ const FirebaseEngine = (function(){
             });
         },
 
+        /**
+         * Returns the current user.
+         * If no user is logged in, NULL is returned.
+         *
+         * @return {null}
+         */
+
         getCurrentUser(){
 
             const $self = this;
             return $self._currentUser;
+        },
+
+        /**
+         * Returns the current user flag. Used for catching
+         * if the user is logged in.
+         *
+         * @return {Logic._currentUserFlag|{}}
+         */
+
+        getCurrentUserFlag(){
+
+            const $self = this;
+            return $self._currentUserFlag;
+        },
+
+        /**
+         * Logs in a user based on e-mail and password.
+         * If any errors occur, they get saved in the _loginError
+         * attribute of the object.
+         *
+         * @param $email
+         * @param $password
+         *
+         * @return void
+         */
+
+        login($email, $password){
+
+            const $self = this;
+
+            $self._auth.signInWithEmailAndPassword($email, $password)
+                .catch(function($error){
+
+                    if($error){
+
+                        $self._loginError = $error;
+                        $self._loginErrorFlag.fireEvent('present');
+                    }
+                });
+        },
+
+        /**
+         * Returns the login error, if any.
+         * If there is no login error, returns null.
+         *
+         * @return {null}
+         */
+
+        getLoginError(){
+
+            const $self = this;
+            return $self._loginError;
+        },
+
+        /**
+         * Returns the login error flag. Used for catching
+         * if there have been any errors while loggin in.
+         *
+         * @return {Logic._currentUserFlag|{}}
+         */
+
+        getLoginErrorFlag(){
+
+            const $self = this;
+            return $self._loginErrorFlag;
         },
 
         /**
@@ -198,6 +292,26 @@ const FirebaseEngine = (function(){
         getCurrentUser(){
 
             return Logic.getCurrentUser();
+        },
+
+        getCurrentUserFlag(){
+
+            return Logic.getCurrentUserFlag();
+        },
+
+        getLoginError(){
+
+            return Logic.getLoginError();
+        },
+
+        getLoginErrorFlag(){
+
+            return Logic.getLoginErrorFlag();
+        },
+
+        login($email, $password){
+
+            Logic.login($email, $password);
         }
 	}
 })();
