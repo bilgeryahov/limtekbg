@@ -81,10 +81,12 @@ const FirebaseEngine = (function(){
 
                     $self._currentUser = $currentUser;
                     $self._currentUserFlag.fireEvent('present');
-                    return;
                 }
+                else{
 
-                $self._currentUser = null;
+                    $self._currentUser = null;
+                    $self._currentUserFlag.fireEvent('not_present');
+                }
             });
         },
 
@@ -180,8 +182,6 @@ const FirebaseEngine = (function(){
          */
 
         firebaseGET: function($path, $extra, $callback){
-
-            const $self = this;
 
             // Represent the extra parameter as a string.
             let $extraString = '';
