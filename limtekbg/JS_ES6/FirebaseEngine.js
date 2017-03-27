@@ -131,6 +131,12 @@ const FirebaseEngine = (function(){
 
             const $self = this;
 
+            if($self.getCurrentUser()){
+
+                console.error('FirebaseEngine.login(): You cannot login while, you are logged in!');
+                return;
+            }
+
             $self._auth.signInWithEmailAndPassword($email, $password)
                 .catch(function($error){
 
