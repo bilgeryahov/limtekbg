@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css"/>
-    <link rel="stylesheet" href="./CSS/Default.css"/>
+    <link rel="stylesheet" href="./CSS/Administration.css"/>
     <script src="https://www.gstatic.com/firebasejs/3.6.10/firebase.js"></script>
     <script src="./JS/Vendor/MooTools-Core-1.6.0.js"></script>
     <script src="./JS/Vendor/MooTools-More-1.6.0.js"></script>
@@ -18,8 +18,8 @@
 </head>
 <body>
 
-    <div class="w3-container">
-        <div id="LoginForm" class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px; margin-top: 2em;">
+    <div id="LoginForm" class="w3-container">
+        <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px; margin-top: 2em;">
             <div class="w3-center"><br>
                 <img src="./images/avatar.png" alt="Avatar" style="width:30%" class="w3-circle w3-margin-top">
             </div>
@@ -28,12 +28,20 @@
                 <input id="InputEmail" class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter e-mail address">
                 <label><b>Password</b></label>
                 <input id="InputPassword" class="w3-input w3-border" type="password" placeholder="Enter Password">
-                <button class="w3-btn-block w3-green w3-section w3-padding w3-ripple">Login</button>
+                <button id="LoginButton" class="w3-btn-block w3-green w3-section w3-padding w3-ripple">Login</button>
             </div>
             <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
                 <span class="w3-right w3-padding w3-hide-small">Forgot <a href="#">password?</a></span>
             </div>
         </div>
+    </div>
+
+    <div id="Content" style="display:none;" class="animate-bottom">
+        <h2>Tada!</h2>
+        <p>Some text in my newly loaded page..</p>
+    </div>
+
+    <div id="Loader" style="display: none;">
     </div>
 
 </body>
