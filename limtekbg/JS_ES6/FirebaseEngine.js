@@ -175,6 +175,29 @@ const FirebaseEngine = (function(){
         },
 
         /**
+         * Log-out a user.
+         *
+         * @param $callback
+         *
+         * @return void
+         */
+
+        logout($callback){
+
+            const $self = this;
+
+            $self._auth.signOut().then(function(){
+
+                // Sign-out was successful.
+                return $callback(null, true);
+            }).catch(function($error){
+
+                // Sign-out had problems.
+                return $callback($error.message, null);
+            });
+        },
+
+        /**
          * Makes a GET request to the Firebase Real Time database.
          *
          * @important - if data arrived is null, the function returns null
@@ -318,6 +341,11 @@ const FirebaseEngine = (function(){
         login($email, $password){
 
             Logic.login($email, $password);
+        },
+
+        logout($callback){
+
+            Logic.logout($callback);
         }
 	}
 })();
