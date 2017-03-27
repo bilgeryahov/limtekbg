@@ -19,6 +19,12 @@ const AministrationController = (function () {
         _inputEmail: {},
         _inputPassword: {},
 
+        /**
+         * Initializes the main functionality.
+         *
+         * @return void
+         */
+
         init(){
 
             const $self = this;
@@ -84,6 +90,23 @@ const AministrationController = (function () {
                     // TODO: Tell the user that something is wrong with the credential entered.
                 }
             });
+
+            /*
+             * At first there is a need to check
+             * if there is a user present. We do
+             * this in order to make sure that the
+             * right things are shown on the page.
+             */
+
+            FirebaseEngine.getCurrentUserFlag().addEvent('present', function(){
+
+                $self.displayContent();
+            });
+
+            FirebaseEngine.getCurrentUserFlag().addEvent('not_present', function(){
+
+                $self.displayLoginForm();
+            });
         },
 
         /**
@@ -113,36 +136,80 @@ const AministrationController = (function () {
         },
 
         /**
+         * Usually called after loging in.
+         * Handles if the login was successful or not.
          *
+         * @return void
          */
 
         setAcceptingStatus(){
 
             const $self = this;
 
-            $self._loader.style.display = 'block';
-            $self._loginForm.style.display = 'none';
-            $self._pageContent.style.display = 'none';
+            // First display me the loader.
+            $self.displayLoader();
 
             FirebaseEngine.getCurrentUserFlag().addEvent('present', function(){
 
                // User is logged in!
-                alert(FirebaseEngine.getCurrentUser().email);
-
-                $self._pageContent.style.display = 'block';
-                $self._loader.style.display = 'none';
-                $self._loginForm.style.display = 'none';
+                $self.displayContent();
             });
 
             FirebaseEngine.getLoginErrorFlag().addEvent('present', function(){
 
-               // Problem while logging in!
+                // Problem while logging in!
+                // TODO: Find a way to properly display error messages in the future.
                 alert(FirebaseEngine.getLoginError().message);
-
-                $self._loginForm.style.display = 'block';
-                $self._loader.style.display = 'none';
-                $self._pageContent.style.display = 'none';
+                $self.displayLoginForm();
             });
+        },
+
+        /**
+         * Displays the Login Form, making sure
+         * that everything else is hidden on the page.
+         *
+         * @return void
+         */
+
+        displayLoginForm(){
+
+            const $self = this;
+
+            $self._loginForm.style.display = 'block';
+            $self._loader.style.display = 'none';
+            $self._pageContent.style.display = 'none';
+        },
+
+        /**
+         * Displays the page content, making sure
+         * that everything else is hidden on the page.
+         *
+         * @return void
+         */
+
+        displayContent(){
+
+            const $self = this;
+
+            $self._pageContent.style.display = 'block';
+            $self._loader.style.display = 'none';
+            $self._loginForm.style.display = 'none';
+        },
+
+        /**
+         * Displays the loader, making sure
+         * that everything else is hidden on the page.
+         *
+         * @return void
+         */
+
+        displayLoader(){
+
+            const $self = this;
+
+            $self._loader.style.display = 'block';
+            $self._loginForm.style.display = 'none';
+            $self._pageContent.style.display = 'none';
         }
     };
 
