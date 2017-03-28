@@ -16,6 +16,7 @@ const run_sequence = require('run-sequence');
 const replace = require('gulp-replace');
 const exec = require('child_process').exec;
 const cofigFileLimtek = require('./configFileLimtek.json');
+const clean  = require('gulp-clean');
 
 // Compile JS ES6 to JS ES5.
 gulp.task('compile_javascript',  function(){
@@ -31,6 +32,13 @@ gulp.task('compile_css', function(){
 	return gulp.src('./SCSS/*scss')
 		.pipe(sass().on('error', sass.logError))
 		.pipe(gulp.dest('./Deploy/CSS/'));
+});
+
+// Clean the folder.
+gulp.task('clean_content', function(){
+
+    return gulp.src('./Deploy/', {read : false})
+        .pipe(clean());
 });
 
 // Copy static files.
@@ -89,11 +97,11 @@ gulp.task('firebase_deploy', function(){
 // Deploy locally.
 gulp.task('deploy_locally', function(){
 
-	return run_sequence('copy_content', 'compile_css', 'apply_development_api_key', 'compile_javascript', 'remove_development_api_key');
+	return run_sequence('clean_content', 'copy_content', 'compile_css', 'apply_development_api_key', 'compile_javascript', 'remove_development_api_key');
 });
 
 // Deploy live.
 gulp.task('deploy_live', function(){
 
-    return run_sequence('copy_content', 'compile_css', 'apply_live_api_key', 'compile_javascript', 'remove_live_api_key', 'firebase_deploy');
+    return run_sequence('clean_content', 'copy_content', 'compile_css', 'apply_live_api_key', 'compile_javascript', 'remove_live_api_key', 'firebase_deploy');
 });
