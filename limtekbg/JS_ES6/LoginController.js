@@ -1,14 +1,14 @@
 /**
- * @file AdministrationController.js
+ * @file LoginController.js
  *
- * Module, which exposes administrative rights.
+ * Module, which exposes login controls.
  *
  * @author Bilger Yahov <bayahov1@gmail.com>
  * @version 1.0.0
  * @copyright © 2017 Bilger Yahov, all rights reserved.
  */
 
-const AministrationController = (function () {
+const LoginController = (function () {
 
     const Logic = {
 
@@ -35,14 +35,14 @@ const AministrationController = (function () {
             const $self = this;
             if(!FirebaseEngine){
 
-                console.error('AdministrationController.init() FirebaseEngine is not present!');
+                console.error('LoginController.init() FirebaseEngine is not present!');
                 return;
             }
 
             $self._loader = $('Loader');
             if(!$self._loader){
 
-                console.error('AdministrationController.init(): Loader is not found!');
+                console.error('LoginController.init(): Loader is not found!');
                 return;
             }
 
@@ -97,14 +97,14 @@ const AministrationController = (function () {
 
             if(!$self._pageContent){
 
-                console.error('AdministrationController.getPageContentElements(): Content is not found!');
+                console.error('LoginController.getPageContentElements(): Content is not found!');
                 return false;
             }
 
             $self._logoutButton = $('LogoutButton');
             if(!$self._logoutButton){
 
-                console.error('AdministrationController.getPageContentElements(): LogoutButton is not found!');
+                console.error('LoginController.getPageContentElements(): LogoutButton is not found!');
                 return false;
             }
 
@@ -125,28 +125,28 @@ const AministrationController = (function () {
             $self._loginForm = $('LoginForm');
             if(!$self._loginForm){
 
-                console.error('AdministrationController.getLoginFormElements(): LoginForm is not found!');
+                console.error('LoginController.getLoginFormElements(): LoginForm is not found!');
                 return false;
             }
 
             $self._loginButton = $('LoginButton');
             if(!$self._loginButton){
 
-                console.error('AdministrationController.getLoginFormElements(): LoginButton is missing!');
+                console.error('LoginController.getLoginFormElements(): LoginButton is missing!');
                 return false;
             }
 
             $self._inputEmail = $('InputEmail');
             if(!$self._inputEmail){
 
-                console.error('AdministrationController.getLoginFormElements(): InputEmail is missing!');
+                console.error('LoginController.getLoginFormElements(): InputEmail is missing!');
                 return false;
             }
 
             $self._inputPassword = $('InputPassword');
             if(!$self._inputPassword){
 
-                console.error('AdministrationController.getLoginFormElements(): InputPassword is missing!');
+                console.error('LoginController.getLoginFormElements(): InputPassword is missing!');
                 return false;
             }
 
@@ -267,7 +267,7 @@ const AministrationController = (function () {
 
             if($error){
 
-                console.error('AdministrationController.handleLogout(): ' + $error);
+                console.error('LoginController.handleLogout(): ' + $error);
                 alert($error);
                 // TODO: Find a way to tell the user that there was a problem while loging out.
                 return;
@@ -364,5 +364,5 @@ const AministrationController = (function () {
 
 document.addEvent('domready', function(){
 
-    AministrationController.init();
+    LoginController.init();
 });
