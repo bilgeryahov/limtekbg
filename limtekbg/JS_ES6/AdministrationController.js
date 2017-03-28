@@ -300,6 +300,7 @@ const AministrationController = (function () {
             else{
 
                 // TODO: Tell the user that something is wrong with the credential entered.
+                alert('Wrong credentials!');
             }
         },
 
