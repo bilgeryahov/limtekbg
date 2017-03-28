@@ -60,7 +60,7 @@ const LoginController = (function () {
             FirebaseEngine.getCurrentUserFlag().removeEvents('present');
             FirebaseEngine.getCurrentUserFlag().addEvent('present', function(){
 
-                // TODO: Redirect
+                window.location.replace('./administration.html');
             });
 
             FirebaseEngine.getCurrentUserFlag().removeEvents('not_present');
@@ -181,7 +181,7 @@ const LoginController = (function () {
             FirebaseEngine.getCurrentUserFlag().removeEvents('present');
             FirebaseEngine.getCurrentUserFlag().addEvent('present', function(){
 
-                // TODO: Redirect
+                window.location.replace('./administration.html');
             });
 
             FirebaseEngine.getLoginErrorFlag().removeEvents('present');
