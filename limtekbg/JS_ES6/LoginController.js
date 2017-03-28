@@ -60,6 +60,7 @@ const LoginController = (function () {
             FirebaseEngine.getCurrentUserFlag().removeEvents('present');
             FirebaseEngine.getCurrentUserFlag().addEvent('present', function(){
 
+                console.log('LoginController#CurrentUserFlag: User is here, redirecting....');
                 window.location.replace('./administration.html');
             });
 
@@ -181,6 +182,7 @@ const LoginController = (function () {
             FirebaseEngine.getCurrentUserFlag().removeEvents('present');
             FirebaseEngine.getCurrentUserFlag().addEvent('present', function(){
 
+                console.log('LoginController#CurrentUserFlag: User is here, redirecting....');
                 window.location.replace('./administration.html');
             });
 
@@ -188,7 +190,7 @@ const LoginController = (function () {
             FirebaseEngine.getLoginErrorFlag().addEvent('present', function(){
 
                 // Problem while logging in!
-                console.error('#LoginErrorFlag: ' + FirebaseEngine.getLoginError());
+                console.error('LoginController#LoginErrorFlag: ' + FirebaseEngine.getLoginError());
                 alert(FirebaseEngine.getLoginError());
                 $self.displayLoginForm();
             });
@@ -259,5 +261,6 @@ const LoginController = (function () {
 
 document.addEvent('domready', function(){
 
+    // Initialize the main functionality.
     LoginController.init();
 });
