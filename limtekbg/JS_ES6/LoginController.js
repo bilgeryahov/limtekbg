@@ -14,10 +14,6 @@ const LoginController = (function () {
 
         _loader: {},
 
-        // Page content elements.
-        _pageContent: {},
-        _logoutButton: {},
-
         // Login form elements
         _loginForm: {},
         _inputEmail: {},
@@ -46,11 +42,6 @@ const LoginController = (function () {
                 return;
             }
 
-            if(!$self.getPageContentElements()){
-
-                return;
-            }
-
             if(!$self.getLoginFormElements()){
 
                 return;
@@ -58,9 +49,6 @@ const LoginController = (function () {
 
             // Attach the Login Form element events.
             $self.attachLoginFormElementEvents();
-
-            // Attach the Page Content element events.
-            $self.attachPageContentElementEvents();
 
             /*
              * At first there is a need to check
@@ -72,7 +60,7 @@ const LoginController = (function () {
             FirebaseEngine.getCurrentUserFlag().removeEvents('present');
             FirebaseEngine.getCurrentUserFlag().addEvent('present', function(){
 
-                $self.displayContent();
+                // TODO: Redirect
             });
 
             FirebaseEngine.getCurrentUserFlag().removeEvents('not_present');
@@ -80,35 +68,6 @@ const LoginController = (function () {
 
                 $self.displayLoginForm();
             });
-        },
-
-        /**
-         * Gets the elements for the page content from the DOM.
-         * If something goes wrong, false is returned. Otherwise true.
-         *
-         * @return {boolean}
-         */
-
-        getPageContentElements(){
-
-            const $self = this;
-
-            $self._pageContent = $('Content');
-
-            if(!$self._pageContent){
-
-                console.error('LoginController.getPageContentElements(): Content is not found!');
-                return false;
-            }
-
-            $self._logoutButton = $('LogoutButton');
-            if(!$self._logoutButton){
-
-                console.error('LoginController.getPageContentElements(): LogoutButton is not found!');
-                return false;
-            }
-
-            return true;
         },
 
         /**
@@ -151,25 +110,6 @@ const LoginController = (function () {
             }
 
             return true;
-        },
-
-        /**
-         * Attaches the corresponding events to the page content elements.
-         *
-         * @return void
-         */
-
-        attachPageContentElementEvents(){
-
-            const $self = this;
-
-            $self._logoutButton.addEvent('click', function(){
-
-               FirebaseEngine.logout(function($error, $success){
-
-                   return $self.handleLogout($error, $success);
-               });
-            });
         },
 
         /**
@@ -241,7 +181,7 @@ const LoginController = (function () {
             FirebaseEngine.getCurrentUserFlag().removeEvents('present');
             FirebaseEngine.getCurrentUserFlag().addEvent('present', function(){
 
-                $self.displayContent();
+                // TODO: Redirect
             });
 
             FirebaseEngine.getLoginErrorFlag().removeEvents('present');
@@ -252,31 +192,6 @@ const LoginController = (function () {
                 alert(FirebaseEngine.getLoginError());
                 $self.displayLoginForm();
             });
-        },
-
-        /**
-         * Handles the loging out.
-         *
-         * @param $error
-         * @param $success
-         *
-         * return void
-         */
-
-        handleLogout($error, $success){
-
-            if($error){
-
-                console.error('LoginController.handleLogout(): ' + $error);
-                alert($error);
-                return;
-            }
-
-            if($success){
-
-                // Log out was successful.
-                console.log('LoginController.handleLogout(): logout was successful.');
-            }
         },
 
         /**
@@ -315,23 +230,6 @@ const LoginController = (function () {
 
             $self._loginForm.style.display = 'block';
             $self._loader.style.display = 'none';
-            $self._pageContent.style.display = 'none';
-        },
-
-        /**
-         * Displays the page content, making sure
-         * that everything else is hidden on the page.
-         *
-         * @return void
-         */
-
-        displayContent(){
-
-            const $self = this;
-
-            $self._pageContent.style.display = 'block';
-            $self._loader.style.display = 'none';
-            $self._loginForm.style.display = 'none';
         },
 
         /**
@@ -347,7 +245,6 @@ const LoginController = (function () {
 
             $self._loader.style.display = 'block';
             $self._loginForm.style.display = 'none';
-            $self._pageContent.style.display = 'none';
         }
     };
 
