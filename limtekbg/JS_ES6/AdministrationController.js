@@ -229,6 +229,15 @@ const AministrationController = (function () {
             // First display me the loader.
             $self.displayLoader();
 
+            /*
+             * Usually after login is fired two things can happen.
+             * Either the (admin) user will get logged in or an
+             * error will occur. Since at first there is no user present,
+             * getCurrentUserFlag will be fired for 'present' if the admin comes.
+             * Otherwise, if something goes wrong while logging in, getLoginErrorFlag will
+             * be fired for an error 'present'.
+             */
+
             FirebaseEngine.getCurrentUserFlag().removeEvents('present');
             FirebaseEngine.getCurrentUserFlag().addEvent('present', function(){
 
@@ -240,7 +249,7 @@ const AministrationController = (function () {
 
                 // Problem while logging in!
                 // TODO: Find a way to properly display error messages in the future.
-                alert(FirebaseEngine.getLoginError().message);
+                alert(FirebaseEngine.getLoginError());
                 $self.displayLoginForm();
             });
         },

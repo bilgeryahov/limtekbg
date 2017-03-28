@@ -142,7 +142,7 @@ const FirebaseEngine = (function(){
 
                     if($error){
 
-                        $self._loginError = $error;
+                        $self._loginError = $error.message;
                         $self._loginErrorFlag.fireEvent('present');
                     }
                 });
