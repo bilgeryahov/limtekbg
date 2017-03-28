@@ -248,7 +248,7 @@ const LoginController = (function () {
             FirebaseEngine.getLoginErrorFlag().addEvent('present', function(){
 
                 // Problem while logging in!
-                // TODO: Find a way to properly display error messages in the future.
+                console.error('#LoginErrorFlag: ' + FirebaseEngine.getLoginError());
                 alert(FirebaseEngine.getLoginError());
                 $self.displayLoginForm();
             });
@@ -269,15 +269,13 @@ const LoginController = (function () {
 
                 console.error('LoginController.handleLogout(): ' + $error);
                 alert($error);
-                // TODO: Find a way to tell the user that there was a problem while loging out.
                 return;
             }
 
             if($success){
 
                 // Log out was successful.
-                // TODO: implement.
-                alert('Logout successful!');
+                console.log('LoginController.handleLogout(): logout was successful.');
             }
         },
 
@@ -299,8 +297,8 @@ const LoginController = (function () {
             }
             else{
 
-                // TODO: Tell the user that something is wrong with the credential entered.
-                alert('Wrong credentials!');
+                console.log($validation);
+                alert($validation);
             }
         },
 
