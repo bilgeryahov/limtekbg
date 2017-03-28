@@ -13,11 +13,16 @@ const AministrationController = (function () {
     const Logic = {
 
         _loader: {},
-        _pageContent: {},
-        _loginForm: {},
 
+        // Page content elements.
+        _pageContent: {},
+        _logoutButton: {},
+
+        // Login form elements
+        _loginForm: {},
         _inputEmail: {},
         _inputPassword: {},
+        _loginButton: {},
 
         /**
          * Initializes the main functionality.
@@ -41,55 +46,21 @@ const AministrationController = (function () {
                 return;
             }
 
-            $self._pageContent = $('Content');
-            if(!$self._pageContent){
+            if(!$self.getPageContentElements()){
 
-                console.error('AdministrationController.init(): Content is not found!');
                 return;
             }
 
-            $self._loginForm = $('LoginForm');
-            if(!$self._loginForm){
+            if(!$self.getLoginFormElements()){
 
-                console.error('AdministrationController.init(): LoginForm is not found!');
                 return;
             }
 
-            let $loginButton = $('LoginButton');
-            if(!$loginButton){
+            // Attach the Login Form element events.
+            $self.attachLoginFormElementEvents();
 
-                console.error('AdministrationController.init(): LoginButton is missing!');
-                return;
-            }
-
-            $self._inputEmail = $('InputEmail');
-            if(!$self._inputEmail){
-
-                console.error('AdministrationController.init(): InputEmail is missing!');
-                return;
-            }
-
-            $self._inputPassword = $('InputPassword');
-            if(!$self._inputPassword){
-
-                console.error('AdministrationController.init(): InputPassword is missing!');
-                return;
-            }
-
-            // Good to go.
-            $loginButton.addEvent('click', function(){
-
-                let $validation = $self.validateLoginInputs();
-                if($validation === 'Everything okay'){
-
-                    FirebaseEngine.login($self._inputEmail.value, $self._inputPassword.value);
-                    $self.setAcceptingStatus();
-                }
-                else{
-
-                    // TODO: Tell the user that something is wrong with the credential entered.
-                }
-            });
+            // Attach the Page Content element events.
+            $self.attachPageContentElementEvents();
 
             /*
              * At first there is a need to check
@@ -98,14 +69,123 @@ const AministrationController = (function () {
              * right things are shown on the page.
              */
 
+            FirebaseEngine.getCurrentUserFlag().removeEvents('present');
             FirebaseEngine.getCurrentUserFlag().addEvent('present', function(){
 
                 $self.displayContent();
             });
 
+            FirebaseEngine.getCurrentUserFlag().removeEvents('not_present');
             FirebaseEngine.getCurrentUserFlag().addEvent('not_present', function(){
 
                 $self.displayLoginForm();
+            });
+        },
+
+        /**
+         * Gets the elements for the page content from the DOM.
+         * If something goes wrong, false is returned. Otherwise true.
+         *
+         * @return {boolean}
+         */
+
+        getPageContentElements(){
+
+            const $self = this;
+
+            $self._pageContent = $('Content');
+
+            if(!$self._pageContent){
+
+                console.error('AdministrationController.getPageContentElements(): Content is not found!');
+                return false;
+            }
+
+            $self._logoutButton = $('LogoutButton');
+            if(!$self._logoutButton){
+
+                console.error('AdministrationController.getPageContentElements(): LogoutButton is not found!');
+                return false;
+            }
+
+            return true;
+        },
+
+        /**
+         * Fetches all the Login Form elements from the DOM.
+         * If something goes wrong, false is returned. Otherwise true.
+         *
+         * @return {boolean}
+         */
+
+        getLoginFormElements(){
+
+            const $self = this;
+
+            $self._loginForm = $('LoginForm');
+            if(!$self._loginForm){
+
+                console.error('AdministrationController.getLoginFormElements(): LoginForm is not found!');
+                return false;
+            }
+
+            $self._loginButton = $('LoginButton');
+            if(!$self._loginButton){
+
+                console.error('AdministrationController.getLoginFormElements(): LoginButton is missing!');
+                return false;
+            }
+
+            $self._inputEmail = $('InputEmail');
+            if(!$self._inputEmail){
+
+                console.error('AdministrationController.getLoginFormElements(): InputEmail is missing!');
+                return false;
+            }
+
+            $self._inputPassword = $('InputPassword');
+            if(!$self._inputPassword){
+
+                console.error('AdministrationController.getLoginFormElements(): InputPassword is missing!');
+                return false;
+            }
+
+            return true;
+        },
+
+        /**
+         * Attaches the corresponding events to the page content elements.
+         *
+         * @return void
+         */
+
+        attachPageContentElementEvents(){
+
+            const $self = this;
+
+            $self._logoutButton.addEvent('click', function(){
+
+               FirebaseEngine.logout(function($error, $success){
+
+                   return $self.handleLogout($error, $success);
+               });
+            });
+        },
+
+        /**
+         * Attaches the corresponding events to the login form elements.
+         *
+         * @return void
+         */
+
+        attachLoginFormElementEvents(){
+
+            const $self = this;
+
+            // Good to go.
+            $self._loginButton.addEvent('click', function(){
+
+                $self.attemptLogin();
             });
         },
 
@@ -149,12 +229,13 @@ const AministrationController = (function () {
             // First display me the loader.
             $self.displayLoader();
 
+            FirebaseEngine.getCurrentUserFlag().removeEvents('present');
             FirebaseEngine.getCurrentUserFlag().addEvent('present', function(){
 
-               // User is logged in!
                 $self.displayContent();
             });
 
+            FirebaseEngine.getLoginErrorFlag().removeEvents('present');
             FirebaseEngine.getLoginErrorFlag().addEvent('present', function(){
 
                 // Problem while logging in!
@@ -162,6 +243,55 @@ const AministrationController = (function () {
                 alert(FirebaseEngine.getLoginError().message);
                 $self.displayLoginForm();
             });
+        },
+
+        /**
+         * Handles the loging out.
+         *
+         * @param $error
+         * @param $success
+         *
+         * return void
+         */
+
+        handleLogout($error, $success){
+
+            if($error){
+
+                console.error('AdministrationController.handleLogout(): ' + $error);
+                alert($error);
+                // TODO: Find a way to tell the user that there was a problem while loging out.
+                return;
+            }
+
+            if($success){
+
+                // Log out was successful.
+                // TODO: implement.
+                alert('Logout successful!');
+            }
+        },
+
+        /**
+         * Starts the login process.
+         *
+         * @return void
+         */
+
+        attemptLogin(){
+
+            const $self = this;
+
+            let $validation = $self.validateLoginInputs();
+            if($validation === 'Everything okay'){
+
+                FirebaseEngine.login($self._inputEmail.value, $self._inputPassword.value);
+                $self.setAcceptingStatus();
+            }
+            else{
+
+                // TODO: Tell the user that something is wrong with the credential entered.
+            }
         },
 
         /**
