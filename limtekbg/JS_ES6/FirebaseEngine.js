@@ -185,12 +185,8 @@ const FirebaseEngine = (function(){
                 }
                 else{
 
-                    let ret = $observer.toString();
-                    ret = ret.substr('function '.length);
-                    ret = ret.substr(0, ret.indexOf('('));
-
                     console.log('FirebaseEngine.updateAuthObservers(): ' +
-                        ret + ' does not have the getAuthUpdate() method!');
+                        $observer + ' does not have the getAuthUpdate() method!');
                 }
             });
         },
