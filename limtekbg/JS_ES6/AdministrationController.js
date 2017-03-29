@@ -37,29 +37,41 @@ const AdministrationController = (function () {
                 return;
             }
 
-            FirebaseEngine.getCurrentUserFlag().removeEvents('present');
-            FirebaseEngine.getCurrentUserFlag().addEvent('present', function(){
+            // Add me as an observer for Auth.
+            FirebaseEngine.addAuthObserver(AdministrationController);
 
-                // TODO: User is here
-                console.log('AdministrationController#CurrentUserFlag: user is here ' + FirebaseEngine.getCurrentUser().email);
-            });
-
-            FirebaseEngine.getCurrentUserFlag().removeEvents('not_present');
-            FirebaseEngine.getCurrentUserFlag().addEvent('not_present', function(){
-
-                console.log('AdministrationController#CurrentUserFlag: User is not here, redirecting...');
-                window.location.replace('./login.html');
-            });
-
-            /*
-             * Make sure that attaching the events to the DOM elements
-             * comes actually after attaching the USER presence events.
-             * Since you better not click the Logout Button before
-             * the program knows what to do :P
-             */
+            // Always attach page element events after the observer is set. So
+            // the app knows what to do in each state.
 
             // After you successfully get the page elements, try to attach their events.
             $self.attachPageElementsEvents();
+        },
+
+        /**
+         * Get an Auth update.
+         *
+         * @param $update
+         *
+         * @return void
+         */
+
+        getAuthUpdate($update){
+
+            if($update === 'USER 1'){
+
+                // TODO: User is here
+                console.log('AdministrationController#CurrentUserFlag: user is here ' + FirebaseEngine.getCurrentUser().email);
+            }
+            else if($update === 'USER 0'){
+
+                // The user just logged out.
+                console.log('AdministrationController#CurrentUserFlag: User is not here, redirecting...');
+                window.location.replace('./login.html');
+            }
+            else if($update === 'ERROR 1'){
+
+                // An error happended.
+            }
         },
 
         /**
@@ -139,6 +151,11 @@ const AdministrationController = (function () {
         init(){
 
             Logic.init();
+        },
+
+        getAuthUpdate($update){
+
+            Logic.getAuthUpdate($update)
         }
     }
 })();
