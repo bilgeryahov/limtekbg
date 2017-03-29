@@ -50,28 +50,28 @@ gulp.task('copy_content', function(){
 
 gulp.task('apply_development_api_key', function(){
 
-	return gulp.src('./JS_ES6/FirebaseEngine.js', {base: './'})
+	return gulp.src('./Deploy/JS/FirebaseEngine.js', {base: './'})
 		.pipe(replace(cofigFileLimtek.api_key_default, cofigFileLimtek.api_key_development))
 		.pipe(gulp.dest('./'));
 });
 
 gulp.task('remove_development_api_key', function(){
 
-    return gulp.src('./JS_ES6/FirebaseEngine.js', {base: './'})
+    return gulp.src('./Deploy/JS/FirebaseEngine.js', {base: './'})
         .pipe(replace(cofigFileLimtek.api_key_development, cofigFileLimtek.api_key_default))
         .pipe(gulp.dest('./'));
 });
 
 gulp.task('apply_live_api_key', function(){
 
-    return gulp.src('./JS_ES6/FirebaseEngine.js', {base: './'})
+    return gulp.src('./Deploy/JS/FirebaseEngine.js', {base: './'})
         .pipe(replace(cofigFileLimtek.api_key_default, cofigFileLimtek.api_key_live))
         .pipe(gulp.dest('./'));
 });
 
 gulp.task('remove_live_api_key', function(){
 
-    return gulp.src('./JS_ES6/FirebaseEngine.js', {base: './'})
+    return gulp.src('./Deploy/JS/FirebaseEngine.js', {base: './'})
         .pipe(replace(cofigFileLimtek.api_key_live, cofigFileLimtek.api_key_default))
         .pipe(gulp.dest('./'));
 });
@@ -90,18 +90,18 @@ gulp.task('firebase_deploy', function(){
 		console.log(stdout);
 		console.log(stderr);
 
-		return run_sequence('apply_development_api_key', 'compile_javascript', 'remove_development_api_key');
+		return run_sequence('remove_live_api_key', 'apply_development_api_key');
     });
 });
 
 // Deploy locally.
 gulp.task('deploy_locally', function(){
 
-	return run_sequence('clean_content', 'copy_content', 'compile_css', 'apply_development_api_key', 'compile_javascript', 'remove_development_api_key');
+	return run_sequence('clean_content', 'copy_content', 'compile_css', 'compile_javascript', 'apply_development_api_key');
 });
 
 // Deploy live.
 gulp.task('deploy_live', function(){
 
-    return run_sequence('clean_content', 'copy_content', 'compile_css', 'apply_live_api_key', 'compile_javascript', 'remove_live_api_key', 'firebase_deploy');
+    return run_sequence('clean_content', 'copy_content', 'compile_css', 'compile_javascript', 'apply_live_api_key', 'firebase_deploy');
 });
