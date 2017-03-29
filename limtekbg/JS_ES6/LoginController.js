@@ -20,6 +20,9 @@ const LoginController = (function () {
         _inputPassword: {},
         _loginButton: {},
 
+        // LoginController's Auth Observer
+        _authObserver: {},
+
         /**
          * Initializes the main functionality.
          *
@@ -47,44 +50,38 @@ const LoginController = (function () {
                 return;
             }
 
-            // Add me as an observer for Auth.
-            FirebaseEngine.addAuthObserver(LoginController);
+            // Create a new Observer for the Auth state.
+            $self._authObserver = new Observer();
+
+            // Set-up my Auth update settings.
+            $self._authObserver.getUpdate = function($update){
+
+                if($update === 'USER 1'){
+
+                    console.log('LoginController: User is here, redirecting....');
+                    window.location.replace('./administration.html');
+                }
+                else if($update === 'USER 0'){
+
+                    $self.displayLoginForm();
+                }
+                else if($update === 'ERROR 1'){
+
+                    // Problem while logging in!
+                    console.error('LoginController: ' + FirebaseEngine.getLoginError());
+                    alert(FirebaseEngine.getLoginError());
+                    $self.displayLoginForm();
+                }
+            };
+
+            // Add my Auth Observer as an observer to FirebaseEngine's ObserverManager.
+            FirebaseEngine.getAuthObserverManager().addObserver($self._authObserver);
 
             // Always attach page element events after the observer is set. So
             // the app knows what to do in each state.
 
             // Attach the Login Form element events.
             $self.attachLoginFormElementEvents();
-        },
-
-        /**
-         * Get an Auth update.
-         *
-         * @param $update
-         *
-         * @return void
-         */
-
-        getAuthUpdate($update){
-
-            const $self = this;
-
-            if($update === 'USER 1'){
-
-                console.log('LoginController#CurrentUserFlag: User is here, redirecting....');
-                window.location.replace('./administration.html');
-            }
-            else if($update === 'USER 0'){
-
-                $self.displayLoginForm();
-            }
-            else if($update === 'ERROR 1'){
-
-                // Problem while logging in!
-                console.error('LoginController#LoginErrorFlag: ' + FirebaseEngine.getLoginError());
-                alert(FirebaseEngine.getLoginError());
-                $self.displayLoginForm();
-            }
         },
 
         /**
@@ -231,11 +228,6 @@ const LoginController = (function () {
         init(){
 
             Logic.init();
-        },
-
-        getAuthUpdate($update){
-
-            Logic.getAuthUpdate($update);
         }
     }
 })();
