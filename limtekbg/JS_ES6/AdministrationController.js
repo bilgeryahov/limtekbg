@@ -16,6 +16,9 @@ const AdministrationController = (function () {
         _pageContent: {},
         _logoutButton: {},
 
+        // AdministrationController's Auth Observer
+        _authObserver: {},
+
         /**
          * Initializes the main functionality.
          *
@@ -37,41 +40,37 @@ const AdministrationController = (function () {
                 return;
             }
 
-            // Add me as an observer for Auth.
-            FirebaseEngine.addAuthObserver(AdministrationController);
+            // Create a new Observer for the Auth state.
+            $self._authObserver = new Observer();
+
+            // Set-up my Auth update settings.
+            $self._authObserver.getUpdate = function($update){
+
+                if($update === 'USER 1'){
+
+                    // TODO: User is here
+                    console.log('AdministrationController: user is here ' + FirebaseEngine.getCurrentUser().email);
+                }
+                else if($update === 'USER 0'){
+
+                    // The user just logged out.
+                    console.log('AdministrationController: User is not here, redirecting...');
+                    window.location.replace('./login.html');
+                }
+                else if($update === 'ERROR 1'){
+
+                    // An error happended.
+                }
+            };
+
+            // Add my Auth Observer as an observer to FirebaseEngine's ObserverManager.
+            FirebaseEngine.getAuthObserverManager().addObserver($self._authObserver);
 
             // Always attach page element events after the observer is set. So
             // the app knows what to do in each state.
 
             // After you successfully get the page elements, try to attach their events.
             $self.attachPageElementsEvents();
-        },
-
-        /**
-         * Get an Auth update.
-         *
-         * @param $update
-         *
-         * @return void
-         */
-
-        getAuthUpdate($update){
-
-            if($update === 'USER 1'){
-
-                // TODO: User is here
-                console.log('AdministrationController#CurrentUserFlag: user is here ' + FirebaseEngine.getCurrentUser().email);
-            }
-            else if($update === 'USER 0'){
-
-                // The user just logged out.
-                console.log('AdministrationController#CurrentUserFlag: User is not here, redirecting...');
-                window.location.replace('./login.html');
-            }
-            else if($update === 'ERROR 1'){
-
-                // An error happended.
-            }
         },
 
         /**
@@ -151,11 +150,6 @@ const AdministrationController = (function () {
         init(){
 
             Logic.init();
-        },
-
-        getAuthUpdate($update){
-
-            Logic.getAuthUpdate($update)
         }
     }
 })();
