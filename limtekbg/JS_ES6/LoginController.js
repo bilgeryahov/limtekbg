@@ -47,46 +47,44 @@ const LoginController = (function () {
                 return;
             }
 
-            /*
-             * Usually after login is fired two things can happen.
-             * Either the (admin) user will get logged in or an
-             * error will occur. Since at first there is no user present,
-             * getCurrentUserFlag will be fired for 'present' if the admin comes.
-             * Otherwise, if something goes wrong while logging in, getLoginErrorFlag will
-             * be fired for an error 'present'.
-             */
+            // Add me as an observer for Auth.
+            FirebaseEngine.addAuthObserver(LoginController);
 
-            FirebaseEngine.getCurrentUserFlag().removeEvents('present');
-            FirebaseEngine.getCurrentUserFlag().addEvent('present', function(){
+            // Always attach page element events after the observer is set. So
+            // the app knows what to do in each state.
+
+            // Attach the Login Form element events.
+            $self.attachLoginFormElementEvents();
+        },
+
+        /**
+         * Get an Auth update.
+         *
+         * @param $update
+         *
+         * @return void
+         */
+
+        getAuthUpdate($update){
+
+            const $self = this;
+
+            if($update === 'USER 1'){
 
                 console.log('LoginController#CurrentUserFlag: User is here, redirecting....');
                 window.location.replace('./administration.html');
-            });
-
-            FirebaseEngine.getCurrentUserFlag().removeEvents('not_present');
-            FirebaseEngine.getCurrentUserFlag().addEvent('not_present', function(){
+            }
+            else if($update === 'USER 0'){
 
                 $self.displayLoginForm();
-            });
-
-            FirebaseEngine.getLoginErrorFlag().removeEvents('present');
-            FirebaseEngine.getLoginErrorFlag().addEvent('present', function(){
+            }
+            else if($update === 'ERROR 1'){
 
                 // Problem while logging in!
                 console.error('LoginController#LoginErrorFlag: ' + FirebaseEngine.getLoginError());
                 alert(FirebaseEngine.getLoginError());
                 $self.displayLoginForm();
-            });
-
-            /*
-             * Make sure that attaching the events to the DOM elements
-             * comes actually after attaching the USER presence events.
-             * Since you better not click the Login Button before
-             * the program knows what to do :P
-             */
-
-            // Attach the Login Form element events.
-            $self.attachLoginFormElementEvents();
+            }
         },
 
         /**
@@ -233,6 +231,11 @@ const LoginController = (function () {
         init(){
 
             Logic.init();
+        },
+
+        getAuthUpdate($update){
+
+            Logic.getAuthUpdate($update);
         }
     }
 })();
