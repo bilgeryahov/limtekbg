@@ -26,8 +26,8 @@ const FirebaseEngine = (function(){
         _currentUser: null,
         _loginError: null,
 
-        // List of Auth observers.
-        _authObservers: [],
+        // Auth ObserverManager of FirebaseEngine.
+        _authObserverManager: {},
 
         /**
          * Initializes the Firebase engine.
@@ -58,137 +58,44 @@ const FirebaseEngine = (function(){
             // Initialize the Auth object.
             $self._auth = firebase.auth();
 
-            // Initialize the Auth observers list.
-            $self.initializeAuthObserversList();
+            // Try to set a new Auth ObserverManager.
+            try{
+
+                $self._authObserverManager = new ObserverManager();
+            }
+            catch($error){
+
+                console.error('FirebaseEngine.init(): ' + $error);
+                return;
+            }
+
+            $self._authObserverManager.clearObservers();
 
             $self._auth.onAuthStateChanged(function($currentUser){
 
                 if($currentUser){
 
                     $self._currentUser = $currentUser;
-                    $self.updateAuthObservers('USER 1');
+                    $self._authObserverManager.updateObservers('USER 1');
                 }
                 else{
 
                     $self._currentUser = null;
-                    $self.updateAuthObservers('USER 0');
+                    $self._authObserverManager.updateObservers('USER 0');
                 }
             });
         },
 
         /**
-         * Initialize the Auth observers list.
+         * Gets the Auth ObserverManager of FirebaseEngine.
          *
-         * @return void
+         * @return {Logic._authObserverManager|{}}
          */
 
-        initializeAuthObserversList(){
-            const $self = this;
-
-            $self._authObservers = [];
-        },
-
-        /**
-         * Add an Auth observer.
-         *
-         * @param $observer
-         *
-         * @return void
-         */
-
-        addAuthObserver($observer){
+        getAuthObserverManager(){
 
             const $self = this;
-            $self._authObservers.push($observer);
-        },
-
-        /**
-         * Fetch an Auth observer at a certain index.
-         * If nothing is found, null is returned.
-         *
-         * @param $index
-         *
-         * @return {*}
-         */
-
-        getAuthObserverAt($index){
-
-            const $self = this;
-            if($self._authObservers[$index] !== undefined){
-
-                return $self._authObservers[$index];
-            }
-
-            return null;
-        },
-
-        /**
-         * Fetch a particular Auth observer.
-         * If nothing is found, null is returned.
-         *
-         * @param $observer
-         *
-         * @return {null}
-         */
-
-        getAuthObserver($observer){
-
-            const $self = this;
-            $self._authObservers.forEach(function($item){
-
-                if($item === $observer){
-
-                    return $item;
-                }
-            });
-
-            return null;
-        },
-
-        /**
-         * Remove an Auth observer at a specific index.
-         *
-         * @param $index
-         *
-         * @return {boolean}
-         */
-
-        removeAuthObserverAt($index){
-
-            const $self = this;
-            if($self._authObservers[$index]){
-
-                $self._authObservers.splice($index, 1);
-                return true;
-            }
-
-            return false;
-        },
-
-        /**
-         * Updates the Auth observers for a particular update.
-         *
-         * @param $update
-         *
-         * @return void
-         */
-
-        updateAuthObservers($update){
-
-            const $self = this;
-
-            $self._authObservers.forEach(function($observer){
-
-                if($observer.getAuthUpdate){
-
-                    $observer.getAuthUpdate($update);
-                }
-                else{
-
-                    console.log('FirebaseEngine.updateAuthObservers(): ' +
-                        $observer + ' does not have the getAuthUpdate() method!');
-                }
-            });
+            return $self._authObserverManager;
         },
 
         /**
@@ -231,7 +138,7 @@ const FirebaseEngine = (function(){
                     if($error){
 
                         $self._loginError = $error.message;
-                        $self.updateAuthObservers('ERROR 1');
+                        $self._authObserverManager.updateObservers('ERROR 1');
                     }
                 });
         },
@@ -383,34 +290,9 @@ const FirebaseEngine = (function(){
 			Logic.init();
 		},
 
-        initializeAuthObserversList(){
+        getAuthObserverManager(){
 
-		    Logic.initializeAuthObserversList();
-        },
-
-        addAuthObserver($observer){
-
-            Logic.addAuthObserver($observer);
-        },
-
-        getAuthObserverAt($index){
-
-            return Logic.getAuthObserverAt($index);
-        },
-
-        getAuthObserver($observer){
-
-            return Logic.getAuthObserver($observer);
-        },
-
-        removeAuthObserverAt($index){
-
-            return Logic.removeAuthObserverAt($index);
-        },
-
-        updateAuthObservers($update){
-
-            Logic.updateAuthObservers($update);
+		    return Logic.getAuthObserverManager();
         },
 
         firebaseGET($path, $extra, $callback){
