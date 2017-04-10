@@ -35,6 +35,12 @@ const AdministrationController = (function () {
                 return;
             }
 
+            if(!TemplateProcessor){
+
+                console.error('AdministrationController.init(): TemplateProcessor is not present!');
+                return;
+            }
+
             if(!$self.getPageElements()){
 
                 return;
@@ -134,7 +140,7 @@ const AdministrationController = (function () {
             if($error){
 
                 console.error('AdministrationController.handleLogout(): ' + $error);
-                alert($error);
+                TemplateProcessor.generateCustomErrorMessage($error);
                 return;
             }
 
