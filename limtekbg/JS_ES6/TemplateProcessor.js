@@ -25,8 +25,6 @@ const TemplateProcessor = (function(){
 
        init(){
 
-           const $self = this;
-
            if(!Handlebars){
 
                console.error('TemplateProcessor.init(): Handlebars not found!');
@@ -49,8 +47,6 @@ const TemplateProcessor = (function(){
         */
 
        generateProductsForCategory($data){
-
-           const $self = this;
 
            const $productsPlaceholder = $('ProductsPlaceholder');
            const $productsTemplate = $('ProductsTemplate');
@@ -113,8 +109,6 @@ const TemplateProcessor = (function(){
 
        generateProductsTreeLoadingState(){
 
-           const $self = this;
-
            const $productCategoriesPlaceholder = $('ProductCategoriesPlaceholder');
            const $productCategoriesTemplate = $('ProductCategoriesTemplate');
 
@@ -145,8 +139,6 @@ const TemplateProcessor = (function(){
         */
 
        generateProductsTree($data, $isSubTree){
-
-           const $self = this;
 
            const $productCategoriesPlaceholder = $('ProductCategoriesPlaceholder');
            const $productCategoriesTemplate = $('ProductCategoriesTemplate');
@@ -199,8 +191,6 @@ const TemplateProcessor = (function(){
 
        generateProductImagesLoadingState(){
 
-           const $self = this;
-
            // Make the regular defensive checks.
            const $productImagesPlaceholder = $('ProductImagesPlaceholder');
            const $productImagesTemplate    = $('ProductImagesTemplate');
@@ -231,8 +221,6 @@ const TemplateProcessor = (function(){
         */
 
        generateProductImages($data){
-
-           const $self = this;
 
            // Make the regular defensive checks.
            const $productImagesPlaceholder = $('ProductImagesPlaceholder');
@@ -287,6 +275,34 @@ const TemplateProcessor = (function(){
 
            // Pass the newly created object
            $productImagesPlaceholder.set('html', $compiled({images: $holdURLs}));
+       },
+
+       /**
+        * Generates a custom error message alert.
+        *
+        * @param $message
+        *
+        * @return void
+        */
+
+       generateCustomErrorMessage($message){
+
+            const $customErrorMessageTemplate = $('CustomErrorMessageTemplate');
+            const $customErrorMessagePlaceholder = $('CustomErrorMessagePlaceholder');
+
+            if(!$customErrorMessagePlaceholder || !$customErrorMessageTemplate){
+
+                console.error('TemplateProcessor.generateCustromErrorMessage(): CustomErrorMessagePlaceholder' +
+                    ' or CustomErrorMessageTemplate is missing!');
+
+                return;
+            }
+
+            // Show the modal.
+           CommonReusableUserInterfaceManager.enableCustomErrorMessageModal(true);
+
+            let $compiled = Handlebars.compile($customErrorMessageTemplate.get('html'));
+            $customErrorMessagePlaceholder.set('html', $compiled({message: $message}));
        }
    };
 
@@ -319,7 +335,12 @@ const TemplateProcessor = (function(){
        generateProductImages($data){
 
 		   Logic.generateProductImages($data);
-	   }
+	   },
+
+       generateCustomErrorMessage($message){
+
+           Logic.generateCustomErrorMessage($message);
+       }
    }
 })();
 
