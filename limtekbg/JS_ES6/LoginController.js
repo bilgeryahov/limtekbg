@@ -38,6 +38,12 @@ const LoginController = (function () {
                 return;
             }
 
+            if(!TemplateProcessor){
+
+                console.error('LoginController.init(): TemplateProcessor is not present!');
+                return;
+            }
+
             $self._loader = $('Loader');
             if(!$self._loader){
 
@@ -69,7 +75,7 @@ const LoginController = (function () {
 
                     // Problem while logging in!
                     console.error('LoginController: ' + FirebaseEngine.getLoginError());
-                    alert(FirebaseEngine.getLoginError());
+                    TemplateProcessor.generateCustomErrorMessage(FirebaseEngine.getLoginError());
                     $self.displayLoginForm();
                 }
             };
@@ -188,7 +194,7 @@ const LoginController = (function () {
             else{
 
                 console.log($validation);
-                alert($validation);
+                TemplateProcessor.generateCustomErrorMessage($validation);
             }
         },
 
