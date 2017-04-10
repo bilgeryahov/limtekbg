@@ -34,7 +34,8 @@ const TemplateProcessor = (function(){
            if(!ProductsPageController){
 
                console.error('TemplateProcessor.init(): ProductsPageController not found!');
-               return;
+               // Do not return, since TemplateProcessor is used at places
+               // where the ProductsPageController is not needed.
            }
        },
 
