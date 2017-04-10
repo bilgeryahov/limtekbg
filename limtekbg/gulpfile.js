@@ -84,12 +84,11 @@ gulp.task('firebase_deploy', function(){
 		if(err){
 
 			console.error(err);
-			return;
+            return run_sequence('remove_live_api_key', 'apply_development_api_key');
 		}
 
 		console.log(stdout);
 		console.log(stderr);
-
 		return run_sequence('remove_live_api_key', 'apply_development_api_key');
     });
 });
