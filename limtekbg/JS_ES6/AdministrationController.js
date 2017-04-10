@@ -54,7 +54,7 @@ const AdministrationController = (function () {
 
                 if($update === 'USER 1'){
 
-                    // TODO: User is here
+                    TemplateProcessor.generateCustomErrorMessage('User is here heyyyyoooo!!!');
                     console.log('AdministrationController: user is here ' + FirebaseEngine.getCurrentUser().email);
                 }
                 else if($update === 'USER 0'){
