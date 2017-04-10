@@ -30,13 +30,6 @@ const TemplateProcessor = (function(){
                console.error('TemplateProcessor.init(): Handlebars not found!');
                return;
            }
-
-           if(!ProductsPageController){
-
-               console.error('TemplateProcessor.init(): ProductsPageController not found!');
-               // Do not return, since TemplateProcessor is used at places
-               // where the ProductsPageController is not needed.
-           }
        },
 
        /**
