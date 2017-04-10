@@ -92,9 +92,7 @@ const ProductsLoader = (function(){
                     if($error){
 
                         console.error($error);
-
-                        // TODO: Notify the user that product categories cannot be fetched.
-
+                        TemplateProcessor.generateCustomErrorMessage('Имаше проблем със зареждането на продукти.');
                         return;
                     }
 
@@ -103,9 +101,7 @@ const ProductsLoader = (function(){
 
                         console.log('ProductsLoader.loadProducts(): No data arrived for ' +
                             $path);
-
-                        // TODO: Notify the user that product categories are not present.
-
+                        TemplateProcessor.generateCustomErrorMessage('Имаше проблем със зареждането на продукти.');
                         return;
                     }
 
@@ -357,9 +353,7 @@ const ProductsLoader = (function(){
                     if($error){
 
                         console.error($error);
-
-                        // TODO: Notify the user that products for this category cannot be fetched.
-
+                        TemplateProcessor.generateCustomErrorMessage('Имаше проблем със зареждането на продукти.');
                         return;
                     }
 
