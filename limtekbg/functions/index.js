@@ -1,8 +1,19 @@
-var functions = require('firebase-functions');
+const functions = require('firebase-functions');
 
-// // Start writing Firebase Functions
-// // https://firebase.google.com/preview/functions/write-firebase-functions
-// 
-// exports.helloWorld = functions.https().onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// })
+exports.helloWorld = functions.https.onRequest((req, res) => {
+
+    res
+        .status(200)
+        .json({
+            message:'Hello from my first function!'
+        });
+});
+
+exports.myAge = functions.https.onRequest((req, res) => {
+
+    res
+        .status(404)
+        .json({
+            message:'My age is not found mate!'
+        });
+});
