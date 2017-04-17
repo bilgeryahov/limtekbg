@@ -29,9 +29,9 @@ const AdministrationController = (function () {
 
             const $self = this;
 
-            if(!FirebaseEngine){
+            if(!FirebaseAuthenticationManager){
 
-                console.error('AdministrationController.init(): FirebaseEngine is not present!');
+                console.error('AdministrationController.init(): FirebaseAuthenticationManager is not present!');
                 return;
             }
 
@@ -55,7 +55,7 @@ const AdministrationController = (function () {
                 if($update === 'USER 1'){
 
                     TemplateProcessor.generateCustomErrorMessage('User is here heyyyyoooo!!!');
-                    console.log('AdministrationController: user is here ' + FirebaseEngine.getCurrentUser().email);
+                    console.log('AdministrationController: user is here ' + FirebaseAuthenticationManager.getCurrentUser().email);
                 }
                 else if($update === 'USER 0'){
 
@@ -69,8 +69,8 @@ const AdministrationController = (function () {
                 }
             };
 
-            // Add my Auth Observer as an observer to FirebaseEngine's ObserverManager.
-            FirebaseEngine.getAuthObserverManager().addObserver($self._authObserver);
+            // Add my Auth Observer as an observer to FirebaseAuthenticationManager's ObserverManager.
+            FirebaseAuthenticationManager.getAuthObserverManager().addObserver($self._authObserver);
 
             // Always attach page element events after the observer is set. So
             // the app knows what to do in each state.
@@ -119,7 +119,7 @@ const AdministrationController = (function () {
 
             $self._logoutButton.addEvent('click', function(){
 
-                FirebaseEngine.logout(function($error, $success){
+                FirebaseAuthenticationManager.logout(function($error, $success){
 
                     return $self.handleLogout($error, $success);
                 });

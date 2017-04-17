@@ -32,9 +32,9 @@ const LoginController = (function () {
         init(){
 
             const $self = this;
-            if(!FirebaseEngine){
+            if(!FirebaseAuthenticationManager){
 
-                console.error('LoginController.init() FirebaseEngine is not present!');
+                console.error('LoginController.init() FirebaseAuthenticationManager is not present!');
                 return;
             }
 
@@ -74,14 +74,14 @@ const LoginController = (function () {
                 else if($update === 'ERROR 1'){
 
                     // Problem while logging in!
-                    console.error('LoginController: ' + FirebaseEngine.getLoginError());
-                    TemplateProcessor.generateCustomErrorMessage(FirebaseEngine.getLoginError());
+                    console.error('LoginController: ' + FirebaseAuthenticationManager.getLoginError());
+                    TemplateProcessor.generateCustomErrorMessage(FirebaseAuthenticationManager.getLoginError());
                     $self.displayLoginForm();
                 }
             };
 
-            // Add my Auth Observer as an observer to FirebaseEngine's ObserverManager.
-            FirebaseEngine.getAuthObserverManager().addObserver($self._authObserver);
+            // Add my Auth Observer as an observer to FirebaseAuthenticationManager's ObserverManager.
+            FirebaseAuthenticationManager.getAuthObserverManager().addObserver($self._authObserver);
 
             // Always attach page element events after the observer is set. So
             // the app knows what to do in each state.
@@ -189,7 +189,7 @@ const LoginController = (function () {
             if($validation === 'Everything okay'){
 
                 $self.displayLoader();
-                FirebaseEngine.login($self._inputEmail.value, $self._inputPassword.value);
+                FirebaseAuthenticationManager.login($self._inputEmail.value, $self._inputPassword.value);
             }
             else{
 

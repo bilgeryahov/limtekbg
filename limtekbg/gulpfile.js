@@ -50,28 +50,28 @@ gulp.task('copy_content', function(){
 
 gulp.task('apply_development_api_key', function(){
 
-	return gulp.src('./Deploy/JS/FirebaseEngine.js', {base: './'})
+	return gulp.src('./Deploy/JS/FirebaseAuthenticationManager.js', {base: './'})
 		.pipe(replace(cofigFileLimtek.api_key_default, cofigFileLimtek.api_key_development))
 		.pipe(gulp.dest('./'));
 });
 
 gulp.task('remove_development_api_key', function(){
 
-    return gulp.src('./Deploy/JS/FirebaseEngine.js', {base: './'})
+    return gulp.src('./Deploy/JS/FirebaseAuthenticationManager.js', {base: './'})
         .pipe(replace(cofigFileLimtek.api_key_development, cofigFileLimtek.api_key_default))
         .pipe(gulp.dest('./'));
 });
 
 gulp.task('apply_live_api_key', function(){
 
-    return gulp.src('./Deploy/JS/FirebaseEngine.js', {base: './'})
+    return gulp.src('./Deploy/JS/FirebaseAuthenticationManager.js', {base: './'})
         .pipe(replace(cofigFileLimtek.api_key_default, cofigFileLimtek.api_key_live))
         .pipe(gulp.dest('./'));
 });
 
 gulp.task('remove_live_api_key', function(){
 
-    return gulp.src('./Deploy/JS/FirebaseEngine.js', {base: './'})
+    return gulp.src('./Deploy/JS/FirebaseAuthenticationManager.js', {base: './'})
         .pipe(replace(cofigFileLimtek.api_key_live, cofigFileLimtek.api_key_default))
         .pipe(gulp.dest('./'));
 });

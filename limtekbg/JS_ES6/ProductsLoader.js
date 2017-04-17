@@ -44,10 +44,10 @@ const ProductsLoader = (function(){
 
             const $self = this;
 
-            // Make sure that FirebaseEngine is present.
-            if(!FirebaseEngine){
+            // Make sure that FirebaseDatabaseAndStorageManager is present.
+            if(!FirebaseDatabaseAndStorageManager){
 
-                console.error('ProductsLoader.init(): FirebaseEngine is not present!');
+                console.error('ProductsLoader.init(): FirebaseDatabaseAndStorageManager is not present!');
                 return;
             }
 
@@ -83,7 +83,7 @@ const ProductsLoader = (function(){
 
             };
 
-            FirebaseEngine.firebaseGET(
+            FirebaseDatabaseAndStorageManager.firebaseGET(
                 $path,
                 $extra,
                 function($error, $data){
@@ -344,7 +344,7 @@ const ProductsLoader = (function(){
             let $extra = {};
 
             // Fire the request.
-            FirebaseEngine.firebaseGET(
+            FirebaseDatabaseAndStorageManager.firebaseGET(
                 $path,
                 $extra,
                 function($error, $data){
@@ -416,7 +416,7 @@ const ProductsLoader = (function(){
 
             let $extra = {};
 
-            FirebaseEngine.firebaseGET(
+            FirebaseDatabaseAndStorageManager.firebaseGET(
                 $path,
                 $extra,
                 function($error, $data){
@@ -459,7 +459,7 @@ const ProductsLoader = (function(){
 
                         let $storagePathNodes = [$path, $data['images'][$index]];
                         let $storagePath = DevelopmentHelpers.constructPath($storagePathNodes);
-                        FirebaseEngine.retrieveStorageItemURL($storagePath, function($error, $data){
+                        FirebaseDatabaseAndStorageManager.retrieveStorageItemURL($storagePath, function($error, $data){
 
                             if($error){
 
