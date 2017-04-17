@@ -74,8 +74,8 @@ const LoginController = (function () {
                 else if($update === 'ERROR 1'){
 
                     // Problem while logging in!
-                    console.error('LoginController: ' + FirebaseAuthenticationManager.getLoginError());
-                    TemplateProcessor.generateCustomErrorMessage(FirebaseAuthenticationManager.getLoginError());
+                    console.error('LoginController: ' + FirebaseAuthenticationManager.getAuthError());
+                    TemplateProcessor.generateCustomErrorMessage(FirebaseAuthenticationManager.getAuthError());
                     $self.displayLoginForm();
                 }
             };
@@ -193,7 +193,7 @@ const LoginController = (function () {
             }
             else{
 
-                console.log($validation);
+                console.error($validation);
                 TemplateProcessor.generateCustomErrorMessage($validation);
             }
         },

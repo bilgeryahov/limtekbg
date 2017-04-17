@@ -66,6 +66,8 @@ const AdministrationController = (function () {
                 else if($update === 'ERROR 1'){
 
                     // An error happended.
+                    console.error('AdministrationController: ' + FirebaseAuthenticationManager.getAuthError());
+                    TemplateProcessor.generateCustomErrorMessage(FirebaseAuthenticationManager.getAuthError());
                 }
             };
 
@@ -119,36 +121,9 @@ const AdministrationController = (function () {
 
             $self._logoutButton.addEvent('click', function(){
 
-                FirebaseAuthenticationManager.logout(function($error, $success){
-
-                    return $self.handleLogout($error, $success);
-                });
+                FirebaseAuthenticationManager.logout();
             });
-        },
-
-        /**
-         * Handles the loging out.
-         *
-         * @param $error
-         * @param $success
-         *
-         * return void
-         */
-
-        handleLogout($error, $success){
-
-            if($error){
-
-                console.error('AdministrationController.handleLogout(): ' + $error);
-                TemplateProcessor.generateCustomErrorMessage($error);
-                return;
-            }
-
-            if($success){
-
-                console.log('AdministrationController.handleLogout(): logout was successful.');
-            }
-        },
+        }
     };
 
     return{

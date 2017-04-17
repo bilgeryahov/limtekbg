@@ -18,7 +18,7 @@ const FirebaseAuthenticationManager = (function(){
 
         _auth: {},
         _currentUser: null,
-        _loginError: null,
+        _authError: null,
 
         // Auth ObserverManager of FirebaseAuthenticationManager.
         _authObserverManager: {},
@@ -97,7 +97,7 @@ const FirebaseAuthenticationManager = (function(){
 
         /**
          * Logs in a user based on e-mail and password.
-         * If any errors occur, they get saved in the _loginError
+         * If any errors occur, they get saved in the _authError
          * attribute of the object.
          *
          * @param $email
@@ -112,7 +112,8 @@ const FirebaseAuthenticationManager = (function(){
 
             if($self.getCurrentUser()){
 
-                console.error('FirebaseAuthenticationManager.login(): You cannot login while, you are logged in!');
+                $self._authError = 'You cannot login while, you are logged in!';
+                $self._authObserverManager.updateObservers('ERROR 1');
                 return;
             }
 
@@ -121,45 +122,42 @@ const FirebaseAuthenticationManager = (function(){
 
                     if($error){
 
-                        $self._loginError = $error.message;
+                        $self._authError = $error.message || $error;
                         $self._authObserverManager.updateObservers('ERROR 1');
                     }
                 });
         },
 
         /**
-         * Returns the login error, if any.
-         * If there is no login error, returns null.
+         * Returns the auth error, if any.
+         * If there is no auth error, returns null.
          *
          * @return {null}
          */
 
-        getLoginError(){
+        getAuthError(){
 
             const $self = this;
-            return $self._loginError;
+            return $self._authError;
         },
 
         /**
          * Log-out a user.
          *
-         * @param $callback
-         *
          * @return void
          */
 
-        logout($callback){
+        logout(){
 
             const $self = this;
 
-            $self._auth.signOut().then(function(){
+            $self._auth.signOut()
+                .catch(function($error){
+                    if($error){
 
-                // Sign-out was successful.
-                return $callback(null, true);
-            }).catch(function($error){
-
-                // Sign-out had problems.
-                return $callback($error.message, null);
+                        $self._authError = $error.message || $error;
+                        $self._authObserverManager.updateObservers('ERROR 1');
+                    }
             });
         }
     };
@@ -181,9 +179,9 @@ const FirebaseAuthenticationManager = (function(){
             return Logic.getCurrentUser();
         },
 
-        getLoginError(){
+        getAuthError(){
 
-            return Logic.getLoginError();
+            return Logic.getAuthError();
         },
 
         login($email, $password){
@@ -191,9 +189,9 @@ const FirebaseAuthenticationManager = (function(){
             Logic.login($email, $password);
         },
 
-        logout($callback){
+        logout(){
 
-            Logic.logout($callback);
+            Logic.logout();
         }
     }
 })();
