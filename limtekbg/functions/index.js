@@ -5,6 +5,22 @@ const nodemailer = require('nodemailer');
 
 exports.sendMail = functions.https.onRequest((req, res) => {
 
+    const allowedMethods = [
+        'POST',
+        'PUT'
+    ];
+
+    if(!allowedMethods.includes(req.method)){
+
+        res
+            .status(405)
+            .json({
+                message:'HTTP Method is not allowed!'
+            });
+
+        return;
+    }
+
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth:{
