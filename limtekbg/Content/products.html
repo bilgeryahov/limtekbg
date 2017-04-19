@@ -152,12 +152,10 @@
 		</script>
 		<script id="ProductCategoriesTemplate" type="text/x-handlebars-template">
 			{{#if go_back}}
-				<div class="w3-container" style="margin: 2em auto">
-					<button class="w3-btn-block w3-light-green w3-hover-green CategoryButton"
-							onclick="ProductsPageController.showMainCategories()">
-						Покажи основни категории
-					</button>
-				</div>
+				<button class="w3-btn-block w3-black w3-opacity CategoryButton"
+						onclick="ProductsPageController.showMainCategories()">
+					Покажи основни категории
+				</button>
 			{{/if}}
 			{{#if loading}}
 				<div class="w3-panel w3-light-green" style="color: white !important;">
@@ -170,6 +168,9 @@
 				<button id="button_{{@key}}" class="w3-btn-block w3-light-green w3-hover-green CategoryButton"
 						onclick="ProductsPageController.actionCategoryButton(this)">
 					{{display_name}}
+					{{#if products_list}}
+					<span style="font-weight:bold;">- Има подкатегории</span>
+					{{/if}}
 				</button>
 				{{/each}}
 			{{/if}}
