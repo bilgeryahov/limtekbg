@@ -76,10 +76,16 @@ gulp.task('remove_live_api_key', function(){
         .pipe(gulp.dest('./'));
 });
 
-// After Firebase deploys, make sure that you perform applying the dev api key again.
+/**
+ * After Firebase deploys, make sure that you perform applying the dev api key again.
+ * Also make sure that this task only deploys the hosting.
+ *
+ * Database rules and functions should be deployed only by Firebase native CLI.
+ */
+
 gulp.task('firebase_deploy', function(){
 
-	return exec('firebase deploy', function(err, stdout, stderr){
+	return exec('firebase deploy --only hosting', function(err, stdout, stderr){
 
 		if(err){
 
@@ -96,11 +102,13 @@ gulp.task('firebase_deploy', function(){
 // Deploy locally.
 gulp.task('deploy_locally', function(){
 
-	return run_sequence('clean_content', 'copy_content', 'compile_css', 'compile_javascript', 'apply_development_api_key');
+	return run_sequence('clean_content', 'copy_content', 'compile_css', 'compile_javascript',
+		'apply_development_api_key');
 });
 
 // Deploy live.
 gulp.task('deploy_live', function(){
 
-    return run_sequence('clean_content', 'copy_content', 'compile_css', 'compile_javascript', 'apply_live_api_key', 'firebase_deploy');
+    return run_sequence('clean_content', 'copy_content', 'compile_css', 'compile_javascript',
+		'apply_live_api_key', 'firebase_deploy');
 });
