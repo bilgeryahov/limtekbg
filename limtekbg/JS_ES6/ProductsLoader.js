@@ -165,7 +165,7 @@ const ProductsLoader = (function(){
                 Object.keys($object['products_list']).forEach(function($subCategory){
 
                     // Recursivelly calls itself.
-                    return $traverse($object['products_list'][$subCategory]);
+                    $traverse($object['products_list'][$subCategory]);
                 });
             };
 
@@ -258,7 +258,7 @@ const ProductsLoader = (function(){
                         Object.keys($object['products_list']).forEach(function($subCategory){
 
                             // Recursivelly calls itself.
-                            return $traverse($object['products_list'][$subCategory], $subCategory);
+                            $traverse($object['products_list'][$subCategory], $subCategory);
                         });
                     }
 
