@@ -1,0 +1,11 @@
+SHORT TERM:
+1. Add phone to the sendMail cloud function
+2. Create a controller JS file for the contacts page
+3. Make validation on the front end for the inputs 
+
+
+
+LONG TERM:
+1. Inside functions there has to be security checks for the request parameters
+2. Messages displayed when loggin in logging out and all errors should be handled properly
+  and displayed in Bulgarian language.

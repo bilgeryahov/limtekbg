@@ -12,6 +12,7 @@ exports.sendMail = functions.https.onRequest((req, res) => {
     const allowedParameters = [
         'from_name',
         'from_email',
+        'from_phone',
         'subject',
         'text'
     ];
@@ -64,6 +65,7 @@ exports.sendMail = functions.https.onRequest((req, res) => {
 
     let mailFromName   = req.body.from_name;
     let mailFromEmail  = req.body.from_email;
+    let mailFromPhone  = req.body.from_phone;
     let mailSubject    = req.body.subject;
     let mailText       = req.body.text;
 
@@ -72,6 +74,7 @@ exports.sendMail = functions.https.onRequest((req, res) => {
         from           : mailFromName + ' ' + mailFromEmail,
         subject        : mailSubject,
         text           : mailText + '\n\nMessage: Email has been sent from this user: ' + mailFromEmail
+                                  + '\n\nMessage: Phone number of the sender: ' + mailFromPhone
     };
 
     transporter.sendMail(mailOptions, (err, data) => {
