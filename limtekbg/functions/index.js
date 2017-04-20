@@ -53,6 +53,18 @@ exports.sendMail = functions.https.onRequest((req, res) => {
         return;
     }
 
+    /*
+     * Until this point we verify that the needed parameters
+     * have been passed with the needed request type.
+     */
+
+    let mailFromName   = req.body.from_name;
+    let mailFromEmail  = req.body.from_email;
+    let mailFromPhone  = req.body.from_phone;
+    let mailSubject    = req.body.subject;
+    let mailText       = req.body.text;
+
+    // TODO: Check the req params for their data types (if they are correct).
     // TODO: Check the req params for securiry issues.
 
     let transporter = nodemailer.createTransport({
@@ -62,12 +74,6 @@ exports.sendMail = functions.https.onRequest((req, res) => {
             pass: 'limtek_sender'
         }
     });
-
-    let mailFromName   = req.body.from_name;
-    let mailFromEmail  = req.body.from_email;
-    let mailFromPhone  = req.body.from_phone;
-    let mailSubject    = req.body.subject;
-    let mailText       = req.body.text;
 
     let mailOptions = {
         to             : 'bayahov1@gmail.com',

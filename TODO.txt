@@ -1,5 +1,4 @@
 SHORT TERM:
-1. Add phone to the sendMail cloud function
 2. Create a controller JS file for the contacts page
 3. Make validation on the front end for the inputs 
 
