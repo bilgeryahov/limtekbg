@@ -167,7 +167,7 @@ const ContactsPageController = (function () {
                     $data = JSON.decode($data);
                     if($data.hasOwnProperty('message')){
 
-                        console.error('ContactsPageController.sendMailToCloudService(): ' + $data.message);
+                        console.log('ContactsPageController.sendMailToCloudService(): ' + $data.message);
                         TemplateProcessor.generateCustomMessage('Съобщението е изпратено успешно.');
                         // Indicate that the sending process has finished.
                         $self.sendButtonTriggeredState(false);
