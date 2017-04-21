@@ -1,9 +1,10 @@
 SHORT TERM:
-1. Test the shit out of the contacts page controller.
-2. Implement two functions iside the sendMail cloud function for correctness check and security check. 
-   Make sure that both return different status messages. SO this can be caught by the POST request on the front end.
+1. Make sure that the Login controller uses the validation functions from Development helpers for
+the user input.
+2. Make sure that the login/administration controllers display messages in Bulgarian.
+
+!! Do not forget in the correctness validation checks to check if the field is actually empty.
 
 LONG TERM:
 1. Implement the correcntess checks and the security checks inside DevelopmentHelpers.
-2. Messages displayed when loggin in logging out and all errors should be handled properly
-  and displayed in Bulgarian language.
+2. Implement the correctness checks and the security checks inside sendMail Cloud function.
