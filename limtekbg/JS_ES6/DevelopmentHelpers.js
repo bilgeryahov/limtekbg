@@ -39,4 +39,38 @@ class DevelopmentHelpers {
 
      return $path;
  }
+
+    /**
+     * Validates the passed input for correctness
+     * based on its type.
+     *
+     * @param $input
+     * @param $type
+     *
+     * @return {boolean}
+     */
+
+ static validateCorrectness($input, $type){
+
+     // TODO: Implement
+
+     return true;
+ }
+
+
+    /**
+     * Validates the passed input for
+     * security issues.
+     *
+     * @param $input
+     *
+     * @return {boolean}
+     */
+
+ static validateSecurity($input){
+
+     // TODO: Implement
+
+     return true;
+ }
 }
