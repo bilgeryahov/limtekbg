@@ -4,10 +4,25 @@ const functions  = require('firebase-functions');
 const nodemailer = require('nodemailer');
 
 exports.sendMail = functions.https.onRequest((req, res) => {
+
+    // TODO: This needs to be fixed or?
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+    res.header('Access-Control-Allow-Methods', 'PUT,POST');
+
     const allowedMethods = [
         'POST',
-        'PUT'
+        'PUT',
+        'OPTIONS'
     ];
+
+    if(req.method === 'OPTIONS'){
+
+        res.
+            status(200)
+            .json();
+        return;
+    }
 
     const allowedParameters = [
         'from_name',
