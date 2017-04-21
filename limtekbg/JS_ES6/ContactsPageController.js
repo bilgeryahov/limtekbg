@@ -124,7 +124,10 @@ const ContactsPageController = (function () {
         },
 
         /**
+         * Attempts to send the message to the
+         * cloud service sendMail.
          *
+         * @return void
          */
 
         sendMailToCloudService(){
