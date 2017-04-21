@@ -1,0 +1,39 @@
+{
+  "products_section":{
+    "products_details":{
+      "2s34ax":{
+
+      },
+      "ss234b":{
+
+      }
+    },
+    "categories_details": {
+      "0":{
+        "product_ids":null,
+        "child_ids": {
+          "1": true,
+          "2": true
+        },
+        "parent_id": null,
+        "display_name":"Products"
+      },
+      "1":{
+        "product_ids":{
+          "2s34ax": true
+        },
+        "child_ids": null,
+        "parent_id": 0,
+        "display_name":"Accumulators"
+      },
+      "2":{
+        "product_ids":{
+          "ss234b": true
+        },
+        "child_ids": null,
+        "parent_id": 0,
+        "display_name":"Tractors"
+      }
+    }
+  }
+}
