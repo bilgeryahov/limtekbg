@@ -125,6 +125,9 @@ const ContactsPageController = (function () {
 
             const $self = this;
 
+            // Indicate that the send button has been triggered.
+            $self.sendButtonTriggeredState(true);
+
             $self._cfNameValue = $self._cfNameValue.value;
             $self._cfEmailValue = $self._cfEmailValue.value;
             $self._cfPhoneValue = $self._cfPhoneValue.value;
@@ -166,6 +169,8 @@ const ContactsPageController = (function () {
 
                         console.error('ContactsPageController.sendMailToCloudService(): ' + $data.message);
                         TemplateProcessor.generateCustomErrorMessage('Съобщението е изпратено успешно.');
+                        // Indicate that the sending process has finished.
+                        $self.sendButtonTriggeredState(false);
                         return;
                     }
                 },
@@ -177,10 +182,35 @@ const ContactsPageController = (function () {
                         console.error('ContactsPageController.sendMailToCloudService():' +
                             $error.error);
                         TemplateProcessor.generateCustomErrorMessage('Проблем с изпращането на съобщението.');
+                        // Indicate that the sending process has finished.
+                        $self.sendButtonTriggeredState(false);
                         return;
                     }
                 }
             }).send();
+        },
+
+        /**
+         * Indicates that sending the message has been triggered.
+         *
+         * @param $triggered
+         *
+         * @return void
+         */
+
+        sendButtonTriggeredState($triggered){
+
+            const $self = this;
+
+            if($triggered){
+
+                $self._cfSendButton.innerHTML = 'Моля изчакайте...';
+                $self._cfSendButton.disabled = true;
+                return;
+            }
+
+            $self._cfSendButton.innerHTML = 'Изпрати';
+            $self._cfSendButton.disabled = false;
         }
     };
 
