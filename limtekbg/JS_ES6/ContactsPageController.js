@@ -20,7 +20,7 @@ const ContactsPageController = (function () {
         _cfEmailValue    : '',
         _cfPhoneValue    : '',
         _cfSubjectValue  : '',
-        _cfTextValue     : '',
+        _cfMessageValue     : '',
 
         _cfSendButton    : {},
 
@@ -66,16 +66,16 @@ const ContactsPageController = (function () {
             $self._cfEmailValue = $('CFemail');
             $self._cfPhoneValue = $('CFphone');
             $self._cfSubjectValue = $('CFsubject');
-            $self._cfTextValue = $('CFtext');
+            $self._cfMessageValue = $('CFmessage');
             $self._cfSendButton = $('CFsendButton');
 
             return (
-                !$self._cfNameValue
-                || !$self._cfEmailValue
-                || !$self._cfPhoneValue
-                || !$self._cfSubjectValue
-                || !$self._cfTextValue
-                || !$self._cfSendButton
+                   $self._cfNameValue !== null
+                && $self._cfEmailValue !== null
+                && $self._cfPhoneValue !== null
+                && $self._cfSubjectValue !== null
+                && $self._cfMessageValue !== null
+                && $self._cfSendButton !== null
             );
         },
 
@@ -90,11 +90,11 @@ const ContactsPageController = (function () {
             const $self = this;
 
             return (
-                !DevelopmentHelpers.validateCorrectness($self._cfNameValue, 'text')
-                || !DevelopmentHelpers.validateCorrectness($self._cfEmailValue, 'email')
-                || !DevelopmentHelpers.validateCorrectness($self._cfPhoneValue, 'phone')
-                || !DevelopmentHelpers.validateCorrectness($self._cfSubjectValue, 'text')
-                || !DevelopmentHelpers.validateCorrectness($self._cfTextValue, 'text')
+                DevelopmentHelpers.validateCorrectness($self._cfNameValue, 'text')
+                && DevelopmentHelpers.validateCorrectness($self._cfEmailValue, 'email')
+                && DevelopmentHelpers.validateCorrectness($self._cfPhoneValue, 'phone')
+                && DevelopmentHelpers.validateCorrectness($self._cfSubjectValue, 'text')
+                && DevelopmentHelpers.validateCorrectness($self._cfMessageValue, 'text')
             );
         },
 
@@ -109,11 +109,11 @@ const ContactsPageController = (function () {
             const $self = this;
 
             return(
-                !DevelopmentHelpers.validateSecurity($self._cfNameValue)
-                || !DevelopmentHelpers.validateSecurity($self._cfEmailValue)
-                || !DevelopmentHelpers.validateSecurity($self._cfPhoneValue)
-                || !DevelopmentHelpers.validateSecurity($self._cfSubjectValue)
-                || !DevelopmentHelpers.validateSecurity($self._cfTextValue)
+                DevelopmentHelpers.validateSecurity($self._cfNameValue)
+                && DevelopmentHelpers.validateSecurity($self._cfEmailValue)
+                && DevelopmentHelpers.validateSecurity($self._cfPhoneValue)
+                && DevelopmentHelpers.validateSecurity($self._cfSubjectValue)
+                && DevelopmentHelpers.validateSecurity($self._cfMessageValue)
             );
         },
 
@@ -129,7 +129,7 @@ const ContactsPageController = (function () {
             $self._cfEmailValue = $self._cfEmailValue.value;
             $self._cfPhoneValue = $self._cfPhoneValue.value;
             $self._cfSubjectValue = $self._cfSubjectValue.value;
-            $self._cfTextValue = $self._cfTextValue.value;
+            $self._cfMessageValue = $self._cfMessageValue.value;
 
             if(!$self.validateInputCorrectness()){
 
@@ -152,7 +152,7 @@ const ContactsPageController = (function () {
                 from_email  : $self._cfEmailValue,
                 from_phone  : $self._cfPhoneValue,
                 subject     : $self._cfSubjectValue,
-                text        : $self._cfTextValue
+                text        : $self._cfMessageValue
             };
 
             new Request({
