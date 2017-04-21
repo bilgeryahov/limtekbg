@@ -166,6 +166,7 @@ const ContactsPageController = (function () {
 
                         console.error('ContactsPageController.sendMailToCloudService(): ' + $data.message);
                         TemplateProcessor.generateCustomErrorMessage('Съобщението е изпратено успешно.');
+                        return;
                     }
                 },
                 onFailure($error){
@@ -176,8 +177,8 @@ const ContactsPageController = (function () {
                         console.error('ContactsPageController.sendMailToCloudService():' +
                             $error.error);
                         TemplateProcessor.generateCustomErrorMessage('Проблем с изпращането на съобщението.');
+                        return;
                     }
-
                 }
             }).send();
         }
