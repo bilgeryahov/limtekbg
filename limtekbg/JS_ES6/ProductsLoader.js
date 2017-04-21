@@ -92,7 +92,7 @@ const ProductsLoader = (function(){
                     if($error){
 
                         console.error($error);
-                        TemplateProcessor.generateCustomErrorMessage('Имаше проблем със зареждането на продукти.');
+                        TemplateProcessor.generateCustomMessage('Имаше проблем със зареждането на продукти.');
                         return;
                     }
 
@@ -101,7 +101,7 @@ const ProductsLoader = (function(){
 
                         console.log('ProductsLoader.loadProducts(): No data arrived for ' +
                             $path);
-                        TemplateProcessor.generateCustomErrorMessage('Имаше проблем със зареждането на продукти.');
+                        TemplateProcessor.generateCustomMessage('Имаше проблем със зареждането на продукти.');
                         return;
                     }
 
@@ -353,7 +353,7 @@ const ProductsLoader = (function(){
                     if($error){
 
                         console.error($error);
-                        TemplateProcessor.generateCustomErrorMessage('Имаше проблем със зареждането на продукти.');
+                        TemplateProcessor.generateCustomMessage('Имаше проблем със зареждането на продукти.');
                         return;
                     }
 

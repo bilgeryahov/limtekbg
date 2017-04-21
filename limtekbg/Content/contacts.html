@@ -132,22 +132,22 @@
 			</p>
 			<p>Poetry by: Bilger Yahov <br/> All cats and dogs reserved.</p>
         </footer>
-		<div id="CustomErrorMessagePlaceholder" class="w3-modal">
-		</div>
-		<script id="CustomErrorMessageTemplate" type="text/x-handlebars-template">
-			<div class="w3-modal-content w3-animate-top w3-card-4">
-				<header class="w3-container w3-red">
-        				<span onclick="CommonReusableUserInterfaceManager.enableCustomErrorMessageModal(false);"
-							  class="w3-closebtn">&times;</span>
-					<h2>Съобщение</h2>
-				</header>
-				<div class="w3-container">
-					<p>{{message}}</p>
-				</div>
-				<footer class="w3-container w3-red">
-					<p>Благодарим Ви, че избрахте нас!</p>
-				</footer>
-			</div>
-		</script>
+        <div id="CustomMessagePlaceholder" class="w3-modal">
+        </div>
+        <script id="CustomMessageTemplate" type="text/x-handlebars-template">
+            <div class="w3-modal-content w3-animate-top w3-card-4">
+                <header class="w3-container w3-red">
+        				<span onclick="CommonReusableUserInterfaceManager.enableCustomMessageModal(false);"
+                              class="w3-closebtn">&times;</span>
+                    <h2>Съобщение</h2>
+                </header>
+                <div class="w3-container">
+                    <p>{{message}}</p>
+                </div>
+                <footer class="w3-container w3-red">
+                    <p>Благодарим Ви, че избрахте нас!</p>
+                </footer>
+            </div>
+        </script>
 </body>
 </html>

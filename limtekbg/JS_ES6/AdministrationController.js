@@ -54,7 +54,7 @@ const AdministrationController = (function () {
 
                 if($update === 'USER 1'){
 
-                    TemplateProcessor.generateCustomErrorMessage('User is here heyyyyoooo!!!');
+                    TemplateProcessor.generateCustomMessage('User is here heyyyyoooo!!!');
                     console.log('AdministrationController: user is here ' + FirebaseAuthenticationManager.getCurrentUser().email);
                 }
                 else if($update === 'USER 0'){
@@ -67,7 +67,7 @@ const AdministrationController = (function () {
 
                     // An error happended.
                     console.error('AdministrationController: ' + FirebaseAuthenticationManager.getAuthError());
-                    TemplateProcessor.generateCustomErrorMessage(FirebaseAuthenticationManager.getAuthError());
+                    TemplateProcessor.generateCustomMessage(FirebaseAuthenticationManager.getAuthError());
                 }
             };
 

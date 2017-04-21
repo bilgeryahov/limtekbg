@@ -12,30 +12,30 @@
 class CommonReusableUserInterfaceManager {
 
     /**
-     * Enables/Disables the modal for custom error message.
+     * Enables/Disables the modal for custom message.
      *
      * @param $enable
      *
      * @return void
      */
 
-    static enableCustomErrorMessageModal($enable){
+    static enableCustomMessageModal($enable){
 
-        let $customErrorMessagePlaceholder = $('CustomErrorMessagePlaceholder');
+        let $customMessagePlaceholder = $('CustomMessagePlaceholder');
 
-        if(!$customErrorMessagePlaceholder){
+        if(!$customMessagePlaceholder){
 
-            console.error('CommonReusableUserInterfaceManager.enableCustomErrorMessageModal(): the CustomErrorMessagePlaceholder is' +
+            console.error('CommonReusableUserInterfaceManager.enableCustomMessageModal(): the CustomMessagePlaceholder is' +
                 'missing!');
             return;
         }
 
         if($enable){
 
-            $customErrorMessagePlaceholder.style.display = 'block';
+            $customMessagePlaceholder.style.display = 'block';
             return;
         }
 
-        $customErrorMessagePlaceholder.style.display = 'none';
+        $customMessagePlaceholder.style.display = 'none';
     }
 }

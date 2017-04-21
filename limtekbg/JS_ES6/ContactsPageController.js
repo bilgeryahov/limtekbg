@@ -138,7 +138,7 @@ const ContactsPageController = (function () {
 
                 console.error('ContactsPageController.sendMailToCloudService(): One of the input fields contains ' +
                     ' semantically not correct information');
-                TemplateProcessor.generateCustomErrorMessage('Въвели сте некоректна информация или символи.');
+                TemplateProcessor.generateCustomMessage('Въвели сте некоректна информация или символи.');
                 return;
             }
 
@@ -146,7 +146,7 @@ const ContactsPageController = (function () {
 
                 console.error('ContactsPageController.sendMailToCloudService(): One of the input fields contains ' +
                     ' not secure information');
-                TemplateProcessor.generateCustomErrorMessage('Въвели сте некоректна информация или символи.');
+                TemplateProcessor.generateCustomMessage('Въвели сте некоректна информация или символи.');
                 return;
             }
 
@@ -168,7 +168,7 @@ const ContactsPageController = (function () {
                     if($data.hasOwnProperty('message')){
 
                         console.error('ContactsPageController.sendMailToCloudService(): ' + $data.message);
-                        TemplateProcessor.generateCustomErrorMessage('Съобщението е изпратено успешно.');
+                        TemplateProcessor.generateCustomMessage('Съобщението е изпратено успешно.');
                         // Indicate that the sending process has finished.
                         $self.sendButtonTriggeredState(false);
                         return;
@@ -181,7 +181,7 @@ const ContactsPageController = (function () {
 
                         console.error('ContactsPageController.sendMailToCloudService():' +
                             $error.error);
-                        TemplateProcessor.generateCustomErrorMessage('Проблем с изпращането на съобщението.');
+                        TemplateProcessor.generateCustomMessage('Проблем с изпращането на съобщението.');
                         // Indicate that the sending process has finished.
                         $self.sendButtonTriggeredState(false);
                         return;

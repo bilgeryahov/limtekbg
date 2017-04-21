@@ -272,31 +272,31 @@ const TemplateProcessor = (function(){
        },
 
        /**
-        * Generates a custom error message alert.
+        * Generates a custom message alert.
         *
         * @param $message
         *
         * @return void
         */
 
-       generateCustomErrorMessage($message){
+       generateCustomMessage($message){
 
-            const $customErrorMessageTemplate = $('CustomErrorMessageTemplate');
-            const $customErrorMessagePlaceholder = $('CustomErrorMessagePlaceholder');
+            const $customMessageTemplate = $('CustomMessageTemplate');
+            const $customMessagePlaceholder = $('CustomMessagePlaceholder');
 
-            if(!$customErrorMessagePlaceholder || !$customErrorMessageTemplate){
+            if(!$customMessagePlaceholder || !$customMessageTemplate){
 
-                console.error('TemplateProcessor.generateCustromErrorMessage(): CustomErrorMessagePlaceholder' +
-                    ' or CustomErrorMessageTemplate is missing!');
+                console.error('TemplateProcessor.generateCustromMessage(): CustomMessagePlaceholder' +
+                    ' or CustomMessageTemplate is missing!');
 
                 return;
             }
 
             // Show the modal.
-           CommonReusableUserInterfaceManager.enableCustomErrorMessageModal(true);
+           CommonReusableUserInterfaceManager.enableCustomMessageModal(true);
 
-            let $compiled = Handlebars.compile($customErrorMessageTemplate.get('html'));
-            $customErrorMessagePlaceholder.set('html', $compiled({message: $message}));
+            let $compiled = Handlebars.compile($customMessageTemplate.get('html'));
+            $customMessagePlaceholder.set('html', $compiled({message: $message}));
        }
    };
 
@@ -331,9 +331,9 @@ const TemplateProcessor = (function(){
 		   Logic.generateProductImages($data);
 	   },
 
-       generateCustomErrorMessage($message){
+       generateCustomMessage($message){
 
-           Logic.generateCustomErrorMessage($message);
+           Logic.generateCustomMessage($message);
        }
    }
 })();
