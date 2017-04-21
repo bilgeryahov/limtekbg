@@ -1,10 +1,9 @@
 SHORT TERM:
-2. Create a controller JS file for the contacts page
-3. Make validation on the front end for the inputs 
-
-
+1. Test the shit out of the contacts page controller.
+2. Implement two functions iside the sendMail cloud function for correctness check and security check. 
+   Make sure that both return different status messages. SO this can be caught by the POST request on the front end.
 
 LONG TERM:
-1. Inside functions there has to be security checks for the request parameters
+1. Implement the correcntess checks and the security checks inside DevelopmentHelpers.
 2. Messages displayed when loggin in logging out and all errors should be handled properly
   and displayed in Bulgarian language.
