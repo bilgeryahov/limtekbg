@@ -21,7 +21,7 @@ exports.sendMail = functions.https.onRequest((req, res) => {
         res
             .status(405)
             .json({
-                message:'HTTP Method is not allowed!'
+                error:'HTTP Method is not allowed!'
             });
         return;
     }
@@ -30,7 +30,7 @@ exports.sendMail = functions.https.onRequest((req, res) => {
         res
             .status(400)
             .json({
-                message:'There is a problem with request parameters.'
+                error:'There is a problem with request parameters.'
             });
         return;
     }
@@ -48,7 +48,7 @@ exports.sendMail = functions.https.onRequest((req, res) => {
         res
             .status(400)
             .json({
-                message:'There is a problem with request parameters.'
+                error:'There is a problem with request parameters.'
             });
         return;
     }
@@ -88,7 +88,7 @@ exports.sendMail = functions.https.onRequest((req, res) => {
             res
                 .status(503)
                 .json({
-                    message:'Problem with sending the e-mail.'
+                    error:'Problem with sending the e-mail.'
                 });
             return;
         }
