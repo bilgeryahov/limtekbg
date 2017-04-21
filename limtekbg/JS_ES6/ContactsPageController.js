@@ -16,13 +16,19 @@ const ContactsPageController = (function () {
 
     const Logic = {
 
-        _cfNameValue     : '',
-        _cfEmailValue    : '',
-        _cfPhoneValue    : '',
-        _cfSubjectValue  : '',
-        _cfMessageValue     : '',
+        _cfNameElement        : {},
+        _cfEmailElement       : {},
+        _cfPhoneElement       : {},
+        _cfSubjectElement     : {},
+        _cfMessageElement     : {},
 
-        _cfSendButton    : {},
+        _cfNameValue          : '',
+        _cfEmailValue         : '',
+        _cfPhoneValue         : '',
+        _cfSubjectValue       : '',
+        _cfMessageValue       : '',
+
+        _cfSendButton         : {},
 
         /**
          * Initializes the main functionality.
@@ -62,19 +68,19 @@ const ContactsPageController = (function () {
 
             const $self = this;
 
-            $self._cfNameValue = $('CFname');
-            $self._cfEmailValue = $('CFemail');
-            $self._cfPhoneValue = $('CFphone');
-            $self._cfSubjectValue = $('CFsubject');
-            $self._cfMessageValue = $('CFmessage');
+            $self._cfNameElement = $('CFname');
+            $self._cfEmailElement = $('CFemail');
+            $self._cfPhoneElement = $('CFphone');
+            $self._cfSubjectElement = $('CFsubject');
+            $self._cfMessageElement = $('CFmessage');
             $self._cfSendButton = $('CFsendButton');
 
             return (
-                   $self._cfNameValue !== null
-                && $self._cfEmailValue !== null
-                && $self._cfPhoneValue !== null
-                && $self._cfSubjectValue !== null
-                && $self._cfMessageValue !== null
+                   $self._cfNameElement !== null
+                && $self._cfEmailElement !== null
+                && $self._cfPhoneElement !== null
+                && $self._cfSubjectElement !== null
+                && $self._cfMessageElement !== null
                 && $self._cfSendButton !== null
             );
         },
@@ -128,11 +134,11 @@ const ContactsPageController = (function () {
             // Indicate that the send button has been triggered.
             $self.sendButtonTriggeredState(true);
 
-            $self._cfNameValue = $self._cfNameValue.value;
-            $self._cfEmailValue = $self._cfEmailValue.value;
-            $self._cfPhoneValue = $self._cfPhoneValue.value;
-            $self._cfSubjectValue = $self._cfSubjectValue.value;
-            $self._cfMessageValue = $self._cfMessageValue.value;
+            $self._cfNameValue = $self._cfNameElement.value;
+            $self._cfEmailValue = $self._cfEmailElement.value;
+            $self._cfPhoneValue = $self._cfPhoneElement.value;
+            $self._cfSubjectValue = $self._cfSubjectElement.value;
+            $self._cfMessageValue = $self._cfMessageElement.value;
 
             if(!$self.validateInputCorrectness()){
 
@@ -174,18 +180,13 @@ const ContactsPageController = (function () {
                         return;
                     }
                 },
-                onFailure($error){
+                onFailure(){
 
-                    $error = JSON.decode($error);
-                    if($error.hasOwnProperty('error')){
-
-                        console.error('ContactsPageController.sendMailToCloudService():' +
-                            $error.error);
-                        TemplateProcessor.generateCustomMessage('Проблем с изпращането на съобщението.');
-                        // Indicate that the sending process has finished.
-                        $self.sendButtonTriggeredState(false);
-                        return;
-                    }
+                    console.error('ContactsPageController.sendMailToCloudService(): Sending the message failed.');
+                    TemplateProcessor.generateCustomMessage('Проблем с изпращането на съобщението.');
+                    // Indicate that the sending process has finished.
+                    $self.sendButtonTriggeredState(false);
+                    return;
                 }
             }).send();
         },
