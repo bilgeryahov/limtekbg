@@ -173,7 +173,7 @@ const LoginController = (function () {
             else{
 
                 console.error('LoginController.attemptLogin(): Problem with validation of the input fields.');
-                TemplateProcessor.generateCustomMessage('Въвели сте неправилни символи в едно от полетаата.');
+                TemplateProcessor.generateCustomMessage('Въвели сте неправилни символи в едно от полетата.');
             }
         },
 
