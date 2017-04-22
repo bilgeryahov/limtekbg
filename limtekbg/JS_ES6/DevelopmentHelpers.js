@@ -19,26 +19,26 @@ class DevelopmentHelpers {
      * @return {string}
      */
 
- static constructPath($nodes){
+     static constructPath($nodes){
 
-     // Return value.
-     let $path = '';
+         // Return value.
+         let $path = '';
 
-     // Check if array.
-     if(!$nodes[0]){
+         // Check if array.
+         if(!$nodes[0]){
 
-         console.error('DevelopmentHelpers.constructPath(): The passed parameter is not an array.');
+             console.error('DevelopmentHelpers.constructPath(): The passed parameter is not an array.');
+             return $path;
+         }
+
+         // Add a slash after each child node.
+         $nodes.forEach(function($childNode){
+
+            $path += $childNode + '/';
+         });
+
          return $path;
      }
-
-     // Add a slash after each child node.
-     $nodes.forEach(function($childNode){
-
-        $path += $childNode + '/';
-     });
-
-     return $path;
- }
 
     /**
      * Validates the passed input for correctness
@@ -50,12 +50,12 @@ class DevelopmentHelpers {
      * @return {boolean}
      */
 
- static validateCorrectness($input, $type){
+     static validateCorrectness($input, $type){
 
-     // TODO: Implement
+         // TODO: Implement
 
-     return true;
- }
+         return true;
+     }
 
 
     /**
@@ -67,10 +67,10 @@ class DevelopmentHelpers {
      * @return {boolean}
      */
 
- static validateSecurity($input){
+     static validateSecurity($input){
 
-     // TODO: Implement
+         // TODO: Implement
 
-     return true;
- }
+         return true;
+     }
 }
