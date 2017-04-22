@@ -2,6 +2,7 @@ SHORT TERM:
 
 
 !! Do not forget in the correctness validation checks to check if the field is actually empty.
+!! Do not forget to add password correctness check.
 
 LONG TERM:
 1. Implement the correcntess checks and the security checks inside DevelopmentHelpers.
