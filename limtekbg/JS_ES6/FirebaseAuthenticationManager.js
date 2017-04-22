@@ -112,7 +112,7 @@ const FirebaseAuthenticationManager = (function(){
 
             if($self.getCurrentUser()){
 
-                $self._authError = 'You cannot login while, you are logged in!';
+                $self._authError = 'Не можеш да се впишеш, когато вече си вписан';
                 $self._authObserverManager.updateObservers('ERROR 1');
                 return;
             }
@@ -120,11 +120,24 @@ const FirebaseAuthenticationManager = (function(){
             $self._auth.signInWithEmailAndPassword($email, $password)
                 .catch(function($error){
 
-                    if($error){
+                    $self._authError = 'Проблем при вписване';
 
-                        $self._authError = $error.message || $error;
-                        $self._authObserverManager.updateObservers('ERROR 1');
+                    if($error && $error.code){
+
+                        if($error.code === 'auth/wrong-password'){
+
+                            $self._authError = 'Неправилна парола';
+                        }
+                        else if($error.code === 'auth/user-not-found'){
+
+                            $self._authError = 'Неправилен имейл адрес';
+                        }
+
+                        console.error('FirebaseAuthenticationManager.login(): ');
+                        console.error($error);
                     }
+
+                    $self._authObserverManager.updateObservers('ERROR 1');
                 });
         },
 
@@ -155,7 +168,14 @@ const FirebaseAuthenticationManager = (function(){
                 .catch(function($error){
                     if($error){
 
-                        $self._authError = $error.message || $error;
+                        $self._authError = 'Възникна проблем';
+
+                        if($error && $error.code){
+
+                            console.error('FirebaseAuthenticationManager.logout(): ');
+                            console.log($error);
+                        }
+
                         $self._authObserverManager.updateObservers('ERROR 1');
                     }
             });
