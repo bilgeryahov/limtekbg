@@ -1,7 +1,5 @@
 SHORT TERM:
-1. Make sure that the Login controller uses the validation functions from Development helpers for
-the user input.
-2. Make sure that the login/administration controllers display messages in Bulgarian.
+
 
 !! Do not forget in the correctness validation checks to check if the field is actually empty.
 

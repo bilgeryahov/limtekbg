@@ -150,32 +150,6 @@ const LoginController = (function () {
         },
 
         /**
-         * Validates the login input fields for correctness.
-         *
-         * @return string
-         */
-
-        validateLoginInputs(){
-
-            let $self = this;
-
-            if($self._inputPassword.value === '' || $self._inputEmail.value === '') {
-
-                return 'Fill in all the fields!';
-            }
-
-            let $atpos = $self._inputEmail.value.indexOf('@');
-            let $dotpos = $self._inputEmail.value.indexOf('.');
-
-            if($atpos < 0 || $dotpos < $atpos + 2 || $dotpos + 2 >= $self._inputEmail.value.length){
-
-                return 'Enter a correct e-mail address!';
-            }
-
-            return 'Everything okay';
-        },
-
-        /**
          * Starts the login process.
          *
          * @return void
@@ -185,16 +159,21 @@ const LoginController = (function () {
 
             const $self = this;
 
-            let $validation = $self.validateLoginInputs();
-            if($validation === 'Everything okay'){
+            // Validate.
+            if(
+                DevelopmentHelpers.validateCorrectness($self._inputEmail.value, 'email')
+                && DevelopmentHelpers.validateCorrectness($self._inputPassword.value, 'password')
+                && DevelopmentHelpers.validateSecurity($self._inputEmail)
+                && DevelopmentHelpers.validateSecurity($self._inputPassword)
+            ){
 
                 $self.displayLoader();
                 FirebaseAuthenticationManager.login($self._inputEmail.value, $self._inputPassword.value);
             }
             else{
 
-                console.error($validation);
-                TemplateProcessor.generateCustomMessage($validation);
+                console.error('LoginController.attemptLogin(): Problem with validation of the input fields.');
+                TemplateProcessor.generateCustomMessage('Въвели сте неправилни символи в едно от полетаата.');
             }
         },
 
