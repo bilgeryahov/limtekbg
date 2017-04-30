@@ -137,6 +137,9 @@ const ContactsPageController = (function () {
             // Indicate that the send button has been triggered.
             $self.sendButtonTriggeredState(true);
 
+            // Try to get reCAPTCHA user's response.
+            let $reCAPTCHAresponse = grecaptcha.getResponse();
+
             $self._cfNameValue = $self._cfNameElement.value;
             $self._cfEmailValue = $self._cfEmailElement.value;
             $self._cfPhoneValue = $self._cfPhoneElement.value;
@@ -160,6 +163,7 @@ const ContactsPageController = (function () {
             }
 
             let $postData = {
+                recaptcha_response: $reCAPTCHAresponse,
                 from_name   : $self._cfNameValue,
                 from_email  : $self._cfEmailValue,
                 from_phone  : $self._cfPhoneValue,
@@ -183,7 +187,11 @@ const ContactsPageController = (function () {
                         return;
                     }
                 },
-                onFailure(){
+                onFailure($xhr){
+
+                    if($xhr){
+                        console.error($xhr);
+                    }
 
                     console.error('ContactsPageController.sendMailToCloudService(): Sending the message failed.');
                     TemplateProcessor.generateCustomMessage('Проблем с изпращането на съобщението.');
