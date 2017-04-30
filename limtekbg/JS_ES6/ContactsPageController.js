@@ -139,6 +139,14 @@ const ContactsPageController = (function () {
 
             // Try to get reCAPTCHA user's response.
             let $reCAPTCHAresponse = grecaptcha.getResponse();
+            if(!$reCAPTCHAresponse || $reCAPTCHAresponse === 'undefined' || $reCAPTCHAresponse === ''){
+
+                // Indicate that the sending process has finished.
+                $self.sendButtonTriggeredState(false);
+                console.error('ContactsPageController.sendMailToCloudService(): reCAPTCHA skipped!');
+                TemplateProcessor.generateCustomMessage('Отбележете, че не сте робот.');
+                return;
+            }
 
             $self._cfNameValue = $self._cfNameElement.value;
             $self._cfEmailValue = $self._cfEmailElement.value;
@@ -148,6 +156,11 @@ const ContactsPageController = (function () {
 
             if(!$self.validateInputCorrectness()){
 
+                // Reset reCAPTCHA
+                grecaptcha.reset();
+
+                // Indicate that the sending process has finished.
+                $self.sendButtonTriggeredState(false);
                 console.error('ContactsPageController.sendMailToCloudService(): One of the input fields contains ' +
                     ' semantically not correct information');
                 TemplateProcessor.generateCustomMessage('Въвели сте некоректна информация или символи.');
@@ -156,6 +169,11 @@ const ContactsPageController = (function () {
 
             if(!$self.validateInputSecurity()){
 
+                // Reset reCAPTCHA
+                grecaptcha.reset();
+
+                // Indicate that the sending process has finished.
+                $self.sendButtonTriggeredState(false);
                 console.error('ContactsPageController.sendMailToCloudService(): One of the input fields contains ' +
                     ' not secure information');
                 TemplateProcessor.generateCustomMessage('Въвели сте некоректна информация или символи.');
@@ -180,6 +198,9 @@ const ContactsPageController = (function () {
                     $data = JSON.decode($data);
                     if($data.hasOwnProperty('message')){
 
+                        // Reset reCAPTCHA
+                        grecaptcha.reset();
+
                         console.log('ContactsPageController.sendMailToCloudService(): ' + $data.message);
                         TemplateProcessor.generateCustomMessage('Съобщението е изпратено успешно.');
                         // Indicate that the sending process has finished.
@@ -188,6 +209,9 @@ const ContactsPageController = (function () {
                     }
                 },
                 onFailure($xhr){
+
+                    // Reset reCAPTCHA
+                    grecaptcha.reset();
 
                     if($xhr){
                         console.error($xhr);
