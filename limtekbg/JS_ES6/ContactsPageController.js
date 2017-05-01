@@ -96,10 +96,10 @@ const ContactsPageController = (function () {
             const $self = this;
 
             return (
-                DevelopmentHelpers.validateCorrectness($self._cfNameValue, 'text')
+                DevelopmentHelpers.validateCorrectness($self._cfNameValue, 'name')
                 && DevelopmentHelpers.validateCorrectness($self._cfEmailValue, 'email')
                 && DevelopmentHelpers.validateCorrectness($self._cfPhoneValue, 'phone')
-                && DevelopmentHelpers.validateCorrectness($self._cfSubjectValue, 'text')
+                && DevelopmentHelpers.validateCorrectness($self._cfSubjectValue, 'subject')
                 && DevelopmentHelpers.validateCorrectness($self._cfMessageValue, 'text')
             );
         },

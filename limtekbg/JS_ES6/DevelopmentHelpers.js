@@ -52,11 +52,79 @@ class DevelopmentHelpers {
 
      static validateCorrectness($input, $type){
 
-         // TODO: Implement
+         if(!$input  || !$type){
 
-         return true;
+             return false;
+         }
+
+         if($input.length === 0){
+
+             return false;
+         }
+
+        let $correct = false;
+
+         switch ($type){
+
+             case 'email':
+                 let $atPos = $input.indexOf('@');
+                 let $dotPos = $input.indexOf('.');
+                 $correct = (
+                         $input.length < 50 &&
+                         $atPos > 0 &&
+                         $dotPos > $atPos +2 &&
+                         $dotPos + 2 < $input.length &&
+                         !$input.includes(' ')
+                 );
+                 break;
+
+             case 'phone':
+                 $correct = (
+                     !isNaN($input) &&
+                     $input.length < 50
+                 );
+                 break;
+
+             case 'password':
+                 let $lower = new RegExp(/[a-z]{1,}/);
+                 let $upper = new RegExp(/[A-Z]{1,}/);
+                 let $numeric = new RegExp(/[0-9]{1,}/);
+                 let $special = new RegExp(/[!@#$&*]{1,}/);
+                 $correct = (
+                     $lower.test($input) &&
+                     $upper.test($input) &&
+                     $numeric.test($input) &&
+                     $special.test($input) &&
+                     !$input.includes(' ') &&
+                     $input.length < 50
+                 );
+                 break;
+
+             case 'name':
+                 $correct = (
+                     $input.length < 50
+                 );
+                 break;
+
+             case 'subject':
+                 $correct = (
+                     $input.length < 50
+                 );
+                 break;
+
+             case 'text':
+                 $correct = (
+                     $input.length < 600
+                 );
+                 break;
+
+             default:
+                 $correct = false;
+                 break;
+         }
+
+         return $correct;
      }
-
 
     /**
      * Validates the passed input for
