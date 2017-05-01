@@ -1,15 +1,40 @@
 'use strict';
 
+/**
+ * @file index.js
+ *
+ * Contains Firebase cloud functions.
+ *
+ * @author Bilger Yahov <bayahov1@gmail.com>
+ * @version 1.0.0
+ * @copyright © 2017 Bilger Yahov, all rights reserved.
+ */
+
 const functions  = require('firebase-functions');
 const nodemailer = require('nodemailer');
 const querystring = require('querystring');
 const https = require('https');
 const http = require('http');
 
+/**
+ * @cloudFunction sendMail.js
+ *
+ * Cloud function which deals with sending an email message to Gmail account.
+ */
+
 exports.sendMail = functions.https.onRequest((req, res) => {
+
+    /*
+     * Headers for each response.
+     */
+
     res.header('Access-Control-Allow-Origin', 'https://limtek-fb748.firebaseapp.com');
     res.header('Access-Control-Allow-Headers', 'X-Requested-With');
     res.header('Access-Control-Allow-Methods', 'PUT,POST');
+
+    /*
+     * Deal with req method type.
+     */
 
     const allowedMethods = [
         'POST',
@@ -24,15 +49,6 @@ exports.sendMail = functions.https.onRequest((req, res) => {
         return;
     }
 
-    const allowedParameters = [
-        'recaptcha_response',
-        'from_name',
-        'from_email',
-        'from_phone',
-        'subject',
-        'text'
-    ];
-
     if(!allowedMethods.includes(req.method)){
         res
             .status(405)
@@ -42,34 +58,66 @@ exports.sendMail = functions.https.onRequest((req, res) => {
         return;
     }
 
-    if(Object.keys(req.body).length !== allowedParameters.length){
-        res
-            .status(400)
-            .json({
-                error:'There is a problem with request parameters.'
-            });
-        return;
-    }
+    /*
+     * Start checking the request parameters.
+     */
 
-    for(let parameter in req.body){
-        if(req.body.hasOwnProperty(parameter)){
-            let index = allowedParameters.indexOf(parameter);
-            if(index !== -1){
-                allowedParameters.splice(index, 1);
-            }
+    const allowedParameters = [
+        'recaptcha_response',
+        'from_name',
+        'from_email',
+        'from_phone',
+        'subject',
+        'text'
+    ];
+
+    let reqParamsProblem = {error: ''};
+
+    if(reqParamsProblem.error === ''){
+        if(Object.keys(req.body).length !== allowedParameters.length){
+            reqParamsProblem.error = 'The number of request parameters is not matching what the function expects.';
         }
     }
 
-    if(allowedParameters.length !== 0){
+    if(reqParamsProblem.error === ''){
+        for(let parameter in req.body){
+            if(req.body.hasOwnProperty(parameter)){
+                let index = allowedParameters.indexOf(parameter);
+                if(index !== -1){
+                    allowedParameters.splice(index, 1);
+                }
+            }
+        }
+        if(allowedParameters.length !== 0){
+            reqParamsProblem.error = 'There are missing request parameters.';
+        }
+    }
+
+    if(reqParamsProblem.error === ''){
+        // TODO: Check the req params for their data types (if they are correct).
+        if(5 === 6){
+            reqParamsProblem.error = 'The request parameters did not pass the correctness check.';
+        }
+    }
+
+    if(reqParamsProblem.error === ''){
+        // TODO: Check the req params for securiry issues.
+        if(5 === 6){
+            reqParamsProblem.error = 'The request parameters did not pass the security check.';
+        }
+    }
+
+    if(reqParamsProblem.error !== ''){
         res
             .status(400)
-            .json({
-                error:'There is a problem with request parameters.'
-            });
+            .json(reqParamsProblem);
         return;
     }
 
-    // Let's verify reCAPTCHA.
+    /*
+     * Deal with reCAPTCHA.
+     */
+
     const recaptchaPOSTdata = querystring.stringify({
         'secret': '6LeNYx8UAAAAAN4l_zsbZN_7lLY10pESj1TAla0_',
         'response': req.body.recaptcha_response
@@ -99,7 +147,7 @@ exports.sendMail = functions.https.onRequest((req, res) => {
 
                 if(!obj.hasOwnProperty('success') || !obj.hasOwnProperty('challenge_ts') ||
                     !obj.hasOwnProperty('hostname')){
-                    console.log(obj);
+                    console.error(obj);
                     res
                         .status(503)
                         .json({
@@ -109,37 +157,35 @@ exports.sendMail = functions.https.onRequest((req, res) => {
                 }
 
                 if(obj['success'] === true && obj['hostname'].includes('limtek-fb748.firebaseapp.com')){
-                 return finishSendingMail();
+                    return finishSendingMail();
                 }
 
-                console.log(obj);
+                console.error(obj);
                 res
                     .status(400)
                     .json({
                         error: 'reCAPTCHA did not pass success and hostname checks.'
                     });
-                return;
             }
             catch(exc){
-                console.log(exc);
+                console.error('Exception: ' + exc);
+                console.error('Output: ' + output);
                 res
                     .status(503)
                     .json({
                         error:'reCAPTCHA did not reply with proper message. Failed while parsing it.'
                     });
-                return;
             }
         });
     });
 
     recaptchaPOSTreq.on('error', (e) => {
-        console.log(e);
+        console.error(e);
         res
             .status(503)
             .json({
-                error:'reCAPTCHA request went wrong'
+                error:'reCAPTCHA request went wrong.'
             });
-        return;
     });
 
     recaptchaPOSTreq.write(recaptchaPOSTdata);
@@ -151,9 +197,6 @@ exports.sendMail = functions.https.onRequest((req, res) => {
         let mailFromPhone  = req.body.from_phone;
         let mailSubject    = req.body.subject;
         let mailText       = req.body.text;
-
-        // TODO: Check the req params for their data types (if they are correct).
-        // TODO: Check the req params for securiry issues.
 
         let transporter = nodemailer.createTransport({
             service: 'gmail',
@@ -173,7 +216,7 @@ exports.sendMail = functions.https.onRequest((req, res) => {
 
         transporter.sendMail(mailOptions, (err, data) => {
             if(err){
-                console.log(err);
+                console.error(err);
                 res
                     .status(503)
                     .json({
@@ -182,6 +225,7 @@ exports.sendMail = functions.https.onRequest((req, res) => {
                 return;
             }
 
+            console.log(data);
             res
                 .status(201)
                 .json({
