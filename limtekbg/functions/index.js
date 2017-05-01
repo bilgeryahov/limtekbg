@@ -173,6 +173,7 @@ exports.sendMail = functions.https.onRequest((req, res) => {
 
         transporter.sendMail(mailOptions, (err, data) => {
             if(err){
+                console.log(err);
                 res
                     .status(503)
                     .json({
