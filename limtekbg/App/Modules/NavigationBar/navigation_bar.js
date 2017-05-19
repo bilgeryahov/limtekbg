@@ -60,20 +60,13 @@ const NavigationBar = (function(){
             const selfObj = this;
             const path = window.location.pathname;
 
-            let templateInfo = {current: '', rest: []};
+            let templateInfo = [];
 
             switch (path){
 
                 case '/index.html':
-                    templateInfo.current = 'Начало';
-                    templateInfo.rest = [
-                        {name: 'Доставки', path: 'deliveries.html'},
-                        {name: 'Контакти', path: 'contacts.html'},
-                        {name: 'Продукти', path: 'products.html'}
-                    ];
-                    break;
-
-                    templateInfo.rest = [
+                    templateInfo = [
+                        {name: 'Начало', path: 'index.html', current: true},
                         {name: 'Доставки', path: 'deliveries.html'},
                         {name: 'Контакти', path: 'contacts.html'},
                         {name: 'Продукти', path: 'products.html'}
@@ -81,35 +74,35 @@ const NavigationBar = (function(){
                     break;
 
                 case '/deliveries.html':
-                    templateInfo.current = 'Доставки';
-                    templateInfo.rest = [
+                    templateInfo = [
                         {name: 'Начало', path: 'index.html'},
+                        {name: 'Доставки', path: 'deliveries.html', current: true},
                         {name: 'Контакти', path: 'contacts.html'},
                         {name: 'Продукти', path: 'products.html'}
                     ];
                     break;
 
                 case '/contacts.html':
-                    templateInfo.current = 'Контакти';
-                    templateInfo.rest = [
+                    templateInfo = [
                         {name: 'Начало', path: 'index.html'},
                         {name: 'Доставки', path: 'deliveries.html'},
+                        {name: 'Контакти', path: 'contacts.html', current: true},
                         {name: 'Продукти', path: 'products.html'}
                     ];
                     break;
 
                 case '/products.html':
-                    templateInfo.current = 'Продукти';
-                    templateInfo.rest = [
+                    templateInfo = [
                         {name: 'Начало', path: 'index.html'},
                         {name: 'Доставки', path: 'deliveries.html'},
-                        {name: 'Контакти', path: 'contacts.html'}
+                        {name: 'Контакти', path: 'contacts.html'},
+                        {name: 'Продукти', path: 'products.html', current: true}
                     ];
                     break;
 
                 default:
-                    templateInfo.current = 'Начало';
-                    templateInfo.rest = [
+                    templateInfo = [
+                        {name: 'Начало', path: 'index.html', current: true},
                         {name: 'Доставки', path: 'deliveries.html'},
                         {name: 'Контакти', path: 'contacts.html'},
                         {name: 'Продукти', path: 'products.html'}
@@ -133,7 +126,7 @@ const NavigationBar = (function(){
 
             const selfObj = this;
             const compiled = Handlebars.compile(pageContent);
-            selfObj._placeholder.set('html', compiled({current: templateInfo.current, rest: templateInfo.rest}));
+            selfObj._placeholder.set('html', compiled({pages: templateInfo}));
         },
 
         /**
