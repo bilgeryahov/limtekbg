@@ -39,17 +39,27 @@ gulp.task('copy_content', function(){
 // Compile JS ES6 to JS ES5.
 gulp.task('compile_javascript',  function(){
 
-    return gulp.src('./Deploy/Modules/**/*.js')
+    const paths = [
+        './Deploy/Modules/**/*.js',
+        './Deploy/JavaScript/*.js'
+    ];
+
+    return gulp.src(paths, {base: './'})
         .pipe(babel())
-        .pipe(gulp.dest('./Deploy/Modules/'));
+        .pipe(gulp.dest('./'));
 });
 
 // Compile SCSS to CSS.
 gulp.task('compile_css', function(){
 
-    return gulp.src('./Deploy/Modules/**/*.scss')
+    const paths = [
+        './Deploy/Modules/**/*.scss',
+        './Deploy/StyleSheets/*.scss'
+    ];
+
+    return gulp.src(paths, {base: './'})
         .pipe(sass().on('error', sass.logError))
-        .pipe(gulp.dest('./Deploy/Modules/'));
+        .pipe(gulp.dest('./'));
 });
 
 // Deploy locally.
