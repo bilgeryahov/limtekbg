@@ -39,6 +39,8 @@ gulp.task('copy_content', function(){
 // Compile JS ES6 to JS ES5.
 gulp.task('compile_javascript',  function(){
 
+    // Make sure to take everything from the modules.
+    // Make sure to take only the EcmaScript 6 files.
     const paths = [
         './Deploy/Modules/**/*.js',
         './Deploy/JavaScript/*.js'
@@ -52,6 +54,8 @@ gulp.task('compile_javascript',  function(){
 // Compile SCSS to CSS.
 gulp.task('compile_css', function(){
 
+    // Make sure to take everything from the modules.
+    // Make sure to take only the scss stylesheets.
     const paths = [
         './Deploy/Modules/**/*.scss',
         './Deploy/StyleSheets/*.scss'
