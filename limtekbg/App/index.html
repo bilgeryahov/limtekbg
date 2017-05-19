@@ -1,55 +1,12 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Лимтек Инженеринг - Limtek Engineering</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0 maximum-scale=1"/>
-        <meta charset="utf-8"/>
-        <meta name="description" content="Web store for machinery"/>
-        <meta name="keywords" content="магазин, онлайн, машини, нови, втора употреба, акумулатори, резервни
-              части, лемежи, болтове, гайки"/>
-        <meta name="author" content="Bilger Yahov"/>
-        <link rel="stylesheet" href="./CSS/Vendor/w3css.css"/>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato"/>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat"/>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css"/>
-        <link rel="stylesheet" href="./CSS/Default.css"/>
-        <script src="./JS/Vendor/MooTools-Core-1.6.0.js"></script>
-        <script src="./JS/Vendor/MooTools-More-1.6.0.js"></script>
-        <script src="./JS/PageDynamicsHandler.js"></script>
-        <style>
-            body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
-            .w3-navbar,h1,button {font-family: "Montserrat", sans-serif}
-            .fa-anchor{font-size:200px}
-        </style>
+    <head id="HeadPlaceholder">
     </head>
     <body>
-        <!-- Navbar -->
-        <ul class="w3-navbar w3-green w3-card-2 w3-top w3-left-align w3-large">
-            <li class="w3-hide-medium w3-hide-large w3-opennav w3-right">
-                <a class="w3-padding-large w3-hover-white w3-large w3-green" href="#" id="ToggleNavigation"
-                 title="Toggle Navigation Menu">
-                <i class="fa fa-bars"></i>
-                </a>
-            </li>
-            <li><a href="#" class="w3-padding-large w3-white">Начало</a></li>
-            <li class="w3-hide-small"><a href="./deliveries.html" class="w3-padding-large w3-hover-white">Доставки</a></li>
-            <li class="w3-hide-small"><a href="./contacts.html" class="w3-padding-large w3-hover-white">Контакти</a></li>
-            <li class="w3-hide-small"><a href="products.html" class="w3-padding-large w3-hover-white">Продукти</a></li>
-        </ul>
-        <!-- Navbar on small screens -->
-        <div id="NavDemo" class="w3-hide w3-hide-large w3-hide-medium w3-top">
-            <ul class="w3-navbar w3-left-align w3-large w3-white">
-                <li><a class="w3-padding-large" href="./deliveries.html">Доставки</a></li>
-                <li><a class="w3-padding-large" href="./contacts.html">Контакти</a></li>
-                <li><a class="w3-padding-large" href="products.html">Продукти</a></li>
-            </ul>
-        </div>
-        <!-- Header -->
-        <div class="w3-container w3-green w3-center w3-padding-64">
-            <h1 class="w3-margin">Лимтек Инженеринг</h1>
-            <p class="w3-large">Вашият надежден партньор!</p>
-            <img src="./images/logo_opacity.png" alt="Logo"/>
-        </div>
+        <nav id="NavigationBarPlaceholder">
+        </nav>
+       <header id="HeaderPlaceholder">
+       </header>
         <div id="MainWrapper">
             <!-- First Grid -->
             <div class="w3-row-padding w3-padding-64 w3-container">
@@ -85,28 +42,58 @@
             <div class="w3-row-padding w3-padding-64 w3-container">
                 <div class="w3-content">
                     <div class="w3-content w3-padding-16">
-                        <img class="w3-half w3-padding w3-round" src="./images/building1.jpg" alt="Building image"/>
-                        <img class="w3-half w3-padding w3-round" src="./images/building2.jpg" alt="Building image"/>
+                        <img class="w3-half w3-padding w3-round" src="https://firebasestorage.googleapis.com/v0/b/limtek-fb748.appspot.com/o/images%2Fbuilding1.jpg?alt=media&token=28f40763-ac40-439e-bdb8-da602476efb5" alt="Building image"/>
+                        <img class="w3-half w3-padding w3-round" src="https://firebasestorage.googleapis.com/v0/b/limtek-fb748.appspot.com/o/images%2Fbuilding2.jpg?alt=media&token=cf4122c0-6b43-4e3f-bb3c-8cf546ca93f8" alt="Building image"/>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Quote of the day -->
-        <div class="w3-container w3-black w3-center w3-opacity w3-padding-64">
-            <h1 class="w3-margin w3-xlarge">Цитат на деня: <span id="Quote">Аз съм много готин пич.</span></h1>
-        </div>
-        <!-- Footer -->
-        <footer class="w3-container w3-padding-32 w3-center w3-opacity">
-            <div class="w3-xlarge w3-padding-32">
-                <a href="#" class="w3-hover-text-indigo"><i class="fa fa-facebook-official"></i></a>
-                <a href="#" class="w3-hover-text-indigo"><i class="fa fa-linkedin"></i></a>
-            </div>
-            <p>
-                Designed with <a href="http://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a>
-                <br/>
-                Powered by <a href="https://firebase.google.com/" target="_blank">Firebase</a> engine
-            </p>
-            <p>Poetry by: Bilger Yahov <br/> All cats and dogs reserved.</p>
+
+        <section id="QuoteOfTheDayPlaceholder">
+        </section>
+        <footer id="FooterPlaceholder">
         </footer>
-</body>
+
+        <!-- Vendor JavaScript needed for loading of the modules. -->
+        <script type="text/javascript" src="./JS/Vendor/handlebars-v4.0.5.js"></script>
+        <script type="text/javascript" src="./JS/Vendor/MooTools-Core-1.6.0.js"></script>
+        <script type="text/javascript" src="./JS/Vendor/MooTools-More-1.6.0.js"></script>
+
+        <!-- Vendor CSS, which has to be pre-loaded. -->
+        <link rel="stylesheet" href="./CSS/Vendor/w3css.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css"/>
+
+        <style>
+            body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
+            .w3-navbar,h1,button {font-family: "Montserrat", sans-serif}
+            .fa-anchor{font-size:200px}
+        </style>
+
+        <!-- Head module -->
+        <script id="HeadTemplate" type="text/x-handlebars-template" src="./Modules/Head/head.html"></script>
+        <script type="text/javascript" src="./Modules/Head/head.js"></script>
+        <link rel="stylesheet" href="./Modules/Head/head.css">
+
+        <!-- Header module -->
+        <script id="HeaderTemplate" type="text/x-handlebars-template" src="./Modules/Header/header.html"></script>
+        <script type="text/javascript" src="./Modules/Header/header.js"></script>
+        <link rel="stylesheet" href="./Modules/Header/header.css">
+
+        <!-- NavigationBar module -->
+        <script id="NavigationBarTemplate" type="text/x-handlebars-template" src="./Modules/NavigationBar/navigation_bar.html"></script>
+        <script type="text/javascript" src="./Modules/NavigationBar/navigation_bar.js"></script>
+        <link rel="stylesheet" href="./Modules/NavigationBar/navigation_bar.css">
+
+        <!-- Footer module -->
+        <script id="FooterTemplate" type="text/x-handlebars-template" src="./Modules/Footer/footer.html"></script>
+        <script type="text/javascript" src="./Modules/Footer/footer.js"></script>
+        <link rel="stylesheet" href="./Modules/Footer/footer.css">
+
+        <!-- QuoteOfTheDay module -->
+        <script id="QuoteOfTheDayTemplate" type="text/x-handlebars-template" src="./Modules/QuoteOfTheDay/quote_of_the_day.html"></script>
+        <script type="text/javascript" src="./Modules/QuoteOfTheDay/quote_of_the_day.js"></script>
+        <link rel="stylesheet" href="./Modules/QuoteOfTheDay/quote_of_the_day.css">
+    </body>
 </html>
