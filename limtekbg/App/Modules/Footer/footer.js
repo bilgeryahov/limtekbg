@@ -36,11 +36,20 @@ const Footer = (function(){
             selfObj._template = $('FooterTemplate');
             selfObj._placeholder = $('FooterPlaceholder');
 
+            if(!selfObj._template || !selfObj._placeholder){
+
+                console.error('Footer.init(): Template Or Placeholder not found!');
+                return;
+            }
+
             new Request({
                 url: selfObj._templatePath,
                 method: 'get',
                 onSuccess(data){
                     return selfObj.generateTemplate(data);
+                },
+                onFailure(){
+                    console.error('Footer.init(): Failed while getting the template! Aborting!');
                 }
             }).send();
         },
@@ -67,7 +76,6 @@ const Footer = (function(){
             Logic.init();
         }
     }
-
 })();
 
 document.addEvent('domready', function () {
