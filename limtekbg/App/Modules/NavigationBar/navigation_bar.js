@@ -38,11 +38,20 @@ const NavigationBar = (function(){
             selfObj._template = $('NavigationBarTemplate');
             selfObj._placeholder = $('NavigationBarPlaceholder');
 
+            if(!selfObj._template || !selfObj._placeholder){
+
+                console.error('NavigationBar.init(): Template Or Placeholder not found!');
+                return;
+            }
+
             new Request({
                 url: selfObj._templatePath,
                 method: 'get',
                 onSuccess(data){
                     return selfObj.determinePage(data);
+                },
+                onFailure(){
+                    console.error('NavigationBar.init(): Failed while getting the template! Aborting!');
                 }
             }).send();
         },
@@ -172,7 +181,6 @@ const NavigationBar = (function(){
             Logic.toggleNavigationBar();
         }
     }
-
 })();
 
 document.addEvent('domready', function () {
