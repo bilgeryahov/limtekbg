@@ -56,11 +56,20 @@ const ContactForm = (function(){
             selfObj._template = $('ContactFormTemplate');
             selfObj._placeholder = $('ContactFormPlaceholder');
 
+            if(!selfObj._template || !selfObj._placeholder){
+
+                console.error('ContactForm.init(): Template Or Placeholder not found!');
+                return;
+            }
+
             new Request({
                 url: selfObj._templatePath,
                 method: 'get',
                 onSuccess(data){
                     return selfObj.generateTemplate(data);
+                },
+                onFailure(){
+                    console.error('ContactForm.init(): Failed while getting the template! Aborting!');
                 }
             }).send();
         },
