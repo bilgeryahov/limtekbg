@@ -38,17 +38,26 @@ const CustomMessage = (function(){
                 selfObj._placeholder = $('CustomMessagePlaceholder');
             }
 
+            if(!selfObj._template || !selfObj._placeholder){
+
+                console.error('CustomMessage.showMessage(): Template Or Placeholder not found!');
+                return;
+            }
+
             new Request({
                 url: selfObj._templatePath,
                 method: 'get',
                 onSuccess(data){
                     return selfObj.generateTemplate(data, message);
+                },
+                onFailure(){
+                    console.error('CustomMessage.showMessage(): Failed while getting the template! Aborting!');
                 }
             }).send();
         },
 
         /**
-         * Generates the template with the custom message in it.
+         * Generates the template with the custom message in it and makes the box visible.
          *
          * @param pageContent
          * @param templateInfo
@@ -86,5 +95,4 @@ const CustomMessage = (function(){
             Logic.hideMessage();
         }
     }
-
 })();
