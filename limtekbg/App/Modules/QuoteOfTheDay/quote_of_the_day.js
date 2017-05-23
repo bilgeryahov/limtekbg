@@ -48,11 +48,20 @@ const QuoteOfTheDay = (function(){
             selfObj._template = $('QuoteOfTheDayTemplate');
             selfObj._placeholder = $('QuoteOfTheDayPlaceholder');
 
+            if(!selfObj._template || !selfObj._placeholder){
+
+                console.error('QuoteOfTheDay.init(): Template Or Placeholder not found!');
+                return;
+            }
+
             new Request({
                 url: selfObj._templatePath,
                 method: 'get',
                 onSuccess(data){
                     return selfObj.getRandomQuote(data);
+                },
+                onFailure(){
+                    console.error('QuoteOfTheDay.init(): Failed while getting the template! Aborting!');
                 }
             }).send();
         },
@@ -97,7 +106,6 @@ const QuoteOfTheDay = (function(){
             Logic.init();
         }
     }
-
 })();
 
 document.addEvent('domready', function () {
