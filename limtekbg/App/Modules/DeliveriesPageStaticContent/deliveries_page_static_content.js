@@ -36,11 +36,20 @@ const DeliveriesPageStaticContent = (function(){
             selfObj._template = $('DeliveriesPageStaticContentTemplate');
             selfObj._placeholder = $('DeliveriesPageStaticContentPlaceholder');
 
+            if(!selfObj._template || !selfObj._placeholder){
+
+                console.error('DeliveriesPageStaticContent.init(): Template Or Placeholder not found!');
+                return;
+            }
+
             new Request({
                 url: selfObj._templatePath,
                 method: 'get',
                 onSuccess(data){
                     return selfObj.generateTemplate(data);
+                },
+                onFailure(){
+                    console.error('DeliveriesPageStaticContent.init(): Failed while getting the template! Aborting!');
                 }
             }).send();
         },
@@ -67,7 +76,6 @@ const DeliveriesPageStaticContent = (function(){
             Logic.init();
         }
     }
-
 })();
 
 document.addEvent('domready', function () {
