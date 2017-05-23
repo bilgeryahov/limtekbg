@@ -36,11 +36,20 @@ const IndexPageStaticContent = (function(){
             selfObj._template = $('IndexPageStaticContentTemplate');
             selfObj._placeholder = $('IndexPageStaticContentPlaceholder');
 
+            if(!selfObj._template || !selfObj._placeholder){
+
+                console.error('IndexPageStaticContent.init(): Template Or Placeholder not found!');
+                return;
+            }
+
             new Request({
                 url: selfObj._templatePath,
                 method: 'get',
                 onSuccess(data){
                     return selfObj.generateTemplate(data);
+                },
+                onFailure(){
+                    console.error('IndexPageStaticContent.init(): Failed while getting the template! Aborting!');
                 }
             }).send();
         },
@@ -67,7 +76,6 @@ const IndexPageStaticContent = (function(){
             Logic.init();
         }
     }
-
 })();
 
 document.addEvent('domready', function () {
