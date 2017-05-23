@@ -40,7 +40,7 @@ gulp.task('copy_content', function(){
 gulp.task('compile_javascript',  function(){
 
     // Make sure to take everything from the modules.
-    // Make sure to take only the EcmaScript 6 files.
+    // Make sure to take only the EcmaScript 6 files, without Vendor folder.
     const paths = [
         './Deploy/Modules/**/*.js',
         './Deploy/JavaScript/*.js'
@@ -55,7 +55,7 @@ gulp.task('compile_javascript',  function(){
 gulp.task('compile_css', function(){
 
     // Make sure to take everything from the modules.
-    // Make sure to take only the scss stylesheets.
+    // Make sure to take only the scss stylesheets, without Vendor folder.
     const paths = [
         './Deploy/Modules/**/*.scss',
         './Deploy/StyleSheets/*.scss'
