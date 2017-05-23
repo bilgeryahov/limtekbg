@@ -36,11 +36,20 @@ const Head = (function(){
             selfObj._template = $('HeadTemplate');
             selfObj._placeholder = $('HeadPlaceholder');
 
+            if(!selfObj._template || !selfObj._placeholder){
+
+                console.error('Head.init(): Template Or Placeholder not found!');
+                return;
+            }
+
             new Request({
                 url: selfObj._templatePath,
                 method: 'get',
                 onSuccess(data){
                     return selfObj.generateTemplate(data);
+                },
+                onFailure(){
+                    console.error('Head.init(): Failed while getting the template! Aborting!');
                 }
             }).send();
         },
@@ -67,7 +76,6 @@ const Head = (function(){
             Logic.init();
         }
     }
-
 })();
 
 document.addEvent('domready', function () {
