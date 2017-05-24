@@ -153,7 +153,18 @@ const ContactForm = (function(){
             }
 
             // First get the DOM elements, at least try.
-            selfObj.getDomElements();
+            const continueSending = selfObj.getDomElements();
+            if(!continueSending){
+
+                // Reset reCAPTCHA
+                grecaptcha.reset();
+
+                // Indicate that the sending process has finished.
+                selfObj.sendButtonTriggeredState(false);
+                console.log('ContactForm.sendMailToCloudService(): Problem with presence' +
+                    ' of DOM elements!');
+                return;
+            }
 
             selfObj._cfNameValue = selfObj._cfNameElement.value;
             selfObj._cfEmailValue = selfObj._cfEmailElement.value;
