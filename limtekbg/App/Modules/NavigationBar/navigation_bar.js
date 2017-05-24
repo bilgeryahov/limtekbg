@@ -12,15 +12,14 @@ const NavigationBar = (function(){
 
     const Logic = {
 
-        _template: null,
-        _placeholder: null,
         _templatePath: './Modules/NavigationBar/navigation_bar.html',
+        _placeholderName: 'NavigationBarPlaceholder',
+        _templateFactory: null,
 
         _navDemo: null,
 
         /**
-         * Gets the template and placeholder. If goes successful, calls
-         * for setting up the right page on the navigation.
+         * Initialize the main functionality.
          *
          * @return void
          */
@@ -35,36 +34,21 @@ const NavigationBar = (function(){
 
             const selfObj = this;
 
-            selfObj._template = $('NavigationBarTemplate');
-            selfObj._placeholder = $('NavigationBarPlaceholder');
+            selfObj._flexibleTemplateFactory = new FlexibleTemplateFactory(
+                selfObj._templatePath, selfObj._placeholderName, {}
+            );
 
-            if(!selfObj._template || !selfObj._placeholder){
-
-                console.error('NavigationBar.init(): Template Or Placeholder not found!');
-                return;
-            }
-
-            new Request({
-                url: selfObj._templatePath,
-                method: 'get',
-                onSuccess(data){
-                    return selfObj.determinePage(data);
-                },
-                onFailure(){
-                    console.error('NavigationBar.init(): Failed while getting the template! Aborting!');
-                }
-            }).send();
+            selfObj.determinePage();
         },
 
         /**
-         * Determines which is the page the user is currently on.
+         * Determines which is the page the user is currently on;
+         * Calls for generating the template.
          *
-         * @param pageContent
-         *
-         * @return execution of last function
+         * @return void
          */
 
-        determinePage(pageContent){
+        determinePage(){
 
             const selfObj = this;
             const path = window.location.pathname;
@@ -119,23 +103,8 @@ const NavigationBar = (function(){
                     break;
             }
 
-            return selfObj.generateTemplate(pageContent, templateInfo);
-        },
-
-        /**
-         * Generates the template using Handlebars.
-         *
-         * @param pageContent
-         * @param templateInfo
-         *
-         * @return void
-         */
-
-        generateTemplate(pageContent, templateInfo){
-
-            const selfObj = this;
-            const compiled = Handlebars.compile(pageContent);
-            selfObj._placeholder.set('html', compiled({pages: templateInfo}));
+            selfObj._flexibleTemplateFactory.addCustomTemplateData( { pages: templateInfo } );
+            selfObj._flexibleTemplateFactory.initProcess();
         },
 
         /**
