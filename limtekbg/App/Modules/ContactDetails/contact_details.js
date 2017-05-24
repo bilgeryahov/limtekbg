@@ -12,60 +12,25 @@ const ContactDetails = (function(){
 
     const Logic = {
 
-        _template: null,
-        _placeholder: null,
         _templatePath: './Modules/ContactDetails/contact_details.html',
+        _placeholderName: 'ContactDetailsPlaceholder',
+        _templateFactory: null,
 
         /**
-         * Gets the template and placeholder. If goes successful, calls
-         * for generating the template.
+         * Makes sure the module is displayed.
          *
          * @return void
          */
 
         init(){
 
-            if(!Handlebars){
-
-                console.error('ContactDetails.init(): Handlebars is not present!');
-                return;
-            }
-
             const selfObj = this;
 
-            selfObj._template = $('ContactDetailsTemplate');
-            selfObj._placeholder = $('ContactDetailsPlaceholder');
+            selfObj._templateFactory = new TemplateFactory(
+                selfObj._templatePath, selfObj._placeholderName, {}
+            );
 
-            if(!selfObj._template || !selfObj._placeholder){
-
-                console.error('ContactDetails.init(): Template Or Placeholder not found!');
-                return;
-            }
-
-            new Request({
-                url: selfObj._templatePath,
-                method: 'get',
-                onSuccess(data){
-                    return selfObj.generateTemplate(data);
-                },
-                onFailure(){
-                    console.error('ContactDetails.init(): Failed while getting the template! Aborting!');
-                }
-            }).send();
-        },
-
-        /**
-         * Generates the template using Handlebars.
-         *
-         * @param data
-         *
-         * @return void
-         */
-
-        generateTemplate(data){
-            const selfObj = this;
-            const compiled = Handlebars.compile(data);
-            selfObj._placeholder.set('html', compiled());
+            selfObj._templateFactory.initProcess();
         }
     };
 
