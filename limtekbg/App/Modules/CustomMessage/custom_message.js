@@ -12,62 +12,45 @@ const CustomMessage = (function(){
 
     const Logic = {
 
-        _template: null,
-        _placeholder: null,
         _templatePath: './Modules/CustomMessage/custom_message.html',
+        _placeholderName: 'CustomMessagePlaceholder',
+        _flexibleTemplateFactory: null,
 
         /**
-         * Gets the template and placeholder. If goes successful, calls
-         * for generating the template.
+         * Initialize the CustomMessage module.
+         *
+         * @return void
+         */
+
+        init(){
+
+            if(!Handlebars){
+
+                console.error('CustomMessage.init(): Handlebars is not present!');
+                return;
+            }
+
+            const selfObj = this;
+
+            selfObj._flexibleTemplateFactory = new FlexibleTemplateFactory(
+                selfObj._templatePath, selfObj._placeholderName, {}
+            );
+        },
+
+        /**
+         * Show a message to the user.
+         *
+         * @param message
          *
          * @return void
          */
 
         showMessage(message){
 
-            if(!Handlebars){
-
-                console.error('CustomMessage.showMessage(): Handlebars is not present!');
-                return;
-            }
-
             const selfObj = this;
-
-            if(selfObj._placeholder === null || selfObj._template === null){
-                selfObj._template = $('CustomMessageTemplate');
-                selfObj._placeholder = $('CustomMessagePlaceholder');
-            }
-
-            if(!selfObj._template || !selfObj._placeholder){
-
-                console.error('CustomMessage.showMessage(): Template Or Placeholder not found!');
-                return;
-            }
-
-            new Request({
-                url: selfObj._templatePath,
-                method: 'get',
-                onSuccess(data){
-                    return selfObj.generateTemplate(data, message);
-                },
-                onFailure(){
-                    console.error('CustomMessage.showMessage(): Failed while getting the template! Aborting!');
-                }
-            }).send();
-        },
-
-        /**
-         * Generates the template with the custom message in it and makes the box visible.
-         *
-         * @param pageContent
-         * @param templateInfo
-         */
-
-        generateTemplate(pageContent, templateInfo){
-            const selfObj = this;
-            const compiled = Handlebars.compile(pageContent);
-            selfObj._placeholder.set('html', compiled({message: templateInfo}));
-            selfObj._placeholder.style.display = 'block';
+            selfObj._flexibleTemplateFactory.addCustomTemplateData( { message : message } );
+            selfObj._flexibleTemplateFactory.initProcess();
+            selfObj._flexibleTemplateFactory.showPlaceholder();
         },
 
         /**
@@ -79,11 +62,16 @@ const CustomMessage = (function(){
         hideMessage(){
 
             const selfObj = this;
-            selfObj._placeholder.style.display = 'none';
+            selfObj._flexibleTemplateFactory.hidePlaceholder();
         }
     };
 
     return{
+
+        init(){
+
+            Logic.init();
+        },
 
         showMessage(message){
 
@@ -96,3 +84,8 @@ const CustomMessage = (function(){
         }
     }
 })();
+
+document.addEvent('domready', function () {
+
+    CustomMessage.init();
+});
