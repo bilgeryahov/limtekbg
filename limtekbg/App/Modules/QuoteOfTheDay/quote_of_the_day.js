@@ -26,12 +26,6 @@ const QuoteOfTheDay = (function(){
 
         init(){
 
-            if(!Handlebars){
-
-                console.error('QuoteOfTheDay.init(): Handlebars is not present!');
-                return;
-            }
-
             const selfObj = this;
 
             selfObj._listOfQuotes = [
