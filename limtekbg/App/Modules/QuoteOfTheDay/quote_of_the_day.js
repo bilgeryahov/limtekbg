@@ -12,15 +12,14 @@ const QuoteOfTheDay = (function(){
 
     const Logic = {
 
-        _template: null,
-        _placeholder: null,
         _templatePath: './Modules/QuoteOfTheDay/quote_of_the_day.html',
+        _placeholderName: 'QuoteOfTheDayPlaceholder',
+        _templateFactory: null,
 
         _listOfQuotes: [],
 
         /**
-         * Gets the template and placeholder. If goes successful, calls
-         * for generating the template.
+         * Initializes the module.
          *
          * @return void
          */
@@ -45,57 +44,26 @@ const QuoteOfTheDay = (function(){
                 'Истината рядко е чиста и никога проста.'
             ];
 
-            selfObj._template = $('QuoteOfTheDayTemplate');
-            selfObj._placeholder = $('QuoteOfTheDayPlaceholder');
+            selfObj._flexibleTemplateFactory = new FlexibleTemplateFactory(
+                selfObj._templatePath, selfObj._placeholderName, {}
+            );
 
-            if(!selfObj._template || !selfObj._placeholder){
-
-                console.error('QuoteOfTheDay.init(): Template Or Placeholder not found!');
-                return;
-            }
-
-            new Request({
-                url: selfObj._templatePath,
-                method: 'get',
-                onSuccess(data){
-                    return selfObj.getRandomQuote(data);
-                },
-                onFailure(){
-                    console.error('QuoteOfTheDay.init(): Failed while getting the template! Aborting!');
-                }
-            }).send();
+            selfObj.getRandomQuote();
         },
 
         /**
          * Gets a random quote.
          *
-         * @param pageContent
-         *
-         * @return execution of final function.
+         * @return void
          */
 
-        getRandomQuote(pageContent){
+        getRandomQuote(){
 
             const selfObj = this;
             let number = Math.floor((Math.random() * 7));
             let quote = selfObj._listOfQuotes[number];
-
-            return selfObj.generateTemplate(pageContent, quote);
-        },
-
-        /**
-         * Generates the template using Handlebars.
-         *
-         * @param pageContent
-         * @param templateInfo
-         *
-         * @return void
-         */
-
-        generateTemplate(pageContent, templateInfo){
-            const selfObj = this;
-            const compiled = Handlebars.compile(pageContent);
-            selfObj._placeholder.set('html', compiled({quote: templateInfo}));
+            selfObj._flexibleTemplateFactory.addCustomTemplateData( { quote: quote } );
+            selfObj._flexibleTemplateFactory.initProcess();
         }
     };
 
