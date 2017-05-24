@@ -22,6 +22,8 @@ const ContactForm = (function(){
         _cfSubjectElement     : {},
         _cfMessageElement     : {},
 
+        _elementsPresent: false,
+
         _cfNameValue          : '',
         _cfEmailValue         : '',
         _cfPhoneValue         : '',
@@ -54,7 +56,7 @@ const ContactForm = (function(){
         },
 
         /**
-         * Gets the elements from the page.
+         * Gets the elements from the page if they are not already fetched.
          *
          * @return {boolean}
          */
@@ -63,6 +65,11 @@ const ContactForm = (function(){
 
             const selfObj = this;
 
+            if(selfObj._elementsPresent){
+
+                return true;
+            }
+
             selfObj._cfNameElement = $('CFname');
             selfObj._cfEmailElement = $('CFemail');
             selfObj._cfPhoneElement = $('CFphone');
@@ -70,7 +77,7 @@ const ContactForm = (function(){
             selfObj._cfMessageElement = $('CFmessage');
             selfObj._cfSendButton = $('CFsendButton');
 
-            return (
+            selfObj._elementsPresent = (
                 selfObj._cfNameElement !== null
                 && selfObj._cfEmailElement !== null
                 && selfObj._cfPhoneElement !== null
@@ -78,6 +85,8 @@ const ContactForm = (function(){
                 && selfObj._cfMessageElement !== null
                 && selfObj._cfSendButton !== null
             );
+
+            return selfObj._elementsPresent;
         },
 
         /**
@@ -143,6 +152,9 @@ const ContactForm = (function(){
                 return;
             }
 
+            // First get the DOM elements, at least try.
+            selfObj.getDomElements();
+
             selfObj._cfNameValue = selfObj._cfNameElement.value;
             selfObj._cfEmailValue = selfObj._cfEmailElement.value;
             selfObj._cfPhoneValue = selfObj._cfPhoneElement.value;
@@ -207,11 +219,12 @@ const ContactForm = (function(){
                     // Reset reCAPTCHA
                     grecaptcha.reset();
 
+                    console.error('ContactForm.sendMailToCloudService(): Sending the message failed.');
+
                     if(xhr){
                         console.error(xhr);
                     }
 
-                    console.error('ContactForm.sendMailToCloudService(): Sending the message failed.');
                     CustomMessage.showMessage('Проблем с изпращането на съобщението.');
                     // Indicate that the sending process has finished.
                     selfObj.sendButtonTriggeredState(false);
@@ -255,7 +268,6 @@ const ContactForm = (function(){
             Logic.sendMailToCloudService();
         }
     }
-
 })();
 
 document.addEvent('domready', function () {
