@@ -1,63 +1,40 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Login</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0 maximum-scale=1"/>
-    <meta charset="utf-8"/>
-    <meta name="author" content="Bilger Yahov">
-    <link rel="stylesheet" href="StyleSheets/Vendor/w3css.css"/>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato"/>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css"/>
-    <link rel="stylesheet" href="StyleSheets/Login.css"/>
-    <script src="https://www.gstatic.com/firebasejs/3.6.10/firebase.js"></script>
-    <script src="JavaScript/Vendor/MooTools-Core-1.6.0.js"></script>
-    <script src="JavaScript/Vendor/MooTools-More-1.6.0.js"></script>
-    <script src="JavaScript/Vendor/handlebars-v4.0.5.js"></script>
-    <script src="JavaScript/DevelopmentHelpers.js"></script>
-    <script src="JavaScript/ObserverPattern.js"></script>
-    <script src="JavaScript/FirebaseAuthenticationManager.js"></script>
-    <script src="JavaScript/LoginController.js"></script>
-    <script src="JavaScript/CommonReusableUserInterfaceManager.js"></script>
-    <script src="JavaScript/TemplateProcessor.js"></script>
-</head>
-<body>
-
-    <div id="LoginForm" style="display: none;" class="w3-container">
-        <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px; margin-top: 2em;">
-            <div class="w3-center"><br>
-                <img src="./images/avatar.png" alt="Avatar" style="width:30%" class="w3-circle w3-margin-top">
+    <head id="HeadPlaceholder">
+    </head>
+    <body>
+        <section id="MainWrapper">
+            <div id="LoginPlaceholder" style="display: none;">
             </div>
-            <div class="w3-container">
-                <label><b>E-mail address</b></label>
-                <input id="InputEmail" class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter e-mail address">
-                <label><b>Password</b></label>
-                <input id="InputPassword" class="w3-input w3-border" type="password" placeholder="Enter Password">
-                <button id="LoginButton" class="w3-btn-block w3-green w3-section w3-padding w3-ripple">Login</button>
-            </div>
-        </div>
-    </div>
+        </section>
 
-    <div id="Loader" style="display: none;">
-    </div>
+        <!-- JavaScript needed for loading of the modules. -->
+        <script type="text/javascript" src="JavaScript/Vendor/handlebars-v4.0.5.js"></script>
+        <script type="text/javascript" src="JavaScript/Vendor/MooTools-Core-1.6.0.js"></script>
+        <script type="text/javascript" src="JavaScript/Vendor/MooTools-More-1.6.0.js"></script>
 
-    <div id="CustomMessagePlaceholder" class="w3-modal">
-    </div>
-    <script id="CustomMessageTemplate" type="text/x-handlebars-template">
-        <div class="w3-modal-content w3-animate-top w3-card-4">
-            <header class="w3-container w3-red">
-        				<span onclick="CommonReusableUserInterfaceManager.enableCustomMessageModal(false);"
-                              class="w3-closebtn">&times;</span>
-                <h2>Съобщение</h2>
-            </header>
-            <div class="w3-container">
-                <p>{{message}}</p>
-            </div>
-            <footer class="w3-container w3-red">
-                <p>Благодарим Ви, че избрахте нас!</p>
-            </footer>
-        </div>
-    </script>
+        <!-- Page specific JavaScript -->
+        <script type="text/javascript" src="JavaScript/DevelopmentHelpers.js"></script>
+        <script type="text/javascript" src="JavaScript/TemplateFactory.js"></script>
+        <script type="text/javascript" src="JavaScript/FlexibleTemplateFactory.js"></script>
+        <script type="text/javascript" src="JavaScript/FirebaseAuthenticationManager.js"></script>
+        <script type="text/javascript" src="JavaScript/ObserverPattern.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/3.6.10/firebase.js"></script>
 
-</body>
+        <!-- CSS, which has to be pre-loaded. -->
+        <link rel="stylesheet" href="StyleSheets/Vendor/w3css.css"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css"/>
+        <link rel="stylesheet" href="StyleSheets/default.css"/>
+
+        <!-- Head module -->
+        <script type="text/javascript" src="./Modules/Head/head.js"></script>
+        <link rel="stylesheet" href="./Modules/Head/head.css"/>
+
+        <!-- Login module -->
+        <script type="text/javascript" src="./Modules/Login/login.js"></script>
+        <link rel="stylesheet" href="./Modules/Login/login.css"/>
+
+    </body>
 </html>
