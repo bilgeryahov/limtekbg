@@ -1,5 +1,5 @@
 /**
- * @file header.js
+ * @file Header.js
  *
  * Header module controller.
  *
@@ -12,60 +12,25 @@ const Header = (function(){
 
     const Logic = {
 
-        _template: null,
-        _placeholder: null,
-        _templatePath: './Modules/Header/header.html',
+        _templatePath: './Modules/Header/Header.html',
+        _placeholderName: 'HeaderPlaceholder',
+        _templateFactory: null,
 
         /**
-         * Gets the template and placeholder. If goes successful, calls
-         * for generating the template.
+         * Initializes the main functionality.
          *
          * @return void
          */
 
         init(){
 
-            if(!Handlebars){
-
-                console.error('Header.init(): Handlebars is not present!');
-                return;
-            }
-
             const selfObj = this;
 
-            selfObj._template = $('HeaderTemplate');
-            selfObj._placeholder = $('HeaderPlaceholder');
+            selfObj._templateFactory = new TemplateFactory(
+                selfObj._templatePath, selfObj._placeholderName, {}
+            );
 
-            if(!selfObj._template || !selfObj._placeholder){
-
-                console.error('ContactDetails.init(): Template Or Placeholder not found!');
-                return;
-            }
-
-            new Request({
-                url: selfObj._templatePath,
-                method: 'get',
-                onSuccess(data){
-                    return selfObj.generateTemplate(data);
-                },
-                onFailure(){
-                    console.error('Header.init(): Failed while getting the template! Aborting!');
-                }
-            }).send();
-        },
-
-        /**
-         * Generates the template using Handlebars.
-         *
-         * @param data
-         *
-         * @return void
-         */
-
-        generateTemplate(data){
-            const selfObj = this;
-            const compiled = Handlebars.compile(data);
-            selfObj._placeholder.set('html', compiled());
+            selfObj._templateFactory.initProcess();
         }
     };
 
