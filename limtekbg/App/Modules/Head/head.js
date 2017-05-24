@@ -12,60 +12,25 @@ const Head = (function(){
 
     const Logic = {
 
-        _template: null,
-        _placeholder: null,
         _templatePath: './Modules/Head/head.html',
+        _placeholderName: 'HeadPlaceholder',
+        _templateFactory: null,
 
         /**
-         * Gets the template and placeholder. If goes successful, calls
-         * for generating the template.
+         * Initializes the main functionality.
          *
          * @return void
          */
 
         init(){
 
-            if(!Handlebars){
-
-                console.error('Head.init(): Handlebars is not present!');
-                return;
-            }
-
             const selfObj = this;
 
-            selfObj._template = $('HeadTemplate');
-            selfObj._placeholder = $('HeadPlaceholder');
+            selfObj._templateFactory = new TemplateFactory(
+                selfObj._templatePath, selfObj._placeholderName, {}
+            );
 
-            if(!selfObj._template || !selfObj._placeholder){
-
-                console.error('Head.init(): Template Or Placeholder not found!');
-                return;
-            }
-
-            new Request({
-                url: selfObj._templatePath,
-                method: 'get',
-                onSuccess(data){
-                    return selfObj.generateTemplate(data);
-                },
-                onFailure(){
-                    console.error('Head.init(): Failed while getting the template! Aborting!');
-                }
-            }).send();
-        },
-
-        /**
-         * Generates the template using Handlebars.
-         *
-         * @param data
-         *
-         * @return void
-         */
-
-        generateTemplate(data){
-            const selfObj = this;
-            const compiled = Handlebars.compile(data);
-            selfObj._placeholder.set('html', compiled());
+            selfObj._templateFactory.initProcess();
         }
     };
 
