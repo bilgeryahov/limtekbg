@@ -153,8 +153,7 @@ const ContactForm = (function(){
             }
 
             // First get the DOM elements, at least try.
-            const continueSending = selfObj.getDomElements();
-            if(!continueSending){
+            if(!selfObj.getDomElements()){
 
                 // Reset reCAPTCHA
                 grecaptcha.reset();
