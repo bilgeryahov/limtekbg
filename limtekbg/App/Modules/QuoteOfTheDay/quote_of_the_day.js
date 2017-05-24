@@ -14,7 +14,7 @@ const QuoteOfTheDay = (function(){
 
         _templatePath: './Modules/QuoteOfTheDay/quote_of_the_day.html',
         _placeholderName: 'QuoteOfTheDayPlaceholder',
-        _templateFactory: null,
+        _flexibleTemplateFactory: null,
 
         _listOfQuotes: [],
 

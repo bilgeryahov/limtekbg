@@ -14,7 +14,7 @@ const NavigationBar = (function(){
 
         _templatePath: './Modules/NavigationBar/navigation_bar.html',
         _placeholderName: 'NavigationBarPlaceholder',
-        _templateFactory: null,
+        _flexibleTemplateFactory: null,
 
         _navDemo: null,
 
