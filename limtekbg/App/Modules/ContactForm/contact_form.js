@@ -12,9 +12,9 @@ const ContactForm = (function(){
 
     const Logic = {
 
-        _template: null,
-        _placeholder: null,
         _templatePath: './Modules/ContactForm/contact_form.html',
+        _placeholderName: 'ContactFormPlaceholder',
+        _templateFactory: null,
 
         _cfNameElement        : {},
         _cfEmailElement       : {},
@@ -31,19 +31,12 @@ const ContactForm = (function(){
         _cfSendButton         : {},
 
         /**
-         * Gets the template and placeholder. If goes successful, calls
-         * for generating the template.
+         * Makes sure the module is displayed.
          *
          * @return void
          */
 
         init(){
-
-            if(!Handlebars){
-
-                console.error('ContactForm.init(): Handlebars is not present!');
-                return;
-            }
 
             if(!CustomMessage){
 
@@ -53,39 +46,11 @@ const ContactForm = (function(){
 
             const selfObj = this;
 
-            selfObj._template = $('ContactFormTemplate');
-            selfObj._placeholder = $('ContactFormPlaceholder');
+            selfObj._templateFactory = new TemplateFactory(
+                selfObj._templatePath, selfObj._placeholderName, {}
+            );
 
-            if(!selfObj._template || !selfObj._placeholder){
-
-                console.error('ContactForm.init(): Template Or Placeholder not found!');
-                return;
-            }
-
-            new Request({
-                url: selfObj._templatePath,
-                method: 'get',
-                onSuccess(data){
-                    return selfObj.generateTemplate(data);
-                },
-                onFailure(){
-                    console.error('ContactForm.init(): Failed while getting the template! Aborting!');
-                }
-            }).send();
-        },
-
-        /**
-         * Generates the template using Handlebars.
-         *
-         * @param data
-         *
-         * @return void
-         */
-
-        generateTemplate(data){
-            const selfObj = this;
-            const compiled = Handlebars.compile(data);
-            selfObj._placeholder.set('html', compiled());
+            selfObj._templateFactory.initProcess();
         },
 
         /**
