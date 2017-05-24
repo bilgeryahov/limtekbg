@@ -24,12 +24,6 @@ const CustomMessage = (function(){
 
         init(){
 
-            if(!Handlebars){
-
-                console.error('CustomMessage.init(): Handlebars is not present!');
-                return;
-            }
-
             const selfObj = this;
 
             selfObj._flexibleTemplateFactory = new FlexibleTemplateFactory(

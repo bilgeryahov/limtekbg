@@ -26,12 +26,6 @@ const NavigationBar = (function(){
 
         init(){
 
-            if(!Handlebars){
-
-                console.error('NavigationBar.init(): Handlebars is not present!');
-                return;
-            }
-
             const selfObj = this;
 
             selfObj._flexibleTemplateFactory = new FlexibleTemplateFactory(
