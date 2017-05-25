@@ -14,7 +14,7 @@ const QuoteOfTheDay = (function(){
 
         _templatePath: './Modules/QuoteOfTheDay/quote_of_the_day.html',
         _placeholderName: 'QuoteOfTheDayPlaceholder',
-        _flexibleTemplateFactory: null,
+        _template: null,
 
         _listOfQuotes: [],
 
@@ -38,26 +38,26 @@ const QuoteOfTheDay = (function(){
                 'Истината рядко е чиста и никога проста.'
             ];
 
-            $self._flexibleTemplateFactory = new FlexibleTemplateFactory(
-                $self._templatePath, $self._placeholderName, {}
+            const $quote = $self.getRandomQuote();
+
+            $self._template = new Template(
+                $self._templatePath, $self._placeholderName, {quote: $quote}
             );
 
-            $self.getRandomQuote();
+            $self._template.displayMain();
         },
 
         /**
          * Gets a random quote.
          *
-         * @return void
+         * @return string
          */
 
         getRandomQuote(){
 
             const $self = this;
             let $number = Math.floor((Math.random() * 7));
-            let $quote = $self._listOfQuotes[$number];
-            $self._flexibleTemplateFactory.addCustomTemplateData( { quote: $quote } );
-            $self._flexibleTemplateFactory.initProcess();
+            return $self._listOfQuotes[$number];
         }
     };
 
