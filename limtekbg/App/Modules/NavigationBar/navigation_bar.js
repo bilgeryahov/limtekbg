@@ -27,6 +27,19 @@ const NavigationBar = (function(){
         init(){
 
             const $self = this;
+            $self.renderTemplate();
+        },
+
+        /**
+         * Renders the template.
+         *
+         * @return void
+         */
+
+        renderTemplate(){
+
+            const $self = this;
+
             const $pages = $self.determinePage();
 
             $self._template = new Template(
