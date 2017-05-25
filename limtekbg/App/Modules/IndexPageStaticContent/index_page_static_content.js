@@ -14,7 +14,7 @@ const IndexPageStaticContent = (function(){
 
         _templatePath: './Modules/IndexPageStaticContent/index_page_static_content.html',
         _placeholderName: 'IndexPageStaticContentPlaceholder',
-        _templateFactory: null,
+        _template: null,
 
         /**
          * Initializes the main functionality.
@@ -26,11 +26,11 @@ const IndexPageStaticContent = (function(){
 
             const $self = this;
 
-            $self._templateFactory = new TemplateFactory(
+            $self._template = new Template(
                 $self._templatePath, $self._placeholderName, {}
             );
 
-            $self._templateFactory.initProcess();
+            $self._template.displayMain();
         }
     };
 
