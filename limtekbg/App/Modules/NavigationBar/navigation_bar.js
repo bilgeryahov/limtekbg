@@ -26,13 +26,13 @@ const NavigationBar = (function(){
 
         init(){
 
-            const selfObj = this;
+            const $self = this;
 
-            selfObj._flexibleTemplateFactory = new FlexibleTemplateFactory(
-                selfObj._templatePath, selfObj._placeholderName, {}
+            $self._flexibleTemplateFactory = new FlexibleTemplateFactory(
+                $self._templatePath, $self._placeholderName, {}
             );
 
-            selfObj.determinePage();
+            $self.determinePage();
         },
 
         /**
@@ -44,15 +44,15 @@ const NavigationBar = (function(){
 
         determinePage(){
 
-            const selfObj = this;
-            const path = window.location.pathname;
+            const $self = this;
+            const $path = window.location.pathname;
 
-            let templateInfo = [];
+            let $templateInfo = [];
 
-            switch (path){
+            switch ($path){
 
                 case '/index.html':
-                    templateInfo = [
+                    $templateInfo = [
                         {name: 'Начало', path: 'index.html', current: true},
                         {name: 'Доставки', path: 'deliveries.html'},
                         {name: 'Контакти', path: 'contacts.html'},
@@ -61,7 +61,7 @@ const NavigationBar = (function(){
                     break;
 
                 case '/deliveries.html':
-                    templateInfo = [
+                    $templateInfo = [
                         {name: 'Начало', path: 'index.html'},
                         {name: 'Доставки', path: 'deliveries.html', current: true},
                         {name: 'Контакти', path: 'contacts.html'},
@@ -70,7 +70,7 @@ const NavigationBar = (function(){
                     break;
 
                 case '/contacts.html':
-                    templateInfo = [
+                    $templateInfo = [
                         {name: 'Начало', path: 'index.html'},
                         {name: 'Доставки', path: 'deliveries.html'},
                         {name: 'Контакти', path: 'contacts.html', current: true},
@@ -79,7 +79,7 @@ const NavigationBar = (function(){
                     break;
 
                 case '/products.html':
-                    templateInfo = [
+                    $templateInfo = [
                         {name: 'Начало', path: 'index.html'},
                         {name: 'Доставки', path: 'deliveries.html'},
                         {name: 'Контакти', path: 'contacts.html'},
@@ -88,7 +88,7 @@ const NavigationBar = (function(){
                     break;
 
                 default:
-                    templateInfo = [
+                    $templateInfo = [
                         {name: 'Начало', path: 'index.html', current: true},
                         {name: 'Доставки', path: 'deliveries.html'},
                         {name: 'Контакти', path: 'contacts.html'},
@@ -97,8 +97,8 @@ const NavigationBar = (function(){
                     break;
             }
 
-            selfObj._flexibleTemplateFactory.addCustomTemplateData( { pages: templateInfo } );
-            selfObj._flexibleTemplateFactory.initProcess();
+            $self._flexibleTemplateFactory.addCustomTemplateData( { pages: $templateInfo } );
+            $self._flexibleTemplateFactory.initProcess();
         },
 
         /**
@@ -109,25 +109,25 @@ const NavigationBar = (function(){
 
         toggleNavigationBar(){
 
-            const selfObj = this;
+            const $self = this;
 
-            if(selfObj._navDemo === null || typeof selfObj._navDemo === 'undefined'){
+            if($self._navDemo === null || typeof $self._navDemo === 'undefined'){
 
-                selfObj._navDemo = $('NavDemo');
-                if(!selfObj._navDemo){
+                $self._navDemo = $('NavDemo');
+                if(!$self._navDemo){
 
                     console.error('NavigationBar.toggleNavigationBar(): NavDemo is not found!');
                     return;
                 }
             }
 
-            if(selfObj._navDemo.className.indexOf('w3-show') === -1){
+            if($self._navDemo.className.indexOf('w3-show') === -1){
 
-                selfObj._navDemo.className += ' w3-show';
+                $self._navDemo.className += ' w3-show';
             }
             else{
 
-                selfObj._navDemo.className = selfObj._navDemo.className.replace(' w3-show', '');
+                $self._navDemo.className = $self._navDemo.className.replace(' w3-show', '');
             }
         }
     };
