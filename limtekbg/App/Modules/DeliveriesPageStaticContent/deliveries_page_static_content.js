@@ -14,7 +14,7 @@ const DeliveriesPageStaticContent = (function(){
 
         _templatePath: './Modules/DeliveriesPageStaticContent/deliveries_page_static_content.html',
         _placeholderName: 'DeliveriesPageStaticContentPlaceholder',
-        _templateFactory: null,
+        _template: null,
 
         /**
          * Initializes the main functionality.
@@ -26,11 +26,11 @@ const DeliveriesPageStaticContent = (function(){
 
             const $self = this;
 
-            $self._templateFactory = new TemplateFactory(
+            $self._template = new Template(
                 $self._templatePath, $self._placeholderName, {}
             );
 
-            $self._templateFactory.initProcess();
+            $self._template.displayMain();
         }
     };
 
