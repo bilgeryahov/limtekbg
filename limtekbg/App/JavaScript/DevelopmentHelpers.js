@@ -14,128 +14,128 @@ class DevelopmentHelpers {
      * Constructs a Database/Storage path, based on a given array
      * of child nodes.
      *
-     * @param nodes
+     * @param $nodes
      *
      * @return {string}
      */
 
-    static constructPath(nodes){
+    static constructPath($nodes){
 
         // Return value.
-        let path = '';
+        let $path = '';
 
         // Check if array.
-        if(!nodes[0]){
+        if(!$nodes[0]){
 
             console.error('DevelopmentHelpers.constructPath(): The passed parameter is not an array.');
-            return path;
+            return $path;
         }
 
         // Add a slash after each child node.
-        nodes.forEach(function(childNode){
+        $nodes.forEach(function($childNode){
 
-            path += childNode + '/';
+            $path += $childNode + '/';
         });
 
-        return path;
+        return $path;
     }
 
     /**
      * Validates the passed input for correctness
      * based on its type.
      *
-     * @param input
-     * @param type
+     * @param $input
+     * @param $type
      *
      * @return {boolean}
      */
 
-    static validateCorrectness(input, type){
+    static validateCorrectness($input, $type){
 
-        if(!input  || !type){
-
-            return false;
-        }
-
-        if(input.length === 0){
+        if(!$input  || !$type){
 
             return false;
         }
 
-        let correct = false;
+        if($input.length === 0){
 
-        switch (type){
+            return false;
+        }
+
+        let $correct = false;
+
+        switch ($type){
 
             case 'email':
-                let atPos = input.indexOf('@');
-                let dotPos = input.indexOf('.');
-                correct = (
-                    input.length < 50 &&
-                    atPos > 0 &&
-                    dotPos > atPos +2 &&
-                    dotPos + 2 < input.length &&
-                    !input.includes(' ')
+                let $atPos = $input.indexOf('@');
+                let $dotPos = $input.indexOf('.');
+                $correct = (
+                    $input.length < 50 &&
+                    $atPos > 0 &&
+                    $dotPos > $atPos +2 &&
+                    $dotPos + 2 < $input.length &&
+                    !$input.includes(' ')
                 );
                 break;
 
             case 'phone':
-                correct = (
-                    !isNaN(input) &&
-                    input.length < 50
+                $correct = (
+                    !isNaN($input) &&
+                    $input.length < 50
                 );
                 break;
 
             case 'password':
-                let lower = new RegExp(/[a-z]{1,}/);
-                let upper = new RegExp(/[A-Z]{1,}/);
-                let numeric = new RegExp(/[0-9]{1,}/);
-                let special = new RegExp(/[!@#$&*]{1,}/);
-                correct = (
-                    lower.test(input) &&
-                    upper.test(input) &&
-                    numeric.test(input) &&
-                    special.test(input) &&
-                    !input.includes(' ') &&
-                    input.length < 50
+                let $lower = new RegExp(/[a-z]{1,}/);
+                let $upper = new RegExp(/[A-Z]{1,}/);
+                let $numeric = new RegExp(/[0-9]{1,}/);
+                let $special = new RegExp(/[!@#$&*]{1,}/);
+                $correct = (
+                    $lower.test($input) &&
+                    $upper.test($input) &&
+                    $numeric.test($input) &&
+                    $special.test($input) &&
+                    !$input.includes(' ') &&
+                    $input.length < 50
                 );
                 break;
 
             case 'name':
-                correct = (
-                    input.length < 50
+                $correct = (
+                    $input.length < 50
                 );
                 break;
 
             case 'subject':
-                correct = (
-                    input.length < 50
+                $correct = (
+                    $input.length < 50
                 );
                 break;
 
             case 'text':
-                correct = (
-                    input.length < 600
+                $correct = (
+                    $input.length < 600
                 );
                 break;
 
             default:
-                correct = false;
+                $correct = false;
                 break;
         }
 
-        return correct;
+        return $correct;
     }
 
     /**
      * Validates the passed input for
      * security issues.
      *
-     * @param input
+     * @param $input
      *
      * @return {boolean}
      */
 
-    static validateSecurity(input){
+    static validateSecurity($input){
 
         // TODO: Implement
 
