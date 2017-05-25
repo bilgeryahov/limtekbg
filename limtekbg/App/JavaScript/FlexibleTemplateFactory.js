@@ -49,7 +49,7 @@ class FlexibleTemplateFactory extends TemplateFactory{
     }
 
     /**
-     * Hide the placeholder from the DOM.
+     * Hide the placeholder from the DOM (host page).
      *
      * @return void
      */
@@ -60,7 +60,7 @@ class FlexibleTemplateFactory extends TemplateFactory{
     }
 
     /**
-     * Show the placeholder on the DOM.
+     * Show the placeholder on the DOM (host page).
      *
      * @return void
      */
