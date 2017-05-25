@@ -33,7 +33,7 @@ const Login = (function(){
 
         init(){
 
-            const selfObj = this;
+            const $self = this;
 
             if(!FirebaseAuthenticationManager){
 
@@ -53,39 +53,39 @@ const Login = (function(){
                 return;
             }
 
-            selfObj._flexibleTemplateFactory = new FlexibleTemplateFactory(
-                selfObj._templatePath, selfObj._placeholderName, {}
+            $self._flexibleTemplateFactory = new FlexibleTemplateFactory(
+                $self._templatePath, $self._placeholderName, {}
             );
 
-            selfObj._flexibleTemplateFactory.initProcess();
-            selfObj._flexibleTemplateFactory.showPlaceholder();
+            $self._flexibleTemplateFactory.initProcess();
+            $self._flexibleTemplateFactory.showPlaceholder();
 
             // Create a new Observer for the Auth state.
-            selfObj._authObserver = new Observer();
+            $self._authObserver = new Observer();
 
             // Set-up my Auth update settings.
-            selfObj._authObserver.getUpdate = function(update){
+            $self._authObserver.getUpdate = function($update){
 
-                if(update === 'USER 1'){
+                if($update === 'USER 1'){
 
                     console.log('Login: User is here, redirecting....');
                     window.location.replace('./administration.html');
                 }
-                else if(update === 'USER 0'){
+                else if($update === 'USER 0'){
 
-                    selfObj.displayLogin();
+                    $self.displayLogin();
                 }
-                else if(update === 'ERROR 1'){
+                else if($update === 'ERROR 1'){
 
                     // Problem while logging in!
                     console.error('Login: ' + FirebaseAuthenticationManager.getAuthError());
                     CustomMessage.showMessage(FirebaseAuthenticationManager.getAuthError());
-                    selfObj.displayLogin();
+                    $self.displayLogin();
                 }
             };
 
             // Add my Auth Observer as an observer to FirebaseAuthenticationManager's ObserverManager.
-            FirebaseAuthenticationManager.getAuthObserverManager().addObserver(selfObj._authObserver);
+            FirebaseAuthenticationManager.getAuthObserverManager().addObserver($self._authObserver);
         },
 
         /**
@@ -97,24 +97,24 @@ const Login = (function(){
 
         getLoginFormElements(){
 
-            const selfObj = this;
+            const $self = this;
 
-            if(selfObj._elementsPresent){
+            if($self._elementsPresent){
 
                 return true;
             }
 
-            selfObj._loginButton = $('LoginButton');
-            selfObj._inputEmail = $('InputEmail');
-            selfObj._inputPassword = $('InputPassword');
+            $self._loginButton = $('LoginButton');
+            $self._inputEmail = $('InputEmail');
+            $self._inputPassword = $('InputPassword');
 
-            selfObj._elementsPresent = (
-                selfObj._loginButton !== null
-                && selfObj._inputEmail !== null
-                && selfObj._inputPassword !== null
+            $self._elementsPresent = (
+                $self._loginButton !== null
+                && $self._inputEmail !== null
+                && $self._inputPassword !== null
             );
 
-            return selfObj._elementsPresent;
+            return $self._elementsPresent;
         },
 
         /**
@@ -125,10 +125,10 @@ const Login = (function(){
 
         attemptLogin(){
 
-            const selfObj = this;
+            const $self = this;
 
             // Try to fetch the elements from the DOM.
-            if(!selfObj.getLoginFormElements()){
+            if(!$self.getLoginFormElements()){
 
                 console.error('Login.attemptLogin(): Problem with DOM elements.');
                 return;
@@ -136,14 +136,14 @@ const Login = (function(){
 
             // Validate.
             if(
-                DevelopmentHelpers.validateCorrectness(selfObj._inputEmail.value, 'email')
-                && DevelopmentHelpers.validateCorrectness(selfObj._inputPassword.value, 'password')
-                && DevelopmentHelpers.validateSecurity(selfObj._inputEmail)
-                && DevelopmentHelpers.validateSecurity(selfObj._inputPassword)
+                DevelopmentHelpers.validateCorrectness($self._inputEmail.value, 'email')
+                && DevelopmentHelpers.validateCorrectness($self._inputPassword.value, 'password')
+                && DevelopmentHelpers.validateSecurity($self._inputEmail)
+                && DevelopmentHelpers.validateSecurity($self._inputPassword)
             ){
 
-                selfObj.displayLoader();
-                FirebaseAuthenticationManager.login(selfObj._inputEmail.value, selfObj._inputPassword.value);
+                $self.displayLoader();
+                FirebaseAuthenticationManager.login($self._inputEmail.value, $self._inputPassword.value);
             }
             else{
 
@@ -160,10 +160,9 @@ const Login = (function(){
 
         displayLogin(){
 
-            const selfObj = this;
-            selfObj._flexibleTemplateFactory.showPlaceholder();
+            const $self = this;
+            $self._flexibleTemplateFactory.showPlaceholder();
             Loader.hideMe();
-
         },
 
         /**
@@ -174,8 +173,8 @@ const Login = (function(){
 
         displayLoader(){
 
-            const selfObj = this;
-            selfObj._flexibleTemplateFactory.hidePlaceholder();
+            const $self = this;
+            $self._flexibleTemplateFactory.hidePlaceholder();
             Loader.showMe();
         }
     };
