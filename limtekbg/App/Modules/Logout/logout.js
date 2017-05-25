@@ -41,11 +41,7 @@ const Logout = (function(){
                 return;
             }
 
-            $self._template = new Template(
-                $self._templatePath, $self._placeholderName, {}
-            );
-
-            $self._template.displayMain();
+            $self.renderTemplate();
 
             // Create a new Observer for the Auth state.
             $self._authObserver = new Observer();
@@ -74,6 +70,23 @@ const Logout = (function(){
 
             // Add my Auth Observer as an observer to FirebaseAuthenticationManager's ObserverManager.
             FirebaseAuthenticationManager.getAuthObserverManager().addObserver($self._authObserver);
+        },
+
+        /**
+         * Renders the template.
+         *
+         * @return void
+         */
+
+        renderTemplate(){
+
+            const $self = this;
+
+            $self._template = new Template(
+                $self._templatePath, $self._placeholderName, {}
+            );
+
+            $self._template.displayMain();
         },
 
         /**
