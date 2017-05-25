@@ -24,27 +24,27 @@ const CustomMessage = (function(){
 
         init(){
 
-            const selfObj = this;
+            const $self = this;
 
-            selfObj._flexibleTemplateFactory = new FlexibleTemplateFactory(
-                selfObj._templatePath, selfObj._placeholderName, {}
+            $self._flexibleTemplateFactory = new FlexibleTemplateFactory(
+                $self._templatePath, $self._placeholderName, {}
             );
         },
 
         /**
          * Show a message to the user.
          *
-         * @param message
+         * @param $message
          *
          * @return void
          */
 
-        showMessage(message){
+        showMessage($message){
 
-            const selfObj = this;
-            selfObj._flexibleTemplateFactory.addCustomTemplateData( { message : message } );
-            selfObj._flexibleTemplateFactory.initProcess();
-            selfObj._flexibleTemplateFactory.showPlaceholder();
+            const $self = this;
+            $self._flexibleTemplateFactory.addCustomTemplateData( { message : $message } );
+            $self._flexibleTemplateFactory.initProcess();
+            $self._flexibleTemplateFactory.showPlaceholder();
         },
 
         /**
@@ -55,8 +55,8 @@ const CustomMessage = (function(){
 
         hideMessage(){
 
-            const selfObj = this;
-            selfObj._flexibleTemplateFactory.hidePlaceholder();
+            const $self = this;
+            $self._flexibleTemplateFactory.hidePlaceholder();
         }
     };
 
@@ -67,9 +67,9 @@ const CustomMessage = (function(){
             Logic.init();
         },
 
-        showMessage(message){
+        showMessage($message){
 
-            Logic.showMessage(message);
+            Logic.showMessage($message);
         },
 
         hideMessage(){
