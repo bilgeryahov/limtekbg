@@ -11,16 +11,16 @@ class TemplateFactory{
      * Expects the placeholder name, that this module relates to;
      * Expects the initial template data to be injected on the DOM;
      *
-     * @param templatePath
-     * @param placeholderName
-     * @param templateData
+     * @param $templatePath
+     * @param $placeholderName
+     * @param $templateData
      */
 
-    constructor(templatePath, placeholderName, templateData){
+    constructor($templatePath, $placeholderName, $templateData){
 
-        this._templatePath = templatePath;
-        this._placeholderName = placeholderName;
-        this._templateData = templateData;
+        this._templatePath = $templatePath;
+        this._placeholderName = $placeholderName;
+        this._templateData = $templateData;
     }
 
     /**
@@ -64,19 +64,19 @@ class TemplateFactory{
 
     getTemplate(){
 
-        const selfRef = this;
+        const $self = this;
         new Request({
             url: this._templatePath,
             method: 'get',
-            onSuccess(template){
+            onSuccess($template){
 
-                selfRef._template = template;
-                selfRef.generateTemplate();
+                $self._template = $template;
+                $self.generateTemplate();
             },
-            onFailure(xhr){
+            onFailure($xhr){
 
-                console.error(`TemplateFactory - ${selfRef._templatePath} hasn't been fetched.`);
-                console.error(xhr);
+                console.error(`TemplateFactory - ${$self._templatePath} hasn't been fetched.`);
+                console.error($xhr);
             }
         }).send();
     }
@@ -89,7 +89,7 @@ class TemplateFactory{
 
     generateTemplate(){
 
-        const compiled = Handlebars.compile(this._template);
-        this._placeholder.set('html', compiled(this._templateData));
+        const $compiled = Handlebars.compile(this._template);
+        this._placeholder.set('html', $compiled(this._templateData));
     }
 }
