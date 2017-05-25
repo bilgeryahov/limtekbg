@@ -14,7 +14,7 @@ const Login = (function(){
 
         _templatePath: './Modules/Login/login.html',
         _placeholderName: 'LoginPlaceholder',
-        _flexibleTemplateFactory: null,
+        _template: null,
 
         // Login's form elements
         _elementsPresent: false,
@@ -53,11 +53,11 @@ const Login = (function(){
                 return;
             }
 
-            $self._flexibleTemplateFactory = new FlexibleTemplateFactory(
+            $self._template = new Template(
                 $self._templatePath, $self._placeholderName, {}
             );
 
-            $self._flexibleTemplateFactory.initProcess();
+            $self._template.displayMain();
 
             // Create a new Observer for the Auth state.
             $self._authObserver = new Observer();
@@ -160,7 +160,7 @@ const Login = (function(){
         displayLogin(){
 
             const $self = this;
-            $self._flexibleTemplateFactory.showPlaceholder();
+            $self._template.makeVisible();
             Loader.hideMe();
         },
 
@@ -173,7 +173,7 @@ const Login = (function(){
         displayLoader(){
 
             const $self = this;
-            $self._flexibleTemplateFactory.hidePlaceholder();
+            $self._template.makeInvisible();
             Loader.showMe();
         }
     };
