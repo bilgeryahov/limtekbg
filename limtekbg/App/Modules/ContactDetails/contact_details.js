@@ -14,7 +14,7 @@ const ContactDetails = (function(){
 
         _templatePath: './Modules/ContactDetails/contact_details.html',
         _placeholderName: 'ContactDetailsPlaceholder',
-        _templateFactory: null,
+        _template: null,
 
         /**
          * Makes sure the module is displayed.
@@ -26,11 +26,11 @@ const ContactDetails = (function(){
 
             const $self = this;
 
-            $self._templateFactory = new TemplateFactory(
+            $self._template = new Template(
                 $self._templatePath, $self._placeholderName, {}
             );
 
-            $self._templateFactory.initProcess();
+            $self._template.displayMain();
         }
     };
 
