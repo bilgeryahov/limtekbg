@@ -14,7 +14,7 @@ const Logout = (function(){
 
         _templatePath: './Modules/Logout/logout.html',
         _placeholderName: 'LogoutPlaceholder',
-        _templateFactory: null,
+        _template: null,
 
         // Logout's Auth Observer
         _authObserver: {},
@@ -41,11 +41,11 @@ const Logout = (function(){
                 return;
             }
 
-            $self._templateFactory = new TemplateFactory(
+            $self._template = new Template(
                 $self._templatePath, $self._placeholderName, {}
             );
 
-            $self._templateFactory.initProcess();
+            $self._template.displayMain();
 
             // Create a new Observer for the Auth state.
             $self._authObserver = new Observer();
