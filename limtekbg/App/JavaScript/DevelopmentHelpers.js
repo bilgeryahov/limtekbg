@@ -141,4 +141,17 @@ class DevelopmentHelpers {
 
         return true;
     }
+
+    /**
+     * Checks if a given value is an object.
+     *
+     * @param $value
+     *
+     * @return {boolean}
+     */
+
+    static isObject($value){
+
+        return $value === Object($value) && Object.prototype.toString.call($value) !== '[object Array]';
+    }
 }
