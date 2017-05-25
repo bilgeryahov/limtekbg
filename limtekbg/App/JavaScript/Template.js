@@ -31,6 +31,12 @@ function Template($templatePath, $placeholderName, $templateData){
     // Used to add (afterwards) data to a template.
     const addAfterTemplateData = function ($data) {
 
+        if(!DevelopmentHelpers.isObject($data)){
+
+            console.error('Template: The template data should be an object!');
+            return;
+        }
+
         _templateData = $data;
     };
 
