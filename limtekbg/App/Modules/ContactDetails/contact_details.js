@@ -17,12 +17,24 @@ const ContactDetails = (function(){
         _template: null,
 
         /**
-         * Makes sure the module is displayed.
+         * Initializes the main functionality.
          *
          * @return void
          */
 
         init(){
+
+            const $self = this;
+            $self.renderTemplate();
+        },
+
+        /**
+         * Renders the template.
+         *
+         * @return void
+         */
+
+        renderTemplate(){
 
             const $self = this;
 
