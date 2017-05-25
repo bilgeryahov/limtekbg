@@ -1,23 +1,38 @@
 /**
- * Function - class, used to deal with simple templates,
- * which require no deep logic.
+ * Function - class, used to deal with templates.
  *
  * @param $templatePath
  * @param $placeholderName
  * @param $templateData
+ *
  * @constructor
  */
 
 function Template($templatePath, $placeholderName, $templateData){
 
-    // Initial private details.
+    // Make sure that the template data comes as an object.
+    if(!DevelopmentHelpers.isObject($templateData)){
+
+        console.error('Template.constructor(): The template data should be an object!');
+        return;
+    }
+
+    // Initial private attributes.
     const _templatePath = $templatePath;
     const _placeholderName = $placeholderName;
-    const _templateData = $templateData;
+
+    // Can be (afterwards) modified.
+    let _templateData = $templateData;
 
     // Will be populated later.
     let _placeholder = {};
     let _template = {};
+
+    // Used to add (afterwards) data to a template.
+    const addAfterTemplateData = function ($data) {
+
+        _templateData = $data;
+    };
 
     // Tries to fetch the placeholder from the host page.
     const getPlaceholder = function () {
@@ -33,7 +48,7 @@ function Template($templatePath, $placeholderName, $templateData){
     };
 
     // Tries to fetch the template from the module-html file.
-    const getTemplate = function () {
+    const getTemplate = function ($proceedGeneration) {
 
         new Request({
             url: _templatePath,
@@ -41,7 +56,11 @@ function Template($templatePath, $placeholderName, $templateData){
             onSuccess($template){
 
                 _template = $template;
-                return generateTemplate();
+
+                if($proceedGeneration){
+
+                    generateTemplate();
+                }
             },
             onFailure($xhr){
 
@@ -51,7 +70,7 @@ function Template($templatePath, $placeholderName, $templateData){
         }).send();
     };
 
-    // Tries to generate the template on the host page with the initially passed data.
+    // Tries to generate the template on the host page with the template data.
     const generateTemplate = function () {
 
         const $compiled = Handlebars.compile(_template);
@@ -61,7 +80,7 @@ function Template($templatePath, $placeholderName, $templateData){
     /**
      * @public
      *
-     * Kicks-in the process.
+     * Kicks-in the straight-forward process.
      *
      * @return void
      */
@@ -70,7 +89,67 @@ function Template($templatePath, $placeholderName, $templateData){
 
         if(getPlaceholder()){
 
-            getTemplate();
+            // Proceed to generation (straight - forward).
+            getTemplate(true);
         }
     };
+
+    /**
+     * @public
+     *
+     * Makes the placeholder visible.
+     *
+     * @return void
+     */
+
+    this.makeVisible = function () {
+
+        _placeholder.style.display = 'block';
+    };
+
+    /**
+     * @public
+     *
+     * Makes the placeholder invisible.
+     *
+     * @return void
+     */
+
+    this.makeInvisible = function () {
+
+        _placeholder.style.display = 'none';
+    };
+
+    /**
+     * @public
+     *
+     * Prepares the template without generating.
+     *
+     * @return void
+     */
+
+    this.prepare = function () {
+
+        if(getPlaceholder()){
+
+            // No generation.
+            getTemplate(false);
+        }
+    };
+
+    /**
+     * @public
+     *
+     * Calls for displaying the template with additional data.
+     *
+     * @param $data
+     *
+     * @return void
+     */
+
+    this.displayAfter = function ($data) {
+
+        addAfterTemplateData($data);
+        generateTemplate();
+    }
 }
