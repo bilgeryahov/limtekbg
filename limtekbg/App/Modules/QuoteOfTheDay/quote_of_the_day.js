@@ -26,9 +26,9 @@ const QuoteOfTheDay = (function(){
 
         init(){
 
-            const selfObj = this;
+            const $self = this;
 
-            selfObj._listOfQuotes = [
+            $self._listOfQuotes = [
                 'Опит е името, което даваме на грешките си.',
                 'В днешно време хората знаят цената на всичко, но не знаят стойността на нищо.',
                 'Модно е това, което носим самите ние. Не е модно онова, което носят другите хора.',
@@ -38,11 +38,11 @@ const QuoteOfTheDay = (function(){
                 'Истината рядко е чиста и никога проста.'
             ];
 
-            selfObj._flexibleTemplateFactory = new FlexibleTemplateFactory(
-                selfObj._templatePath, selfObj._placeholderName, {}
+            $self._flexibleTemplateFactory = new FlexibleTemplateFactory(
+                $self._templatePath, $self._placeholderName, {}
             );
 
-            selfObj.getRandomQuote();
+            $self.getRandomQuote();
         },
 
         /**
@@ -53,11 +53,11 @@ const QuoteOfTheDay = (function(){
 
         getRandomQuote(){
 
-            const selfObj = this;
-            let number = Math.floor((Math.random() * 7));
-            let quote = selfObj._listOfQuotes[number];
-            selfObj._flexibleTemplateFactory.addCustomTemplateData( { quote: quote } );
-            selfObj._flexibleTemplateFactory.initProcess();
+            const $self = this;
+            let $number = Math.floor((Math.random() * 7));
+            let $quote = $self._listOfQuotes[$number];
+            $self._flexibleTemplateFactory.addCustomTemplateData( { quote: $quote } );
+            $self._flexibleTemplateFactory.initProcess();
         }
     };
 
