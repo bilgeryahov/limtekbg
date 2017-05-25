@@ -14,7 +14,7 @@ const Header = (function(){
 
         _templatePath: './Modules/Header/Header.html',
         _placeholderName: 'HeaderPlaceholder',
-        _templateFactory: null,
+        _template: null,
 
         /**
          * Initializes the main functionality.
@@ -26,11 +26,11 @@ const Header = (function(){
 
             const $self = this;
 
-            $self._templateFactory = new TemplateFactory(
+            $self._template = new Template(
                 $self._templatePath, $self._placeholderName, {}
             );
 
-            $self._templateFactory.initProcess();
+            $self._template.displayMain();
         }
     };
 
