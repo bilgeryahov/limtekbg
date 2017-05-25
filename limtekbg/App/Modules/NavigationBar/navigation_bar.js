@@ -14,7 +14,7 @@ const NavigationBar = (function(){
 
         _templatePath: './Modules/NavigationBar/navigation_bar.html',
         _placeholderName: 'NavigationBarPlaceholder',
-        _flexibleTemplateFactory: null,
+        _template: null,
 
         _navDemo: null,
 
@@ -27,24 +27,23 @@ const NavigationBar = (function(){
         init(){
 
             const $self = this;
+            const $templateInfo = $self.determinePage();
 
-            $self._flexibleTemplateFactory = new FlexibleTemplateFactory(
-                $self._templatePath, $self._placeholderName, {}
+            $self._template = new Template(
+                $self._templatePath, $self._placeholderName, $templateInfo
             );
 
-            $self.determinePage();
+            $self._template.displayMain();
         },
 
         /**
-         * Determines which is the page the user is currently on;
-         * Calls for generating the template.
+         * Determines which is the page the user is currently on.
          *
-         * @return void
+         * @return {Array}
          */
 
         determinePage(){
 
-            const $self = this;
             const $path = window.location.pathname;
 
             let $templateInfo = [];
@@ -97,8 +96,7 @@ const NavigationBar = (function(){
                     break;
             }
 
-            $self._flexibleTemplateFactory.addCustomTemplateData( { pages: $templateInfo } );
-            $self._flexibleTemplateFactory.initProcess();
+            return $templateInfo;
         },
 
         /**
