@@ -14,7 +14,7 @@ const CustomMessage = (function(){
 
         _templatePath: './Modules/CustomMessage/custom_message.html',
         _placeholderName: 'CustomMessagePlaceholder',
-        _flexibleTemplateFactory: null,
+        _template: null,
 
         /**
          * Initialize the CustomMessage module.
@@ -26,9 +26,11 @@ const CustomMessage = (function(){
 
             const $self = this;
 
-            $self._flexibleTemplateFactory = new FlexibleTemplateFactory(
+            $self._template = new Template(
                 $self._templatePath, $self._placeholderName, {}
             );
+
+            $self._template.prepare();
         },
 
         /**
@@ -42,9 +44,10 @@ const CustomMessage = (function(){
         showMessage($message){
 
             const $self = this;
-            $self._flexibleTemplateFactory.addCustomTemplateData( { message : $message } );
-            $self._flexibleTemplateFactory.initProcess();
-            $self._flexibleTemplateFactory.showPlaceholder();
+            $self._template.displayAfter( { message : $message } );
+
+            // Since this is also hidden, display it.
+            $self._template.makeVisible();
         },
 
         /**
@@ -56,7 +59,7 @@ const CustomMessage = (function(){
         hideMessage(){
 
             const $self = this;
-            $self._flexibleTemplateFactory.hidePlaceholder();
+            $self._template.makeInvisible();
         }
     };
 
