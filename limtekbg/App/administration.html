@@ -1,50 +1,51 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Administration</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0 maximum-scale=1"/>
-    <meta charset="utf-8"/>
-    <meta name="author" content="Bilger Yahov">
-    <link rel="stylesheet" href="StyleSheets/Vendor/w3css.css"/>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato"/>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css"/>
-    <link rel="stylesheet" href="StyleSheets/Administration.css"/>
-    <script src="https://www.gstatic.com/firebasejs/3.6.10/firebase.js"></script>
-    <script src="JavaScript/Vendor/MooTools-Core-1.6.0.js"></script>
-    <script src="JavaScript/Vendor/MooTools-More-1.6.0.js"></script>
-    <script src="JavaScript/Vendor/handlebars-v4.0.5.js"></script>
-    <script src="JavaScript/ObserverPattern.js"></script>
-    <script src="JavaScript/FirebaseAuthenticationManager.js"></script>
-    <script src="JavaScript/AdministrationController.js"></script>
-    <script src="JavaScript/CommonReusableUserInterfaceManager.js"></script>
-    <script src="JavaScript/TemplateProcessor.js"></script>
-</head>
-<body>
-
-    <div id="PageContent" class="animate-bottom w3-container">
-        <h2>Tada!</h2>
-        <p>Some text in my newly loaded page..</p>
-        <button id="LogoutButton" class="w3-btn w3-red w3-padding w3-ripple">Logout</button>
-    </div>
-
-    <div id="CustomMessagePlaceholder" class="w3-modal">
-    </div>
-    <script id="CustomMessageTemplate" type="text/x-handlebars-template">
-        <div class="w3-modal-content w3-animate-top w3-card-4">
-            <header class="w3-container w3-red">
-        				<span onclick="CommonReusableUserInterfaceManager.enableCustomMessageModal(false);"
-                              class="w3-closebtn">&times;</span>
-                <h2>Съобщение</h2>
-            </header>
-            <div class="w3-container">
-                <p>{{message}}</p>
+    <head id="HeadPlaceholder">
+    </head>
+    <body>
+        <header id="HeaderPlaceholder">
+        </header>
+        <section id="MainWrapper">
+            <div id="LogoutPlaceholder">
             </div>
-            <footer class="w3-container w3-red">
-                <p>Благодарим Ви, че избрахте нас!</p>
-            </footer>
+        </section>
+        <div id="CustomMessagePlaceholder" class="w3-modal">
         </div>
-    </script>
 
-</body>
+        <!-- JavaScript needed for loading of the modules. -->
+        <script type="text/javascript" src="JavaScript/Vendor/handlebars-v4.0.5.js"></script>
+        <script type="text/javascript" src="JavaScript/Vendor/MooTools-Core-1.6.0.js"></script>
+        <script type="text/javascript" src="JavaScript/Vendor/MooTools-More-1.6.0.js"></script>
+
+        <!-- Page specific JavaScript -->
+        <script type="text/javascript" src="JavaScript/DevelopmentHelpers.js"></script>
+        <script type="text/javascript" src="JavaScript/TemplateFactory.js"></script>
+        <script type="text/javascript" src="JavaScript/FlexibleTemplateFactory.js"></script>
+        <script type="text/javascript" src="JavaScript/FirebaseAuthenticationManager.js"></script>
+        <script type="text/javascript" src="JavaScript/ObserverPattern.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/3.6.10/firebase.js"></script>
+
+        <!-- CSS, which has to be pre-loaded. -->
+        <link rel="stylesheet" href="StyleSheets/Vendor/w3css.css"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css"/>
+        <link rel="stylesheet" href="StyleSheets/default.css"/>
+
+        <!-- Head module -->
+        <script type="text/javascript" src="./Modules/Head/head.js"></script>
+        <link rel="stylesheet" href="./Modules/Head/head.css"/>
+
+        <!-- Header module -->
+        <script type="text/javascript" src="./Modules/Header/header.js"></script>
+        <link rel="stylesheet" href="./Modules/Header/header.css"/>
+
+        <!-- CustomMessage module -->
+        <script type="text/javascript" src="./Modules/CustomMessage/custom_message.js"></script>
+        <link rel="stylesheet" href="./Modules/CustomMessage/custom_message.css"/>
+
+        <!-- Logout module -->
+        <script type="text/javascript" src="./Modules/Logout/logout.js"></script>
+        <link rel="stylesheet" href="./Modules/Logout/logout.css"/>
+    </body>
 </html>
