@@ -38,6 +38,19 @@ const QuoteOfTheDay = (function(){
                 'Истината рядко е чиста и никога проста.'
             ];
 
+            $self.renderTemplate();
+        },
+
+        /**
+         * Renders the template.
+         *
+         * @return void
+         */
+
+        renderTemplate(){
+
+            const $self = this;
+
             const $quote = $self.getRandomQuote();
 
             $self._template = new Template(
