@@ -24,13 +24,13 @@ const Loader = (function(){
 
         init(){
 
-            const selfObj = this;
+            const $self = this;
 
-            selfObj._flexibleTemplateFactory = new FlexibleTemplateFactory(
-                selfObj._templatePath, selfObj._placeholderName, {}
+            $self._flexibleTemplateFactory = new FlexibleTemplateFactory(
+                $self._templatePath, $self._placeholderName, {}
             );
 
-            selfObj._flexibleTemplateFactory.initProcess();
+            $self._flexibleTemplateFactory.initProcess();
         },
 
         /**
@@ -41,8 +41,8 @@ const Loader = (function(){
 
         showMe(){
 
-            const selfObj = this;
-            selfObj._flexibleTemplateFactory.showPlaceholder();
+            const $self = this;
+            $self._flexibleTemplateFactory.showPlaceholder();
         },
 
         /**
@@ -53,8 +53,8 @@ const Loader = (function(){
 
         hideMe(){
 
-            const selfObj = this;
-            selfObj._flexibleTemplateFactory.hidePlaceholder();
+            const $self = this;
+            $self._flexibleTemplateFactory.hidePlaceholder();
         }
     };
 
