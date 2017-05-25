@@ -58,6 +58,8 @@ const Login = (function(){
             );
 
             $self._flexibleTemplateFactory.initProcess();
+
+            // The Login and Loader modules are hidden on the host page by default.
             $self._flexibleTemplateFactory.showPlaceholder();
 
             // Create a new Observer for the Auth state.
