@@ -27,10 +27,10 @@ const NavigationBar = (function(){
         init(){
 
             const $self = this;
-            const $templateInfo = $self.determinePage();
+            const $pages = $self.determinePage();
 
             $self._template = new Template(
-                $self._templatePath, $self._placeholderName, $templateInfo
+                $self._templatePath, $self._placeholderName, {pages: $pages}
             );
 
             $self._template.displayMain();
