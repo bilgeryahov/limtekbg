@@ -13,14 +13,14 @@ class FlexibleTemplateFactory extends TemplateFactory{
 
     initProcess(){
 
-        let continueProcess = true;
+        let $continueProcess = true;
 
         if(typeof this._placeholder === 'undefined' || !this._placeholder){
 
-            continueProcess = this.getPlaceholder();
+            $continueProcess = this.getPlaceholder();
         }
 
-        if(!continueProcess){
+        if(!$continueProcess){
 
             return;
         }
@@ -38,14 +38,14 @@ class FlexibleTemplateFactory extends TemplateFactory{
     /**
      * Adding custom template data, after constructing the object.
      *
-     * @param templateData
+     * @param $templateData
      *
      * @return void
      */
 
-    addCustomTemplateData(templateData){
+    addCustomTemplateData($templateData){
 
-        this._templateData = templateData;
+        this._templateData = $templateData;
     }
 
     /**
