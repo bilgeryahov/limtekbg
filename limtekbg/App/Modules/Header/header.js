@@ -24,13 +24,13 @@ const Header = (function(){
 
         init(){
 
-            const selfObj = this;
+            const $self = this;
 
-            selfObj._templateFactory = new TemplateFactory(
-                selfObj._templatePath, selfObj._placeholderName, {}
+            $self._templateFactory = new TemplateFactory(
+                $self._templatePath, $self._placeholderName, {}
             );
 
-            selfObj._templateFactory.initProcess();
+            $self._templateFactory.initProcess();
         }
     };
 
