@@ -17,7 +17,7 @@ const CustomMessage = (function(){
         _template: null,
 
         /**
-         * Initialize the CustomMessage module.
+         * Initialize the main functionality.
          *
          * @return void
          */

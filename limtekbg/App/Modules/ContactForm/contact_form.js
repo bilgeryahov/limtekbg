@@ -33,7 +33,7 @@ const ContactForm = (function(){
         _cfSendButton         : {},
 
         /**
-         * Makes sure the module is displayed.
+         * Initializes the main functionality.
          *
          * @return void
          */
