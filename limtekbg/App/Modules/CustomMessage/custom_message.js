@@ -26,6 +26,19 @@ const CustomMessage = (function(){
 
             const $self = this;
 
+            $self.renderTemplate();
+        },
+
+        /**
+         * Renders the template.
+         *
+         * @return void
+         */
+
+        renderTemplate(){
+
+            const $self = this;
+
             $self._template = new Template(
                 $self._templatePath, $self._placeholderName, {}
             );
