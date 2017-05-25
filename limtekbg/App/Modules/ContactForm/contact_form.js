@@ -46,13 +46,13 @@ const ContactForm = (function(){
                 return;
             }
 
-            const selfObj = this;
+            const $self = this;
 
-            selfObj._templateFactory = new TemplateFactory(
-                selfObj._templatePath, selfObj._placeholderName, {}
+            $self._templateFactory = new TemplateFactory(
+                $self._templatePath, $self._placeholderName, {}
             );
 
-            selfObj._templateFactory.initProcess();
+            $self._templateFactory.initProcess();
         },
 
         /**
@@ -63,30 +63,30 @@ const ContactForm = (function(){
 
         getDomElements(){
 
-            const selfObj = this;
+            const $self = this;
 
-            if(selfObj._elementsPresent){
+            if($self._elementsPresent){
 
                 return true;
             }
 
-            selfObj._cfNameElement = $('CFname');
-            selfObj._cfEmailElement = $('CFemail');
-            selfObj._cfPhoneElement = $('CFphone');
-            selfObj._cfSubjectElement = $('CFsubject');
-            selfObj._cfMessageElement = $('CFmessage');
-            selfObj._cfSendButton = $('CFsendButton');
+            $self._cfNameElement = $('CFname');
+            $self._cfEmailElement = $('CFemail');
+            $self._cfPhoneElement = $('CFphone');
+            $self._cfSubjectElement = $('CFsubject');
+            $self._cfMessageElement = $('CFmessage');
+            $self._cfSendButton = $('CFsendButton');
 
-            selfObj._elementsPresent = (
-                selfObj._cfNameElement !== null
-                && selfObj._cfEmailElement !== null
-                && selfObj._cfPhoneElement !== null
-                && selfObj._cfSubjectElement !== null
-                && selfObj._cfMessageElement !== null
-                && selfObj._cfSendButton !== null
+            $self._elementsPresent = (
+                $self._cfNameElement !== null
+                && $self._cfEmailElement !== null
+                && $self._cfPhoneElement !== null
+                && $self._cfSubjectElement !== null
+                && $self._cfMessageElement !== null
+                && $self._cfSendButton !== null
             );
 
-            return selfObj._elementsPresent;
+            return $self._elementsPresent;
         },
 
         /**
@@ -97,14 +97,14 @@ const ContactForm = (function(){
 
         validateInputCorrectness(){
 
-            const selfObj = this;
+            const $self = this;
 
             return (
-                DevelopmentHelpers.validateCorrectness(selfObj._cfNameValue, 'name')
-                && DevelopmentHelpers.validateCorrectness(selfObj._cfEmailValue, 'email')
-                && DevelopmentHelpers.validateCorrectness(selfObj._cfPhoneValue, 'phone')
-                && DevelopmentHelpers.validateCorrectness(selfObj._cfSubjectValue, 'subject')
-                && DevelopmentHelpers.validateCorrectness(selfObj._cfMessageValue, 'text')
+                DevelopmentHelpers.validateCorrectness($self._cfNameValue, 'name')
+                && DevelopmentHelpers.validateCorrectness($self._cfEmailValue, 'email')
+                && DevelopmentHelpers.validateCorrectness($self._cfPhoneValue, 'phone')
+                && DevelopmentHelpers.validateCorrectness($self._cfSubjectValue, 'subject')
+                && DevelopmentHelpers.validateCorrectness($self._cfMessageValue, 'text')
             );
         },
 
@@ -116,14 +116,14 @@ const ContactForm = (function(){
 
         validateInputSecurity(){
 
-            const selfObj = this;
+            const $self = this;
 
             return(
-                DevelopmentHelpers.validateSecurity(selfObj._cfNameValue)
-                && DevelopmentHelpers.validateSecurity(selfObj._cfEmailValue)
-                && DevelopmentHelpers.validateSecurity(selfObj._cfPhoneValue)
-                && DevelopmentHelpers.validateSecurity(selfObj._cfSubjectValue)
-                && DevelopmentHelpers.validateSecurity(selfObj._cfMessageValue)
+                DevelopmentHelpers.validateSecurity($self._cfNameValue)
+                && DevelopmentHelpers.validateSecurity($self._cfEmailValue)
+                && DevelopmentHelpers.validateSecurity($self._cfPhoneValue)
+                && DevelopmentHelpers.validateSecurity($self._cfSubjectValue)
+                && DevelopmentHelpers.validateSecurity($self._cfMessageValue)
             );
         },
 
@@ -136,108 +136,108 @@ const ContactForm = (function(){
 
         sendMailToCloudService(){
 
-            const selfObj = this;
+            const $self = this;
 
             // Indicate that the send button has been triggered.
-            selfObj.sendButtonTriggeredState(true);
+            $self.sendButtonTriggeredState(true);
 
             // Try to get reCAPTCHA user's response.
-            let reCAPTCHAresponse = grecaptcha.getResponse();
-            if(!reCAPTCHAresponse || reCAPTCHAresponse === 'undefined' || reCAPTCHAresponse === ''){
+            let $reCAPTCHAresponse = grecaptcha.getResponse();
+            if(!$reCAPTCHAresponse || $reCAPTCHAresponse === 'undefined' || $reCAPTCHAresponse === ''){
 
                 // Indicate that the sending process has finished.
-                selfObj.sendButtonTriggeredState(false);
+                $self.sendButtonTriggeredState(false);
                 console.error('ContactForm.sendMailToCloudService(): reCAPTCHA skipped!');
                 CustomMessage.showMessage('Отбележете, че не сте робот.');
                 return;
             }
 
             // First get the DOM elements, at least try.
-            if(!selfObj.getDomElements()){
+            if(!$self.getDomElements()){
 
                 // Reset reCAPTCHA
                 grecaptcha.reset();
 
                 // Indicate that the sending process has finished.
-                selfObj.sendButtonTriggeredState(false);
+                $self.sendButtonTriggeredState(false);
                 console.log('ContactForm.sendMailToCloudService(): Problem with presence' +
                     ' of DOM elements!');
                 return;
             }
 
-            selfObj._cfNameValue = selfObj._cfNameElement.value;
-            selfObj._cfEmailValue = selfObj._cfEmailElement.value;
-            selfObj._cfPhoneValue = selfObj._cfPhoneElement.value;
-            selfObj._cfSubjectValue = selfObj._cfSubjectElement.value;
-            selfObj._cfMessageValue = selfObj._cfMessageElement.value;
+            $self._cfNameValue = $self._cfNameElement.value;
+            $self._cfEmailValue = $self._cfEmailElement.value;
+            $self._cfPhoneValue = $self._cfPhoneElement.value;
+            $self._cfSubjectValue = $self._cfSubjectElement.value;
+            $self._cfMessageValue = $self._cfMessageElement.value;
 
-            if(!selfObj.validateInputCorrectness()){
+            if(!$self.validateInputCorrectness()){
 
                 // Reset reCAPTCHA
                 grecaptcha.reset();
 
                 // Indicate that the sending process has finished.
-                selfObj.sendButtonTriggeredState(false);
+                $self.sendButtonTriggeredState(false);
                 console.error('ContactForm.sendMailToCloudService(): One of the input fields contains ' +
                     ' semantically not correct information');
                 CustomMessage.showMessage('Въвели сте некоректна информация или символи.');
                 return;
             }
 
-            if(!selfObj.validateInputSecurity()){
+            if(!$self.validateInputSecurity()){
 
                 // Reset reCAPTCHA
                 grecaptcha.reset();
 
                 // Indicate that the sending process has finished.
-                selfObj.sendButtonTriggeredState(false);
+                $self.sendButtonTriggeredState(false);
                 console.error('ContactForm.sendMailToCloudService(): One of the input fields contains ' +
                     ' not secure information');
                 CustomMessage.showMessage('Въвели сте некоректна информация или символи.');
                 return;
             }
 
-            let postData = {
-                recaptcha_response: reCAPTCHAresponse,
-                from_name   : selfObj._cfNameValue,
-                from_email  : selfObj._cfEmailValue,
-                from_phone  : selfObj._cfPhoneValue,
-                subject     : selfObj._cfSubjectValue,
-                text        : selfObj._cfMessageValue
+            let $postData = {
+                recaptcha_response: $reCAPTCHAresponse,
+                from_name   : $self._cfNameValue,
+                from_email  : $self._cfEmailValue,
+                from_phone  : $self._cfPhoneValue,
+                subject     : $self._cfSubjectValue,
+                text        : $self._cfMessageValue
             };
 
             new Request({
                 url:'https://us-central1-limtek-fb748.cloudfunctions.net/sendMail',
                 method: 'POST',
-                data: postData,
-                onSuccess(data){
+                data: $postData,
+                onSuccess($data){
 
-                    data = JSON.decode(data);
-                    if(data.hasOwnProperty('message')){
+                    $data = JSON.decode($data);
+                    if($data.hasOwnProperty('message')){
 
                         // Reset reCAPTCHA
                         grecaptcha.reset();
 
-                        console.log('ContactForm.sendMailToCloudService(): ' + data.message);
+                        console.log('ContactForm.sendMailToCloudService(): ' + $data.message);
                         CustomMessage.showMessage('Съобщението е изпратено успешно.');
                         // Indicate that the sending process has finished.
-                        selfObj.sendButtonTriggeredState(false);
+                        $self.sendButtonTriggeredState(false);
                     }
                 },
-                onFailure(xhr){
+                onFailure($xhr){
 
                     // Reset reCAPTCHA
                     grecaptcha.reset();
 
                     console.error('ContactForm.sendMailToCloudService(): Sending the message failed.');
 
-                    if(xhr){
-                        console.error(xhr);
+                    if($xhr){
+                        console.error($xhr);
                     }
 
                     CustomMessage.showMessage('Проблем с изпращането на съобщението.');
                     // Indicate that the sending process has finished.
-                    selfObj.sendButtonTriggeredState(false);
+                    $self.sendButtonTriggeredState(false);
                 }
             }).send();
         },
@@ -245,24 +245,24 @@ const ContactForm = (function(){
         /**
          * Indicates that sending the message has been triggered.
          *
-         * @param isTriggered
+         * @param $isTriggered
          *
          * @return void
          */
 
-        sendButtonTriggeredState(isTriggered){
+        sendButtonTriggeredState($isTriggered){
 
-            const selfObj = this;
+            const $self = this;
 
-            if(isTriggered){
+            if($isTriggered){
 
-                selfObj._cfSendButton.innerHTML = 'Моля изчакайте...';
-                selfObj._cfSendButton.disabled = true;
+                $self._cfSendButton.innerHTML = 'Моля изчакайте...';
+                $self._cfSendButton.disabled = true;
                 return;
             }
 
-            selfObj._cfSendButton.innerHTML = 'Изпрати';
-            selfObj._cfSendButton.disabled = false;
+            $self._cfSendButton.innerHTML = 'Изпрати';
+            $self._cfSendButton.disabled = false;
         }
     };
 
