@@ -14,7 +14,7 @@ const AdministrationPanelDescription = (function(){
 
         _templatePath: './Modules/AdministrationPanelDescription/administration_panel_description.html',
         _placeholderName: 'AdministrationPanelDescriptionPlaceholder',
-        _templateFactory: null,
+        _template: null,
 
         /**
          * Initializes the main functionality.
@@ -26,11 +26,11 @@ const AdministrationPanelDescription = (function(){
 
             const $self = this;
 
-            $self._templateFactory = new TemplateFactory(
+            $self._template = new Template(
                 $self._templatePath, $self._placeholderName, {}
             );
 
-            $self._templateFactory.initProcess();
+            $self._template.displayMain();
         }
     };
 
