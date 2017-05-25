@@ -14,7 +14,7 @@ const Loader = (function(){
 
         _templatePath: './Modules/Loader/loader.html',
         _placeholderName: 'LoaderPlaceholder',
-        _flexibleTemplateFactory: null,
+        _template: null,
 
         /**
          * Initializes the main functionality.
@@ -26,11 +26,11 @@ const Loader = (function(){
 
             const $self = this;
 
-            $self._flexibleTemplateFactory = new FlexibleTemplateFactory(
+            $self._template = new Template(
                 $self._templatePath, $self._placeholderName, {}
             );
 
-            $self._flexibleTemplateFactory.initProcess();
+            $self._template.displayMain();
         },
 
         /**
@@ -42,7 +42,7 @@ const Loader = (function(){
         showMe(){
 
             const $self = this;
-            $self._flexibleTemplateFactory.showPlaceholder();
+            $self._template.makeVisible();
         },
 
         /**
@@ -54,7 +54,7 @@ const Loader = (function(){
         hideMe(){
 
             const $self = this;
-            $self._flexibleTemplateFactory.hidePlaceholder();
+            $self._template.makeInvisible();
         }
     };
 
