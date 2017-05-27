@@ -7,7 +7,11 @@
     "development":{
       ".write": "root.child('allowedUUIDs').hasChild(auth.uid)",
       "messages":{
-        ".read": "root.child('allowedUUIDs').hasChild(auth.uid)"
+        ".read": "root.child('allowedUUIDs').hasChild(auth.uid)",
+        ".write": true,
+        "$messageID":{
+          ".validate": "newData.hasChild('secret_by_bilger_yahov') && newData.child('secret_by_bilger_yahov').val() === 'no_more_sadness_in_this_world'"
+        }
       },
       "products":{
         ".read": true
