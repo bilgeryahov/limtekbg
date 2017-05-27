@@ -263,6 +263,14 @@ const ContactForm = (function(){
 
             const $self = this;
 
+            // Just in case.
+            $self._cfSendButton = $('CFsendButton');
+            if(!$self._cfSendButton){
+
+                console.error('ContactForm.sendButtonTriggeredState: Button not found!');
+                return;
+            }
+
             if($isTriggered){
 
                 $self._cfSendButton.innerHTML = 'Моля изчакайте...';
