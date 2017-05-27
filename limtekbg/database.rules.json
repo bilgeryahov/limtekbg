@@ -1,19 +1,10 @@
 {
   "rules": {
-    "allowedUUIDs":{
-      ".read": false,
-      ".write": false
-    },
     "development":{
-      ".write": "root.child('allowedUUIDs').hasChild(auth.uid)",
-      "messages":{
-        ".read": "root.child('allowedUUIDs').hasChild(auth.uid)"
-      },
+      ".read" : false,
+      ".write": false,
       "products":{
         ".read": true
-      },
-      "purchases":{
-        ".read": "root.child('allowedUUIDs').hasChild(auth.uid)"
       }
     }
   }
