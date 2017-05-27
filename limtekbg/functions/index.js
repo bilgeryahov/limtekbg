@@ -14,11 +14,16 @@ const functions  = require('firebase-functions');
 const https = require('https');
 const http = require('http');
 const querystring = require('querystring');
+const admin = require('firebase-admin');
+
+// Make sure the functions can use admin privileges.
+admin.initializeApp(functions.config().firebase);
 
 /**
  * @cloudFunction saveMessage.js
  *
  * Cloud function, which saves a single message to the Database.
+ * Uses admin privileges to save the data.
  */
 
 exports.saveMessage = functions.https.onRequest((req, res) => {
@@ -197,7 +202,7 @@ exports.saveMessage = functions.https.onRequest((req, res) => {
     const finishSaving = function(){
 
         // TODO: hardcoded database path to be fixed later.
-        const databasePath = '/development/messages/.json';
+        const databasePath = '/development/messages/';
 
         let mailFromName   = req.body.from_name;
         let mailFromEmail  = req.body.from_email;
@@ -205,85 +210,37 @@ exports.saveMessage = functions.https.onRequest((req, res) => {
         let mailSubject    = req.body.subject;
         let mailText       = req.body.text;
 
-        /*
-         * The last property is to make sure that only this function can write
-         * to the messages.
-         * Since writing is allowed on that datapoint, we want to make sure
-         * that the datapoint cannot be spammed with redundant data.
-         */
-
-        const messageData = JSON.stringify({
-            'dateSent': firebase.database.ServerValue.TIMESTAMP,
+        const message = {
+            'sentOn': firebase.database.ServerValue.TIMESTAMP,
             'seen': false,
-            'messageData': {
+            'data':{
                 'name': mailFromName,
-                'email':mailFromEmail,
-                'phone': mailFromPhone,
+                'email': mailFromEmail,
+                'phone' : mailFromPhone,
                 'subject': mailSubject,
                 'text': mailText
-            },
-            'secret_by_bilger_yahov' : 'no_more_sadness_in_this_world'
-        });
-
-        const messagePOSToptions = {
-            hostname: 'limtek-fb748.firebaseio.com',
-            path: databasePath,
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Content-Length': Buffer.byteLength(messageData)
             }
         };
 
-        const messagePOSTreq = https.request(messagePOSToptions, (messagePOSTres) => {
+        admin.database().ref(databasePath)
+            .push(message)
+            .then(function(snapshot){
 
-            let output = '';
-            messagePOSTres.setEncoding('utf8');
-            messagePOSTres.on('data', (chunk) => {
-                output += chunk;
+                console.log(snapshot.ref);
+                res
+                    .status(201)
+                    .json({
+                        message: 'Message created!'
+                    });
+            })
+            .catch(function(error){
+
+                console.error(error);
+                res
+                    .status(503)
+                    .json({
+                        error: 'Message creation has failed!'
+                    });
             });
-
-            messagePOSTres.on('end', () => {
-                try{
-                    let obj = JSON.parse(output);
-                    if(obj.hasOwnProperty('error')){
-                        console.error(obj);
-                        res
-                            .status(503)
-                            .json({
-                                error:'Database throws an error!'
-                            });
-                        return;
-                    }
-
-                    res
-                        .status(201)
-                        .json({
-                            message:'Message created!'
-                        });
-                }
-                catch(exc){
-                    console.error('Exception: ' + exc);
-                    console.error('Output: ' + output);
-                    res
-                        .status(503)
-                        .json({
-                            error:'Error while parsing the response from the message saving!'
-                        });
-                }
-            });
-        });
-
-        messagePOSTreq.on('error', (e) => {
-            console.error(e);
-            res
-                .status(503)
-                .json({
-                    error:'Message saving POST request went wrong.'
-                });
-        });
-
-        messagePOSTreq.write(messageData);
-        messagePOSTreq.end();
     };
 });
