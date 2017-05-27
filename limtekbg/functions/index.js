@@ -10,25 +10,25 @@
  * @copyright © 2017 Bilger Yahov, all rights reserved.
  */
 
+const firebase = require('firebase');
 const functions  = require('firebase-functions');
-const nodemailer = require('nodemailer');
-const querystring = require('querystring');
 const https = require('https');
 const http = require('http');
 
 /**
- * @cloudFunction sendMail.js
+ * @cloudFunction saveMessage.js
  *
- * Cloud function which deals with sending an email message to Gmail account.
+ * Cloud function, which saves a single message to the Database.
  */
 
-exports.sendMail = functions.https.onRequest((req, res) => {
+exports.saveMessage = functions.https.onRequest((req, res) => {
 
     /*
      * Headers for each response.
      */
 
-    res.header('Access-Control-Allow-Origin', 'https://limtek-fb748.firebaseapp.com');
+    // TODO: Access-Control-Allow-Origin to be changed only to live website.
+    res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'X-Requested-With');
     res.header('Access-Control-Allow-Methods', 'PUT,POST');
 
@@ -118,7 +118,7 @@ exports.sendMail = functions.https.onRequest((req, res) => {
      * Deal with reCAPTCHA.
      */
 
-    const recaptchaPOSTdata = querystring.stringify({
+    const recaptchaPOSTdata = JSON.stringify({
         'secret': '6LeNYx8UAAAAAN4l_zsbZN_7lLY10pESj1TAla0_',
         'response': req.body.recaptcha_response
     });
@@ -136,7 +136,6 @@ exports.sendMail = functions.https.onRequest((req, res) => {
     const recaptchaPOSTreq = https.request(recaptchaPOSToptions, (recaptchaPOSTres) => {
         let output = '';
         recaptchaPOSTres.setEncoding('utf8');
-
         recaptchaPOSTres.on('data', (chunk) => {
             output += chunk;
         });
@@ -156,8 +155,11 @@ exports.sendMail = functions.https.onRequest((req, res) => {
                     return;
                 }
 
-                if(obj['success'] === true && obj['hostname'].includes('limtek-fb748.firebaseapp.com')){
-                    return finishSendingMail();
+                // TODO: Remove localhost from the hostname.
+                if(obj['success'] === true &&
+                    (obj['hostname'].includes('limtek-fb748.firebaseapp.com') || (obj['hostname'].includes('localhost')))
+                ){
+                    return finishSaving();
                 }
 
                 console.error(obj);
@@ -191,46 +193,89 @@ exports.sendMail = functions.https.onRequest((req, res) => {
     recaptchaPOSTreq.write(recaptchaPOSTdata);
     recaptchaPOSTreq.end();
 
-    const finishSendingMail = function(){
+    // POST request going to Database to save the message.
+    const finishSaving = function(){
+
+        // TODO: hardcoded database path to be fixed later.
+        const databasePath = '/development/messages/.json';
+
         let mailFromName   = req.body.from_name;
         let mailFromEmail  = req.body.from_email;
         let mailFromPhone  = req.body.from_phone;
         let mailSubject    = req.body.subject;
         let mailText       = req.body.text;
 
-        let transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth:{
-                user: 'limteksender@gmail.com',
-                pass: 'limtek_sender'
+        const messageData = JSON.stringify({
+            'dateSent': firebase.database.ServerValue.TIMESTAMP,
+            'seen': false,
+            'messageData': {
+                'name': mailFromName,
+                'email':mailFromEmail,
+                'phone': mailFromPhone,
+                'subject': mailSubject,
+                'text': mailText
             }
         });
 
-        let mailOptions = {
-            to             : 'bayahov1@gmail.com',
-            from           : mailFromName + ' ' + mailFromEmail,
-            subject        : mailSubject,
-            text           : mailText + '\n\nMessage: Email has been sent from this user: ' + mailFromEmail
-            + '\n\nMessage: Phone number of the sender: ' + mailFromPhone
+        const messagePOSToptions = {
+            hostname: 'limtek-fb748.firebaseio.com',
+            path: databasePath,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Length': Buffer.byteLength(messageData)
+            }
         };
 
-        transporter.sendMail(mailOptions, (err, data) => {
-            if(err){
-                console.error(err);
-                res
-                    .status(503)
-                    .json({
-                        error:'Problem with sending the e-mail.'
-                    });
-                return;
-            }
+        const messagePOSTreq = https.request(messagePOSToptions, (messagePOSTres) => {
 
-            console.log(data);
+            let output = '';
+            messagePOSTres.setEncoding('utf8');
+            messagePOSTres.on('data', (chunk) => {
+                output += chunk;
+            });
+
+            messagePOSTres.on('end', () => {
+                try{
+                    let obj = JSON.parse(output);
+                    if(obj.hasOwnProperty('error')){
+                        console.error(obj);
+                        res
+                            .status(503)
+                            .json({
+                                error:'Database throws an error!'
+                            });
+                        return;
+                    }
+
+                    res
+                        .status(201)
+                        .json({
+                            message:'Message created!'
+                        });
+                }
+                catch(exc){
+                    console.error('Exception: ' + exc);
+                    console.error('Output: ' + output);
+                    res
+                        .status(503)
+                        .json({
+                            error:'Error while parsing the response from the message saving!'
+                        });
+                }
+            });
+        });
+
+        messagePOSTreq.on('error', (e) => {
+            console.error(e);
             res
-                .status(201)
+                .status(503)
                 .json({
-                    message: 'E-mail sent.'
+                    error:'Message saving POST request went wrong.'
                 });
         });
-    }
+
+        messagePOSTreq.write(messageData);
+        messagePOSTreq.end();
+    };
 });
