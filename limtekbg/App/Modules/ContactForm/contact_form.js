@@ -225,32 +225,28 @@ const ContactForm = (function(){
                 data: $postData,
                 onSuccess($data){
 
+                    // Reset reCAPTCHA
+                    grecaptcha.reset();
+                    CustomMessage.showMessage('Съобщението е изпратено успешно.');
+                    // Indicate that the sending process has finished.
+                    $self.sendButtonTriggeredState(false);
+
                     $data = JSON.decode($data);
                     if($data.hasOwnProperty('message')){
-
-                        // Reset reCAPTCHA
-                        grecaptcha.reset();
-
                         console.log('ContactForm.sendMailToCloudService(): ' + $data.message);
-                        CustomMessage.showMessage('Съобщението е изпратено успешно.');
-                        // Indicate that the sending process has finished.
-                        $self.sendButtonTriggeredState(false);
                     }
                 },
                 onFailure($xhr){
 
                     // Reset reCAPTCHA
                     grecaptcha.reset();
-
-                    console.error('ContactForm.sendMailToCloudService(): Sending the message failed.');
+                    CustomMessage.showMessage('Проблем с изпращането на съобщението.');
+                    // Indicate that the sending process has finished.
+                    $self.sendButtonTriggeredState(false);
 
                     if($xhr){
                         console.error($xhr);
                     }
-
-                    CustomMessage.showMessage('Проблем с изпращането на съобщението.');
-                    // Indicate that the sending process has finished.
-                    $self.sendButtonTriggeredState(false);
                 }
             }).send();
         },
