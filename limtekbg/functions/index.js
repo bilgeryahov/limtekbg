@@ -6,7 +6,6 @@
  * Contains Firebase cloud functions.
  *
  * @author Bilger Yahov <bayahov1@gmail.com>
- * @version 1.0.0
  * @copyright © 2017 Bilger Yahov, all rights reserved.
  */
 
@@ -205,6 +204,13 @@ exports.saveMessage = functions.https.onRequest((req, res) => {
         let mailSubject    = req.body.subject;
         let mailText       = req.body.text;
 
+        /*
+         * The last property is to make sure that only this function can write
+         * to the messages.
+         * Since writing is allowed on that datapoint, we want to make sure
+         * that the datapoint cannot be spammed with redundant data.
+         */
+
         const messageData = JSON.stringify({
             'dateSent': firebase.database.ServerValue.TIMESTAMP,
             'seen': false,
@@ -214,7 +220,8 @@ exports.saveMessage = functions.https.onRequest((req, res) => {
                 'phone': mailFromPhone,
                 'subject': mailSubject,
                 'text': mailText
-            }
+            },
+            'secret_by_bilger_yahov' : 'no_more_sadness_in_this_world'
         });
 
         const messagePOSToptions = {
