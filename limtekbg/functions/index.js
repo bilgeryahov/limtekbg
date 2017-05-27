@@ -13,6 +13,7 @@ const firebase = require('firebase');
 const functions  = require('firebase-functions');
 const https = require('https');
 const http = require('http');
+const querystring = require('querystring');
 
 /**
  * @cloudFunction saveMessage.js
@@ -117,7 +118,7 @@ exports.saveMessage = functions.https.onRequest((req, res) => {
      * Deal with reCAPTCHA.
      */
 
-    const recaptchaPOSTdata = JSON.stringify({
+    const recaptchaPOSTdata = querystring.stringify({
         'secret': '6LeNYx8UAAAAAN4l_zsbZN_7lLY10pESj1TAla0_',
         'response': req.body.recaptcha_response
     });
