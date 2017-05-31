@@ -122,25 +122,6 @@ const ContactForm = (function(){
         },
 
         /**
-         * Validates input fields for security issues.
-         *
-         * @return {boolean}
-         */
-
-        validateInputSecurity(){
-
-            const $self = this;
-
-            return(
-                DevelopmentHelpers.validateSecurity($self._cfNameValue)
-                && DevelopmentHelpers.validateSecurity($self._cfEmailValue)
-                && DevelopmentHelpers.validateSecurity($self._cfPhoneValue)
-                && DevelopmentHelpers.validateSecurity($self._cfSubjectValue)
-                && DevelopmentHelpers.validateSecurity($self._cfMessageValue)
-            );
-        },
-
-        /**
          * Attempts to send the message to the
          * cloud service sendMail.
          *
@@ -193,19 +174,6 @@ const ContactForm = (function(){
                 $self.sendButtonTriggeredState(false);
                 console.error('ContactForm.sendMailToCloudService(): One of the input fields contains ' +
                     ' semantically not correct information');
-                CustomMessage.showMessage('Въвели сте некоректна информация или символи.');
-                return;
-            }
-
-            if(!$self.validateInputSecurity()){
-
-                // Reset reCAPTCHA
-                grecaptcha.reset();
-
-                // Indicate that the sending process has finished.
-                $self.sendButtonTriggeredState(false);
-                console.error('ContactForm.sendMailToCloudService(): One of the input fields contains ' +
-                    ' not secure information');
                 CustomMessage.showMessage('Въвели сте некоректна информация или символи.');
                 return;
             }

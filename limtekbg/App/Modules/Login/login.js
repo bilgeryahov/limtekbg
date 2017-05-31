@@ -150,9 +150,8 @@ const Login = (function(){
             if(
                 DevelopmentHelpers.validateCorrectness($self._inputEmail.value, 'email')
                 && DevelopmentHelpers.validateCorrectness($self._inputPassword.value, 'password')
-                && DevelopmentHelpers.validateSecurity($self._inputEmail)
-                && DevelopmentHelpers.validateSecurity($self._inputPassword)
-            ){
+            )
+            {
 
                 $self.displayLoader();
                 FirebaseAuthenticationManager.login($self._inputEmail.value, $self._inputPassword.value);

@@ -127,22 +127,6 @@ class DevelopmentHelpers {
     }
 
     /**
-     * Validates the passed input for
-     * security issues.
-     *
-     * @param $input
-     *
-     * @return {boolean}
-     */
-
-    static validateSecurity($input){
-
-        // TODO: Implement
-
-        return true;
-    }
-
-    /**
      * Checks if a given value is an object.
      *
      * @param $value
