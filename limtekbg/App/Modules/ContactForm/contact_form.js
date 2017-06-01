@@ -180,9 +180,9 @@ const ContactForm = (function(){
 
             let $postData = {
                 recaptcha_response: $reCAPTCHAresponse,
-                from_name   : $self._cfNameValue,
-                from_email  : $self._cfEmailValue,
-                from_phone  : $self._cfPhoneValue,
+                name   : $self._cfNameValue,
+                email  : $self._cfEmailValue,
+                phone  : $self._cfPhoneValue,
                 subject     : $self._cfSubjectValue,
                 text        : $self._cfMessageValue
             };
