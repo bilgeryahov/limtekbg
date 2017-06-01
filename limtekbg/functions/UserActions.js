@@ -13,7 +13,7 @@ const nodemailer = require('nodemailer');
 module.exports = {
 
     /**
-     * Sends a user message to the administrator.
+     * Sends a user mail to the administrator email inbox.
      *
      * @param req
      * @param res
@@ -21,7 +21,7 @@ module.exports = {
      * @return void
      */
 
-    sendMessage(req, res){
+    sendMail(req, res){
 
         /*
          * Headers for each response.

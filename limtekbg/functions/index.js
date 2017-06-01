@@ -19,7 +19,7 @@ const UserActions = require('./UserActions');
 // Make sure the functions can use admin privileges.
 admin.initializeApp(functions.config().firebase);
 
-exports.sendMessage = functions.https.onRequest((req, res) => {
+exports.sendMail = functions.https.onRequest((req, res) => {
 
-    return UserActions.sendMessage(req, res);
+    return UserActions.sendMail(req, res);
 });
