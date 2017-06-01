@@ -2,13 +2,24 @@
 /**
  * Exports functions, which are meant to be used as
  * development helpers in the cloud.
- *
- * @type {{validateInput: ((req, res))}}
- * Validates user input for correctness and makes
- * sure that dangerous characters are HTML escaped.
  */
 
 module.exports = {
+
+    /**
+     * Validates user input for correctness and makes
+     * sure that dangerous characters are HTML escaped.
+     *
+     * When calling this cloud function, one has to make
+     * sure that provides the 'verify_origin' parameter.
+     * This is to make sure that the call comes from
+     * a trusted place.
+     *
+     * @param req
+     * @param res
+     *
+     * @return void
+     */
 
     validateInput(req, res){
 
