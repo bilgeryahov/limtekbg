@@ -246,8 +246,11 @@ module.exports = {
                     });
             });
 
-            recaptchaPOSTreq.write(recaptchaPOSTdata);
-            recaptchaPOSTreq.end();
+            //recaptchaPOSTreq.write(recaptchaPOSTdata);
+            //recaptchaPOSTreq.end();
+
+            // TODO: Until recaptcha is back.
+            return finishSaving(newBody);
         };
 
         // POST request going to Database to save the message.
