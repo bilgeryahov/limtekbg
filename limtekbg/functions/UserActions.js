@@ -1,5 +1,11 @@
 'use strict';
 
+// Node modules
+const firebase = require('firebase');
+const https = require('https');
+const querystring = require('querystring');
+const admin = require('firebase-admin');
+
 /**
  * Exports functions which are menat to expose
  * functionality to users.
@@ -24,8 +30,8 @@ module.exports = {
          */
 
         // TODO: Access-Control-Allow-Origin to be changed only to live website.
-        res.header('Access-Control-Allow-Origin', '*');
-        res.header('Access-Control-Allow-Headers', '*');
+        res.header('Access-Control-Allow-Origin', 'http://localhost:5000');
+        res.header('Access-Control-Allow-Headers', 'X-Requested-With');
         res.header('Access-Control-Allow-Methods', 'PUT, POST, OPTIONS');
 
         /*
@@ -89,181 +95,117 @@ module.exports = {
             }
         }
 
-        // Make a request for correctness and escaping HTML.
         if(reqParamsProblem.error === ''){
-            let reqParamsObj = {};
-            for(let parameter in req.body){
-                // Make sure not to send recaptcha response to the validation cheker.
-                if(req.body.hasOwnProperty(parameter) && parameter !== 'recaptcha_response'){
-                    reqParamsObj[parameter] = req.body[parameter];
-                }
+            if(!checkCorrectness(req)){
+                reqParamsProblem.error = 'Correctness check did not pass.';
             }
-
-            const validateInputPOSTdata = querystring.stringify(reqParamsObj);
-
-            const validateInputPOSToptions = {
-                hostname: 'us-central1-limtek-fb748.cloudfunctions.net',
-                path: '/validateInput',
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'Content-Length': Buffer.byteLength(validateInputPOSTdata)
-                }
-            };
-
-            const validateInputPOSTreq = https.request(validateInputPOSToptions, (validateInputPOSTres) => {
-                let output = '';
-                validateInputPOSTres.setEncoding('utf8');
-                validateInputPOSTres.on('data', (chunk) => {
-                    output += chunk;
-                });
-
-                validateInputPOSTres.on('end', () => {
-                    try{
-                        let obj = JSON.parse(output);
-                        if(obj.hasOwnProperty('error')){
-                            reqParamsProblem.error = obj.error;
-                        }
-                        return ableToContinue(obj);
-                    }
-                    catch(exc){
-                        console.error('Exception: ' + exc);
-                        console.error('Output: ' + output);
-                        res
-                            .status(503)
-                            .json({
-                                error:'Failed while parsing the validate input response object.'
-                            });
-                    }
-                });
-            });
-
-            validateInputPOSTreq.on('error', (e) => {
-                console.error(e);
-                res
-                    .status(503)
-                    .json({
-                        error:'Validate input request went wrong.'
-                    });
-            });
-
-            validateInputPOSTreq.write(validateInputPOSTdata);
-            validateInputPOSTreq.end();
-        }
-        else{
-            return ableToContinue({});
         }
 
-        const ableToContinue = function (newBody) {
-            if(reqParamsProblem.error !== ''){
-                res
-                    .status(400)
-                    .json(reqParamsProblem);
-                return;
-            }
+        if(reqParamsProblem.error !== ''){
+            res
+                .status(400)
+                .json(reqParamsProblem);
+            return;
+        }
 
-            return continueReCAPTCHAprocess(newBody)
-        };
+        // TODO: Activate recaptcha when it is back.
 
-        const continueReCAPTCHAprocess = function (newBody) {
+        // /*
+        //  * Deal with reCAPTCHA.
+        //  */
+        //
+        // const recaptchaPOSTdata = querystring.stringify({
+        //     'secret': '6LeNYx8UAAAAAN4l_zsbZN_7lLY10pESj1TAla0_',
+        //     'response': req.body.recaptcha_response
+        // });
+        //
+        // const recaptchaPOSToptions = {
+        //     hostname: 'www.google.com',
+        //     path: '/recaptcha/api/siteverify',
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/x-www-form-urlencoded',
+        //         'Content-Length': Buffer.byteLength(recaptchaPOSTdata)
+        //     }
+        // };
+        //
+        // const recaptchaPOSTreq = https.request(recaptchaPOSToptions, (recaptchaPOSTres) => {
+        //     let output = '';
+        //     recaptchaPOSTres.setEncoding('utf8');
+        //     recaptchaPOSTres.on('data', (chunk) => {
+        //         output += chunk;
+        //     });
+        //
+        //     recaptchaPOSTres.on('end', () => {
+        //         try{
+        //             let obj = JSON.parse(output);
+        //
+        //             if(!obj.hasOwnProperty('success') || !obj.hasOwnProperty('challenge_ts') ||
+        //                 !obj.hasOwnProperty('hostname')){
+        //                 console.error(obj);
+        //                 res
+        //                     .status(503)
+        //                     .json({
+        //                         error:'reCAPTCHA did not reply with proper message. It misses a property.'
+        //                     });
+        //                 return;
+        //             }
+        //
+        //             // TODO: Remove localhost from the hostname.
+        //             if(obj['success'] === true &&
+        //                 (obj['hostname'].includes('limtek-fb748.firebaseapp.com') || (obj['hostname'].includes('localhost')))
+        //             ){
+        //                 return finishSaving();
+        //             }
+        //
+        //             console.error(obj);
+        //             res
+        //                 .status(400)
+        //                 .json({
+        //                     error: 'reCAPTCHA did not pass success and hostname checks.'
+        //                 });
+        //         }
+        //         catch(exc){
+        //             console.error('Exception: ' + exc);
+        //             console.error('Output: ' + output);
+        //             res
+        //                 .status(503)
+        //                 .json({
+        //                     error:'reCAPTCHA did not reply with proper message. Failed while parsing it.'
+        //                 });
+        //         }
+        //     });
+        // });
+        //
+        // recaptchaPOSTreq.on('error', (e) => {
+        //     console.error(e);
+        //     res
+        //         .status(503)
+        //         .json({
+        //             error:'reCAPTCHA request went wrong.'
+        //         });
+        // });
+        //
+        // recaptchaPOSTreq.write(recaptchaPOSTdata);
+        // recaptchaPOSTreq.end();
 
-            /*
-             * Deal with reCAPTCHA.
-             */
+        finishSaving();
 
-            // const recaptchaPOSTdata = querystring.stringify({
-            //     'secret': '6LeNYx8UAAAAAN4l_zsbZN_7lLY10pESj1TAla0_',
-            //     'response': req.body.recaptcha_response
-            // });
-            //
-            // const recaptchaPOSToptions = {
-            //     hostname: 'www.google.com',
-            //     path: '/recaptcha/api/siteverify',
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/x-www-form-urlencoded',
-            //         'Content-Length': Buffer.byteLength(recaptchaPOSTdata)
-            //     }
-            // };
-            //
-            // const recaptchaPOSTreq = https.request(recaptchaPOSToptions, (recaptchaPOSTres) => {
-            //     let output = '';
-            //     recaptchaPOSTres.setEncoding('utf8');
-            //     recaptchaPOSTres.on('data', (chunk) => {
-            //         output += chunk;
-            //     });
-            //
-            //     recaptchaPOSTres.on('end', () => {
-            //         try{
-            //             let obj = JSON.parse(output);
-            //
-            //             if(!obj.hasOwnProperty('success') || !obj.hasOwnProperty('challenge_ts') ||
-            //                 !obj.hasOwnProperty('hostname')){
-            //                 console.error(obj);
-            //                 res
-            //                     .status(503)
-            //                     .json({
-            //                         error:'reCAPTCHA did not reply with proper message. It misses a property.'
-            //                     });
-            //                 return;
-            //             }
-            //
-            //             // TODO: Remove localhost from the hostname.
-            //             if(obj['success'] === true &&
-            //                 (obj['hostname'].includes('limtek-fb748.firebaseapp.com') || (obj['hostname'].includes('localhost')))
-            //             ){
-            //                 return finishSaving(newBody);
-            //             }
-            //
-            //             console.error(obj);
-            //             res
-            //                 .status(400)
-            //                 .json({
-            //                     error: 'reCAPTCHA did not pass success and hostname checks.'
-            //                 });
-            //         }
-            //         catch(exc){
-            //             console.error('Exception: ' + exc);
-            //             console.error('Output: ' + output);
-            //             res
-            //                 .status(503)
-            //                 .json({
-            //                     error:'reCAPTCHA did not reply with proper message. Failed while parsing it.'
-            //                 });
-            //         }
-            //     });
-            // });
-            //
-            // recaptchaPOSTreq.on('error', (e) => {
-            //     console.error(e);
-            //     res
-            //         .status(503)
-            //         .json({
-            //             error:'reCAPTCHA request went wrong.'
-            //         });
-            // });
-            //
-            // recaptchaPOSTreq.write(recaptchaPOSTdata);
-            // recaptchaPOSTreq.end();
-
-            // TODO: Until recaptcha is back.
-            return finishSaving(newBody);
-        };
-
-        const finishSaving = function(newBody){
+        const finishSaving = function(){
 
             // TODO: hardcoded database path to be fixed later.
             const databasePath = '/development/messages/';
 
-            let mailFromName   = newBody.from_name;
-            let mailFromEmail  = newBody.from_email;
-            let mailFromPhone  = newBody.from_phone;
-            let mailSubject    = newBody.subject;
-            let mailText       = newBody.text;
+            let mailFromName   = req.body.from_name;
+            let mailFromEmail  = req.body.from_email;
+            let mailFromPhone  = req.body.from_phone;
+            let mailSubject    = req.body.subject;
+            let mailText       = req.body.text;
 
             const message = {
                 'sentOn': firebase.database.ServerValue.TIMESTAMP,
                 'seen': false,
+                'sanitized': false,
                 'data':{
                     'name': mailFromName,
                     'email': mailFromEmail,
@@ -296,3 +238,73 @@ module.exports = {
         };
     }
 };
+
+function checkCorrectness(req){
+
+    let $type = '';
+    let $input = '';
+    let $correct = false;
+
+    for(let parameter in req.body){
+        if(req.body.hasOwnProperty(parameter)){
+            $type = parameter.toString();
+            $input = req.body[parameter].toString();
+
+            // Just copy and paste from DevelopmentHelpers.validateCorrectness.
+            switch ($type){
+
+                case 'email':
+                    let $atPos = $input.indexOf('@');
+                    let $dotPos = $input.indexOf('.');
+                    $correct = (
+                        $input.length < 50 &&
+                        $atPos > 0 &&
+                        $dotPos > $atPos +2 &&
+                        $dotPos + 2 < $input.length &&
+                        !$input.includes(' ')
+                    );
+                    break;
+
+                case 'phone':
+                    $correct = (
+                        !isNaN($input) &&
+                        $input.length < 50
+                    );
+                    break;
+
+                case 'name':
+                    $correct = (
+                        $input.length < 50
+                    );
+                    break;
+
+                case 'subject':
+                    $correct = (
+                        $input.length < 50
+                    );
+                    break;
+
+                case 'text':
+                    $correct = (
+                        $input.length < 600
+                    );
+                    break;
+
+                case 'recaptcha_response':
+                    $correct = true;
+                    break;
+
+                default:
+                    $correct = false;
+                    break;
+            }
+
+            if(!$correct){
+
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
