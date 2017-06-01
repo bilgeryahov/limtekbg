@@ -18,11 +18,15 @@ const admin = require('firebase-admin');
 const CloudDevelopmentHelpers = require('./CloudDevelopmentHelpers');
 const UserActions = require('./UserActions');
 
+// TODO: hardcoded database path to be fixed later.
+const saveMessageDBPath = '/development/messages/';
+
 // Make sure the functions can use admin privileges.
 admin.initializeApp(functions.config().firebase);
 
-exports.saveMessage = functions.https.onRequest((req, res) => {
-    return UserActions.saveMessage(req, res);
+exports.saveMessage = functions.database.ref(saveMessageDBPath + '{messageId}').onWrite(event => {
+
+    return UserActions.saveMessage(event);
 });
 
 exports.validateInput = functions.https.onRequest((req, res) => {

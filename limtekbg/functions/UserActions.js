@@ -6,6 +6,9 @@ const https = require('https');
 const querystring = require('querystring');
 const admin = require('firebase-admin');
 
+// TODO: hardcoded database path to be fixed later.
+const saveMessageDBPath = '/development/messages/';
+
 /**
  * Exports functions which are menat to expose
  * functionality to users.
@@ -193,9 +196,6 @@ module.exports = {
 
         const finishSaving = function(){
 
-            // TODO: hardcoded database path to be fixed later.
-            const databasePath = '/development/messages/';
-
             let mailFromName   = req.body.from_name;
             let mailFromEmail  = req.body.from_email;
             let mailFromPhone  = req.body.from_phone;
@@ -215,7 +215,7 @@ module.exports = {
                 }
             };
 
-            admin.database().ref(databasePath)
+            admin.database().ref(saveMessageDBPath)
                 .push(message)
                 .then(function(snapshot){
 
