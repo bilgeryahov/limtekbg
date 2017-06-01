@@ -69,9 +69,9 @@ module.exports = {
 
         const allowedParameters = [
             'recaptcha_response',
-            'from_name',
-            'from_email',
-            'from_phone',
+            'name',
+            'email',
+            'phone',
             'subject',
             'text'
         ];
@@ -192,13 +192,11 @@ module.exports = {
         // recaptchaPOSTreq.write(recaptchaPOSTdata);
         // recaptchaPOSTreq.end();
 
-        finishSaving();
-
         const finishSaving = function(){
 
-            let mailFromName   = req.body.from_name;
-            let mailFromEmail  = req.body.from_email;
-            let mailFromPhone  = req.body.from_phone;
+            let mailName   = req.body.name;
+            let mailEmail  = req.body.email;
+            let mailPhone  = req.body.phone;
             let mailSubject    = req.body.subject;
             let mailText       = req.body.text;
 
@@ -207,9 +205,9 @@ module.exports = {
                 'seen': false,
                 'sanitized': false,
                 'data':{
-                    'name': mailFromName,
-                    'email': mailFromEmail,
-                    'phone' : mailFromPhone,
+                    'name': mailName,
+                    'email': mailEmail,
+                    'phone' : mailPhone,
                     'subject': mailSubject,
                     'text': mailText
                 }
@@ -236,6 +234,8 @@ module.exports = {
                         });
                 });
         };
+
+        return finishSaving();
     }
 };
 
@@ -301,6 +301,9 @@ function checkCorrectness(req){
 
             if(!$correct){
 
+                console.error('This could not be verified to be correct:');
+                console.error($type);
+                console.error($input);
                 return false;
             }
         }
