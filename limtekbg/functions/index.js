@@ -12,9 +12,6 @@
 // Node modules
 const firebase = require('firebase');
 const functions  = require('firebase-functions');
-const https = require('https');
-const http = require('http');
-const querystring = require('querystring');
 const admin = require('firebase-admin');
 
 // Functions
