@@ -3,13 +3,19 @@
 /**
  * Exports functions which are menat to expose
  * functionality to users.
- *
- * @type {{saveMessage: ((req, res))}}
- * Saves a single message from the user to the
- * database.
  */
 
 module.exports = {
+
+    /**
+     * Saves a single message from the user to the
+     * database.
+     *
+     * @param req
+     * @param res
+     *
+     * @return void
+     */
 
     saveMessage(req, res){
 
