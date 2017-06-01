@@ -167,93 +167,89 @@ module.exports = {
 
         const continueReCAPTCHAprocess = function (newBody) {
 
-            // Add the recaptcha response to the newBody.
-            newBody.recaptcha_response = req.body.recaptcha_response;
-
             /*
              * Deal with reCAPTCHA.
              */
 
-            const recaptchaPOSTdata = querystring.stringify({
-                'secret': '6LeNYx8UAAAAAN4l_zsbZN_7lLY10pESj1TAla0_',
-                'response': newBody.recaptcha_response
-            });
-
-            const recaptchaPOSToptions = {
-                hostname: 'www.google.com',
-                path: '/recaptcha/api/siteverify',
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'Content-Length': Buffer.byteLength(recaptchaPOSTdata)
-                }
-            };
-
-            const recaptchaPOSTreq = https.request(recaptchaPOSToptions, (recaptchaPOSTres) => {
-                let output = '';
-                recaptchaPOSTres.setEncoding('utf8');
-                recaptchaPOSTres.on('data', (chunk) => {
-                    output += chunk;
-                });
-
-                recaptchaPOSTres.on('end', () => {
-                    try{
-                        let obj = JSON.parse(output);
-
-                        if(!obj.hasOwnProperty('success') || !obj.hasOwnProperty('challenge_ts') ||
-                            !obj.hasOwnProperty('hostname')){
-                            console.error(obj);
-                            res
-                                .status(503)
-                                .json({
-                                    error:'reCAPTCHA did not reply with proper message. It misses a property.'
-                                });
-                            return;
-                        }
-
-                        // TODO: Remove localhost from the hostname.
-                        if(obj['success'] === true &&
-                            (obj['hostname'].includes('limtek-fb748.firebaseapp.com') || (obj['hostname'].includes('localhost')))
-                        ){
-                            return finishSaving(newBody);
-                        }
-
-                        console.error(obj);
-                        res
-                            .status(400)
-                            .json({
-                                error: 'reCAPTCHA did not pass success and hostname checks.'
-                            });
-                    }
-                    catch(exc){
-                        console.error('Exception: ' + exc);
-                        console.error('Output: ' + output);
-                        res
-                            .status(503)
-                            .json({
-                                error:'reCAPTCHA did not reply with proper message. Failed while parsing it.'
-                            });
-                    }
-                });
-            });
-
-            recaptchaPOSTreq.on('error', (e) => {
-                console.error(e);
-                res
-                    .status(503)
-                    .json({
-                        error:'reCAPTCHA request went wrong.'
-                    });
-            });
-
-            //recaptchaPOSTreq.write(recaptchaPOSTdata);
-            //recaptchaPOSTreq.end();
+            // const recaptchaPOSTdata = querystring.stringify({
+            //     'secret': '6LeNYx8UAAAAAN4l_zsbZN_7lLY10pESj1TAla0_',
+            //     'response': req.body.recaptcha_response
+            // });
+            //
+            // const recaptchaPOSToptions = {
+            //     hostname: 'www.google.com',
+            //     path: '/recaptcha/api/siteverify',
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/x-www-form-urlencoded',
+            //         'Content-Length': Buffer.byteLength(recaptchaPOSTdata)
+            //     }
+            // };
+            //
+            // const recaptchaPOSTreq = https.request(recaptchaPOSToptions, (recaptchaPOSTres) => {
+            //     let output = '';
+            //     recaptchaPOSTres.setEncoding('utf8');
+            //     recaptchaPOSTres.on('data', (chunk) => {
+            //         output += chunk;
+            //     });
+            //
+            //     recaptchaPOSTres.on('end', () => {
+            //         try{
+            //             let obj = JSON.parse(output);
+            //
+            //             if(!obj.hasOwnProperty('success') || !obj.hasOwnProperty('challenge_ts') ||
+            //                 !obj.hasOwnProperty('hostname')){
+            //                 console.error(obj);
+            //                 res
+            //                     .status(503)
+            //                     .json({
+            //                         error:'reCAPTCHA did not reply with proper message. It misses a property.'
+            //                     });
+            //                 return;
+            //             }
+            //
+            //             // TODO: Remove localhost from the hostname.
+            //             if(obj['success'] === true &&
+            //                 (obj['hostname'].includes('limtek-fb748.firebaseapp.com') || (obj['hostname'].includes('localhost')))
+            //             ){
+            //                 return finishSaving(newBody);
+            //             }
+            //
+            //             console.error(obj);
+            //             res
+            //                 .status(400)
+            //                 .json({
+            //                     error: 'reCAPTCHA did not pass success and hostname checks.'
+            //                 });
+            //         }
+            //         catch(exc){
+            //             console.error('Exception: ' + exc);
+            //             console.error('Output: ' + output);
+            //             res
+            //                 .status(503)
+            //                 .json({
+            //                     error:'reCAPTCHA did not reply with proper message. Failed while parsing it.'
+            //                 });
+            //         }
+            //     });
+            // });
+            //
+            // recaptchaPOSTreq.on('error', (e) => {
+            //     console.error(e);
+            //     res
+            //         .status(503)
+            //         .json({
+            //             error:'reCAPTCHA request went wrong.'
+            //         });
+            // });
+            //
+            // recaptchaPOSTreq.write(recaptchaPOSTdata);
+            // recaptchaPOSTreq.end();
 
             // TODO: Until recaptcha is back.
             return finishSaving(newBody);
         };
 
-        // POST request going to Database to save the message.
         const finishSaving = function(newBody){
 
             // TODO: hardcoded database path to be fixed later.
