@@ -1,13 +1,9 @@
 'use strict';
 
 // Node modules
-const firebase = require('firebase');
 const https = require('https');
 const querystring = require('querystring');
-const admin = require('firebase-admin');
-
-// TODO: hardcoded database path to be fixed later.
-const saveMessageDBPath = '/development/messages/';
+const nodemailer = require('nodemailer');
 
 /**
  * Exports functions which are menat to expose
@@ -17,8 +13,7 @@ const saveMessageDBPath = '/development/messages/';
 module.exports = {
 
     /**
-     * Saves a single message from the user to the
-     * database.
+     * Sends a user message to the administrator.
      *
      * @param req
      * @param res
@@ -26,7 +21,7 @@ module.exports = {
      * @return void
      */
 
-    saveMessage(req, res){
+    sendMessage(req, res){
 
         /*
          * Headers for each response.
@@ -158,7 +153,7 @@ module.exports = {
         //             if(obj['success'] === true &&
         //                 (obj['hostname'].includes('limtek-fb748.firebaseapp.com') || (obj['hostname'].includes('localhost')))
         //             ){
-        //                 return finishSaving();
+        //                 return finishSending();
         //             }
         //
         //             console.error(obj);
@@ -192,7 +187,7 @@ module.exports = {
         // recaptchaPOSTreq.write(recaptchaPOSTdata);
         // recaptchaPOSTreq.end();
 
-        const finishSaving = function(){
+        const finishSending = function(){
 
             let mailName   = req.body.name;
             let mailEmail  = req.body.email;
@@ -200,42 +195,43 @@ module.exports = {
             let mailSubject    = req.body.subject;
             let mailText       = req.body.text;
 
-            const message = {
-                'sentOn': firebase.database.ServerValue.TIMESTAMP,
-                'seen': false,
-                'sanitized': false,
-                'data':{
-                    'name': mailName,
-                    'email': mailEmail,
-                    'phone' : mailPhone,
-                    'subject': mailSubject,
-                    'text': mailText
+            let transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth:{
+                    user: 'limteksender@gmail.com',
+                    pass: 'limtek_sender'
                 }
+            });
+
+            let mailOptions = {
+                to             : 'bayahov1@gmail.com',
+                from           : mailName + ' ' + mailEmail,
+                subject        : mailSubject,
+                text           : mailText + '\n\nMessage: Email has been sent from this user: ' + mailEmail
+                + '\n\nMessage: Phone number of the sender: ' + mailPhone
             };
 
-            admin.database().ref(saveMessageDBPath)
-                .push(message)
-                .then(function(snapshot){
-
-                    console.log(snapshot.ref);
-                    res
-                        .status(201)
-                        .json({
-                            message: 'Message created!'
-                        });
-                })
-                .catch(function(error){
-
-                    console.error(error);
+            transporter.sendMail(mailOptions, (err, data) => {
+                if(err){
+                    console.error(err);
                     res
                         .status(503)
                         .json({
-                            error: 'Message creation has failed!'
+                            error:'Problem with sending the e-mail.'
                         });
-                });
+                    return;
+                }
+
+                console.log(data);
+                res
+                    .status(201)
+                    .json({
+                        message: 'E-mail sent.'
+                    });
+            });
         };
 
-        return finishSaving();
+        return finishSending();
     }
 };
 
