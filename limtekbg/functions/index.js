@@ -24,11 +24,12 @@ const saveMessageDBPath = '/development/messages/';
 // Make sure the functions can use admin privileges.
 admin.initializeApp(functions.config().firebase);
 
-exports.saveMessage = functions.database.ref(saveMessageDBPath + '{messageId}').onWrite(event => {
+exports.saveMessage = functions.https.onRequest((req, res) => {
 
-    return UserActions.saveMessage(event);
+    return UserActions.saveMessage(req, res);
 });
 
-exports.validateInput = functions.https.onRequest((req, res) => {
-    return CloudDevelopmentHelpers.validateInput(req, res);
+exports.sanitizeData = functions.database.ref(saveMessageDBPath + '{messageId}').onWrite(event => {
+
+    return CloudDevelopmentHelpers.sanitizeData(event);
 });
