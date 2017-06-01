@@ -188,7 +188,7 @@ const ContactForm = (function(){
             };
 
             new Request({
-                url:'https://us-central1-limtek-fb748.cloudfunctions.net/saveMessage',
+                url:'https://us-central1-limtek-fb748.cloudfunctions.net/sendMail',
                 method: 'POST',
                 data: $postData,
                 onSuccess($data){
