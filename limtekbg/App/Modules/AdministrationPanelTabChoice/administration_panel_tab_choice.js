@@ -24,6 +24,14 @@ const AdministrationPanelTabChoice = (function(){
 
         init(){
 
+            // Go through the defensive checks.
+            if(!AdministrationPanelProductsSideBar){
+
+                console.error('AdministrationPanelTabChoice.init(): AdministrationPanelProductsSideBar ' +
+                    'is missing');
+                return;
+            }
+
             const $self = this;
             $self.renderTemplate();
         },
@@ -65,14 +73,46 @@ const AdministrationPanelTabChoice = (function(){
 
                 case 'products':
                     $displaySection = 'Продукти';
+                    $self.chooseProducts();
                     break;
 
                 case 'purchases':
                     $displaySection = 'Поръчки';
+                    $self.choosePurchases();
                     break;
             }
 
             $self._template.displayAfter( { chosen_section : $displaySection } );
+        },
+
+        /**
+         * Makes all the modules belonging to Products section be desplayed.
+         * Makes all the modules belonging to Purchases section be hidden.
+         *
+         * @return void
+         */
+
+        chooseProducts(){
+
+            // Show all.
+            AdministrationPanelProductsSideBar.showMe();
+
+            // Hide all.
+        },
+
+        /**
+         * Makes all the modules belonging to Purchases section be desplayed.
+         * Makes all the modules belonging to Products section be hidden.
+         *
+         * @return void
+         */
+
+        choosePurchases(){
+
+            // Show all.
+
+            // Hide all.
+            AdministrationPanelProductsSideBar.hideMe();
         }
     };
 
