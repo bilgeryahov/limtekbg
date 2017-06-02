@@ -38,11 +38,41 @@ const AdministrationPanelTabChoice = (function(){
 
             const $self = this;
 
+            // At the beginning there is no section chosen.
+            let $chosen_section = '';
+
             $self._template = new Template(
-                $self._templatePath, $self._placeholderName, {}
+                $self._templatePath, $self._placeholderName, {chosen_section : $chosen_section}
             );
 
             $self._template.displayMain();
+        },
+
+        /**
+         * Choose a section to display.
+         *
+         * @param $section
+         *
+         * @return void
+         */
+
+        chooseSection($section){
+
+            const $self = this;
+            let $displaySection = '';
+
+            switch ($section) {
+
+                case 'products':
+                    $displaySection = 'Продукти';
+                    break;
+
+                case 'purchases':
+                    $displaySection = 'Поръчки';
+                    break;
+            }
+
+            $self._template.displayAfter( { chosen_section : $displaySection } );
         }
     };
 
@@ -51,6 +81,11 @@ const AdministrationPanelTabChoice = (function(){
         init(){
 
             Logic.init();
+        },
+
+        chooseSection($section){
+
+            Logic.chooseSection($section);
         }
     }
 })();

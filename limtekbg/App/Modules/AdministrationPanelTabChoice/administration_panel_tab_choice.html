@@ -1,4 +1,7 @@
 <div class="w3-bar">
-    <button class="w3-bar-item w3-button w3-blue-gray TabChoiceButton">Продукти</button>
-    <button class="w3-bar-item w3-button w3-blue-gray TabChoiceButton">Поръчки</button>
+    <button class="w3-bar-item w3-button w3-blue-gray TabChoiceButton"
+    onclick="AdministrationPanelTabChoice.chooseSection('products');">Продукти</button>
+    <button class="w3-bar-item w3-button w3-blue-gray TabChoiceButton"
+    onclick="AdministrationPanelTabChoice.chooseSection('purchases');">Поръчки</button>
 </div>
+<p id="ChosenSection">{{chosen_section}}</p>
