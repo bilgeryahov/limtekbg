@@ -24,6 +24,14 @@ const AdministrationPanelProductsSideBar = (function(){
 
         init(){
 
+            // Go through defensive checks.
+            if(!AdministrationPanelProductsCategories){
+
+                console.error('AdministrationPanelProductsSideBar.init(): AdministrationPanelProductsCategories ' +
+                    'is missing');
+                return;
+            }
+
             const $self = this;
             $self.renderTemplate();
         },
@@ -67,6 +75,54 @@ const AdministrationPanelProductsSideBar = (function(){
 
             const $self = this;
             $self._template.makeInvisible();
+        },
+
+        /**
+         * Makes sure that the chose undersection gets visible.
+         *
+         * @param $undersection
+         *
+         * @return void
+         */
+
+        showUndersection($undersection){
+
+            const $self = this;
+
+            switch ($undersection) {
+
+                case 'categories':
+                    $self.showCategoriesUndersection();
+                    break;
+
+                case 'products':
+                    $self.showProductsUndersection();
+                    break;
+            }
+        },
+
+        /**
+         * Makes categories undersection visible.
+         * Makes products undersection invisible.
+         *
+         * @return void
+         */
+
+        showCategoriesUndersection(){
+
+            AdministrationPanelProductsCategories.showMe();
+        },
+
+        /**
+         * Makes products undersection visible.
+         * Makes categories undersection invisible.
+         *
+         * @return void
+         */
+
+        showProductsUndersection(){
+
+            AdministrationPanelProductsCategories.hideMe();
         }
     };
 
@@ -85,6 +141,11 @@ const AdministrationPanelProductsSideBar = (function(){
         hideMe(){
 
             Logic.hideMe();
+        },
+
+        showUndersection($undersection){
+
+            Logic.showUndersection($undersection);
         }
     }
 })();
