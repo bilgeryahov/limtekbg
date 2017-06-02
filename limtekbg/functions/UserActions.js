@@ -4,6 +4,8 @@
 const https = require('https');
 const querystring = require('querystring');
 const nodemailer = require('nodemailer');
+const configDetails = require('./configFileFirebaseFunctions.json');
+
 
 /**
  * Exports functions which are menat to expose
@@ -27,9 +29,8 @@ module.exports = {
          * Headers for each response.
          */
 
-        // TODO: Access-Control-Allow-Origin to be changed only to live website.
-        res.header('Access-Control-Allow-Origin', 'http://localhost:5000');
-        res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+        res.header('Access-Control-Allow-Origin', configDetails.AccessControl.AllowOrigin);
+        res.header('Access-Control-Allow-Headers', configDetails.AccessControl.AllowHeaders);
         res.header('Access-Control-Allow-Methods', 'PUT, POST, OPTIONS');
 
         /*
@@ -113,7 +114,7 @@ module.exports = {
         //  */
         //
         // const recaptchaPOSTdata = querystring.stringify({
-        //     'secret': '6LeNYx8UAAAAAN4l_zsbZN_7lLY10pESj1TAla0_',
+        //     'secret': configDetails.reCAPTCHA.secretKey,
         //     'response': req.body.recaptcha_response
         // });
         //
@@ -151,7 +152,8 @@ module.exports = {
         //
         //             // TODO: Remove localhost from the hostname.
         //             if(obj['success'] === true &&
-        //                 (obj['hostname'].includes('limtek-fb748.firebaseapp.com') || (obj['hostname'].includes('localhost')))
+        //                 (obj['hostname'].includes(configDetails.reCAPTCHA.hostName.live) ||
+        //                 (obj['hostname'].includes(configDetails.reCAPTCHA.hostName.local)))
         //             ){
         //                 return finishSending();
         //             }
@@ -196,15 +198,15 @@ module.exports = {
             let mailText        = req.body.text;
 
             let transporter = nodemailer.createTransport({
-                service: 'gmail',
+                service: configDetails.mailService.name,
                 auth:{
-                    user: 'limteksender@gmail.com',
-                    pass: 'limtek_sender'
+                    user: configDetails.mailService.username,
+                    pass: configDetails.mailService.password
                 }
             });
 
             let mailOptions = {
-                to             : 'bayahov1@gmail.com',
+                to             : configDetails.mailService.outGoingEmailAddress,
                 from           : mailName + ' ' + mailEmail,
                 subject        : mailSubject,
                 text           : mailText + '\n\nMessage: Email has been sent from this user: ' + mailEmail

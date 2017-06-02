@@ -3,7 +3,6 @@
   "api_key_live" : "AIzaSyBSeUAE2adT-G2lSRREJhLuNAT5iv5v6HA",
   "api_key_default" : "api_key_goes_here",
   "reCAPTCHA": {
-    "siteKey": "6LeNYx8UAAAAAEWm3R_TWt3mmewJzMT1CLXcN2-S",
-    "secretKey" : "6LeNYx8UAAAAAN4l_zsbZN_7lLY10pESj1TAla0_"
+    "siteKey": "6LeNYx8UAAAAAEWm3R_TWt3mmewJzMT1CLXcN2-S"
   }
 }
