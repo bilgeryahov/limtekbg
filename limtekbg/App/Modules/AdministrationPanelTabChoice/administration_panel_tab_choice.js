@@ -32,6 +32,13 @@ const AdministrationPanelTabChoice = (function(){
                 return;
             }
 
+            if(!AdministrationPanelProductsCategories){
+
+                console.error('AdministrationPanelTabChoice.init(): AdministrationPanelProductsCategories ' +
+                    'is missing');
+                return;
+            }
+
             const $self = this;
             $self.renderTemplate();
         },
@@ -113,6 +120,7 @@ const AdministrationPanelTabChoice = (function(){
 
             // Hide all.
             AdministrationPanelProductsSideBar.hideMe();
+            AdministrationPanelProductsCategories.hideMe();
         }
     };
 
