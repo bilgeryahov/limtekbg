@@ -3,7 +3,7 @@
     "name":"gmail",
     "username":"limteksender@gmail.com",
     "password":"limtek_sender",
-    "outGoingEmailAddress:":"bayahov1@gmail.com"
+    "recipient" : "bayahov1@gmail.com"
   },
   "AccessControl":{
     "AllowOrigin":"http://localhost:5000",

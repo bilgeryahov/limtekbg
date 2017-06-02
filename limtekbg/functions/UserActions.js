@@ -206,7 +206,7 @@ module.exports = {
             });
 
             let mailOptions = {
-                to             : configDetails.mailService.outGoingEmailAddress,
+                to             : configDetails.mailService.recipient,
                 from           : mailName + ' ' + mailEmail,
                 subject        : mailSubject,
                 text           : mailText + '\n\nMessage: Email has been sent from this user: ' + mailEmail
