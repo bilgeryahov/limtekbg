@@ -32,6 +32,13 @@ const AdministrationPanelProductsSideBar = (function(){
                 return;
             }
 
+            if(!AdministrationPanelProductsProducts){
+
+                console.error('AdministrationPanelProductsSideBar.init(): AdministrationPanelProductsProducts ' +
+                    'is missing');
+                return;
+            }
+
             const $self = this;
             $self.renderTemplate();
         },
@@ -111,6 +118,7 @@ const AdministrationPanelProductsSideBar = (function(){
         showCategoriesUndersection(){
 
             AdministrationPanelProductsCategories.showMe();
+            AdministrationPanelProductsProducts.hideMe();
         },
 
         /**
@@ -122,6 +130,7 @@ const AdministrationPanelProductsSideBar = (function(){
 
         showProductsUndersection(){
 
+            AdministrationPanelProductsProducts.showMe();
             AdministrationPanelProductsCategories.hideMe();
         }
     };
