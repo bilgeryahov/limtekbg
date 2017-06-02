@@ -51,7 +51,6 @@ const Logout = (function(){
 
                 if($update === 'USER 1'){
 
-                    CustomMessage.showMessage('Добре дошли!');
                     console.log('Logout: user is here ' + FirebaseAuthenticationManager.getCurrentUser().email);
                 }
                 else if($update === 'USER 0'){
