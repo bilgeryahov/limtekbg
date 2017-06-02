@@ -189,11 +189,11 @@ module.exports = {
 
         const finishSending = function(){
 
-            let mailName   = req.body.name;
-            let mailEmail  = req.body.email;
-            let mailPhone  = req.body.phone;
-            let mailSubject    = req.body.subject;
-            let mailText       = req.body.text;
+            let mailName        = req.body.name;
+            let mailEmail       = req.body.email;
+            let mailPhone       = req.body.phone;
+            let mailSubject     = req.body.subject;
+            let mailText        = req.body.text;
 
             let transporter = nodemailer.createTransport({
                 service: 'gmail',
