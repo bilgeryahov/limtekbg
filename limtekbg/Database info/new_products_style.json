@@ -1,37 +1,24 @@
 {
-  "products_section":{
+  "products":{
     "products_details":{
       "2s34ax":{
-
+        "parent_id":"a2d4g7",
+        "display_name":"New Holand",
+        "details":"Very nice!"
       },
       "ss234b":{
-
+        "parent_id":"a2d4g7",
+        "display_name":"Zetor",
+        "details":"Very big!"
       }
     },
-    "categories_details": {
-      "0":{
-        "product_ids":null,
-        "child_ids": {
-          "1": true,
-          "2": true
-        },
+    "categories_details":{
+      "e6f452":{
         "parent_id": null,
-        "display_name":"Products"
+        "display_name":"Second hand machines"
       },
-      "1":{
-        "product_ids":{
-          "2s34ax": true
-        },
-        "child_ids": null,
-        "parent_id": 0,
-        "display_name":"Accumulators"
-      },
-      "2":{
-        "product_ids":{
-          "ss234b": true
-        },
-        "child_ids": null,
-        "parent_id": 0,
+      "a2d4g7":{
+        "parent_id": "e6f452",
         "display_name":"Tractors"
       }
     }
