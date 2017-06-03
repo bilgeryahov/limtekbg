@@ -81,17 +81,17 @@ const AdministrationPanelTabChoice = (function(){
         chooseSection($section){
 
             const $self = this;
-            let $displaySection = '';
+            let $displaySection = 'В момента разглеждате секция - ';
 
             switch ($section) {
 
                 case 'products':
-                    $displaySection = 'Продукти';
+                    $displaySection += 'Продукти';
                     $self.chooseProducts();
                     break;
 
                 case 'purchases':
-                    $displaySection = 'Поръчки';
+                    $displaySection += 'Поръчки';
                     $self.choosePurchases();
                     break;
             }
