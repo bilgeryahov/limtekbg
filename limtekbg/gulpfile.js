@@ -12,8 +12,10 @@ const gulp  = require('gulp');
 const sass  = require('gulp-sass');
 const babel = require('gulp-babel');
 const run_sequence = require('run-sequence');
-const replace = require('gulp-replace');
 const clean  = require('gulp-clean');
+const jsonModify = require('gulp-json-modify');
+
+const configFileLimtek = require('./configFileLimtek.json');
 
 // Clean the folder.
 gulp.task('clean_content', function(){
@@ -70,4 +72,32 @@ gulp.task('compile_css', function(){
 gulp.task('deploy_locally', function(){
 
     return run_sequence('clean_content', 'copy_content', 'compile_css', 'compile_javascript', 'clean_scss');
+});
+
+gulp.task('set_development_environment', function () {
+
+    return gulp.src(['./deploy_config.json'])
+        .pipe(jsonModify({
+                key: 'firebase_api_key',
+                value: configFileLimtek.firebase.api_keys.development
+            }))
+        .pipe(jsonModify({
+            key: 'firebase_db_path',
+            value: configFileLimtek.firebase.db_paths.development
+        }))
+        .pipe(gulp.dest('./'));
+});
+
+gulp.task('set_live_environment', function () {
+
+    return gulp.src(['./deploy_config.json'])
+        .pipe(jsonModify({
+            key: 'firebase_api_key',
+            value: configFileLimtek.firebase.api_keys.live
+        }))
+        .pipe(jsonModify({
+            key: 'firebase_db_path',
+            value: configFileLimtek.firebase.db_paths.live
+        }))
+        .pipe(gulp.dest('./'));
 });
