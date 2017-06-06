@@ -1,7 +1,14 @@
 {
-  "api_key_development" : "AIzaSyDV0mt85i0AFHU06uW-VmEwr20ebKPBd14",
-  "api_key_live" : "AIzaSyBSeUAE2adT-G2lSRREJhLuNAT5iv5v6HA",
-  "api_key_default" : "api_key_goes_here",
+  "firebase": {
+    "api_keys": {
+      "development" : "AIzaSyDV0mt85i0AFHU06uW-VmEwr20ebKPBd14",
+      "live" : "AIzaSyBSeUAE2adT-G2lSRREJhLuNAT5iv5v6HA"
+    },
+    "db_paths":{
+      "development":"development",
+      "live":"live"
+    }
+  },
   "reCAPTCHA": {
     "siteKey": "6LeNYx8UAAAAAEWm3R_TWt3mmewJzMT1CLXcN2-S"
   }
