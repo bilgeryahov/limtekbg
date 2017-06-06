@@ -22,7 +22,6 @@
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
     "gulp-clean": "^0.3.2",
-    "gulp-json-modify": "^1.0.2",
     "gulp-sass": "^2.3.2",
     "run-sequence": "^1.2.2"
   },
