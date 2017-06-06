@@ -71,37 +71,37 @@ const AdministrationPanelTabChoice = (function(){
         },
 
         /**
-         * Choose a section to display.
+         * Choose a tab to display.
          *
-         * @param $section
+         * @param $tab
          *
          * @return void
          */
 
-        chooseSection($section){
+        chooseTab($tab){
 
             const $self = this;
-            let $displaySection = 'В момента разглеждате секция - ';
+            let $displayTab = 'В момента разглеждате раздел - ';
 
-            switch ($section) {
+            switch ($tab) {
 
                 case 'products':
-                    $displaySection += 'Продукти';
+                    $displayTab += 'Продукти';
                     $self.chooseProducts();
                     break;
 
                 case 'purchases':
-                    $displaySection += 'Поръчки';
+                    $displayTab += 'Поръчки';
                     $self.choosePurchases();
                     break;
             }
 
-            $self._template.displayAfter( { chosen_section : $displaySection } );
+            $self._template.displayAfter( { chosen_tab : $displayTab } );
         },
 
         /**
-         * Makes all the modules belonging to Products section be desplayed.
-         * Makes all the modules belonging to Purchases section be hidden.
+         * Makes all the modules belonging to Products tab be desplayed.
+         * Makes all the modules belonging to Purchases tab be hidden.
          *
          * @return void
          */
@@ -115,8 +115,8 @@ const AdministrationPanelTabChoice = (function(){
         },
 
         /**
-         * Makes all the modules belonging to Purchases section be desplayed.
-         * Makes all the modules belonging to Products section be hidden.
+         * Makes all the modules belonging to Purchases tab be desplayed.
+         * Makes all the modules belonging to Products tab be hidden.
          *
          * @return void
          */
@@ -139,9 +139,9 @@ const AdministrationPanelTabChoice = (function(){
             Logic.init();
         },
 
-        chooseSection($section){
+        chooseTab($tab){
 
-            Logic.chooseSection($section);
+            Logic.chooseTab($tab);
         }
     }
 })();
