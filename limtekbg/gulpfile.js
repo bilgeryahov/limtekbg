@@ -71,9 +71,11 @@ gulp.task('compile_css', function(){
 // Deploy locally.
 gulp.task('deploy_locally', function(){
 
-    return run_sequence('clean_content', 'copy_content', 'compile_css', 'compile_javascript', 'clean_scss');
+    return run_sequence('clean_content', 'copy_content', 'compile_css', 'compile_javascript', 'clean_scss',
+    'set_development_environment');
 });
 
+// Set the correct keys and paths for dev env.
 gulp.task('set_development_environment', function () {
 
     return gulp.src(['./deploy_config.json'])
@@ -88,6 +90,7 @@ gulp.task('set_development_environment', function () {
         .pipe(gulp.dest('./'));
 });
 
+// Set the correct keys and paths for live env.
 gulp.task('set_live_environment', function () {
 
     return gulp.src(['./deploy_config.json'])
