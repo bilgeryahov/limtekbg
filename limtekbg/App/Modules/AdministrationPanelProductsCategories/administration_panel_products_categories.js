@@ -25,6 +25,14 @@ const AdministrationPanelProductsCategories = (function(){
         init(){
 
             const $self = this;
+
+            if(!FirebaseDatabaseAndStorageManager){
+
+                console.error('AdministrationPanelProductsCategories.init(): ' +
+                    'FirebaseDatabaseAndStorageManager is not present!');
+                return;
+            }
+
             $self.renderTemplate();
         },
 
@@ -67,6 +75,18 @@ const AdministrationPanelProductsCategories = (function(){
 
             const $self = this;
             $self._template.makeInvisible();
+        },
+
+        /**
+         * Fetches all the product categories from the Firebase realtime database.
+         *
+         *
+         */
+
+        fetchProductCategories(){
+
+            const $self = this;
+
         }
     };
 
@@ -85,6 +105,11 @@ const AdministrationPanelProductsCategories = (function(){
         hideMe(){
 
             Logic.hideMe();
+        },
+
+        fetchProductCategories(){
+
+            Logic.fetchProductCategories();
         }
     }
 })();
