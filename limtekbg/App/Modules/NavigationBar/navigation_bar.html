@@ -1,0 +1,28 @@
+<ul class="w3-navbar w3-green w3-card-2 w3-top w3-left-align w3-large">
+    <li class="w3-hide-medium w3-hide-large w3-opennav w3-right">
+        <a class="w3-padding-large w3-hover-white w3-large w3-green" href="#" id="ToggleNavigation"
+           title="Toggle Navigation Menu" onclick="NavigationBar.toggleNavigationBar();">
+            <i class="fa fa-bars"></i>
+        </a>
+    </li>
+
+    {{#each pages}}
+        {{#if this.current}}
+            <li><a href="{{this.path}}" class="w3-padding-large w3-white">{{this.name}}</a></li>
+        {{else}}
+            <li class="w3-hide-small"><a href="{{this.path}}" class="w3-padding-large w3-hover-white">{{this.name}}</a></li>
+        {{/if}}
+    {{/each}}
+</ul>
+
+<div id="NavDemo" class="w3-hide w3-hide-large w3-hide-medium">
+    <ul class="w3-navbar w3-left-align w3-large w3-white">
+        {{#each pages}}
+            {{#if this.current}}
+                <!--Do nothing -->
+            {{else}}
+                <li><a class="w3-padding-large" href="{{this.path}}">{{this.name}}</a></li>
+            {{/if}}
+        {{/each}}
+    </ul>
+</div>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head id="HeadPlaceholder">
+    </head>
+    <body>
+        <header id="HeaderPlaceholder">
+        </header>
+        <section id="MainWrapper">
+            <div id="LoginPlaceholder" style="display: none;">
+            </div>
+            <div id="LoaderPlaceholder" style="display: none;">
+            </div>
+        </section>
+        <div id="CustomMessagePlaceholder" class="w3-modal">
+        </div>
+
+        <!-- JavaScript needed for loading of the modules. -->
+        <script type="text/javascript" src="JavaScript/Vendor/handlebars-v4.0.5.js"></script>
+        <script type="text/javascript" src="JavaScript/Vendor/MooTools-Core-1.6.0.js"></script>
+        <script type="text/javascript" src="JavaScript/Vendor/MooTools-More-1.6.0.js"></script>
+
+        <!-- Page specific JavaScript -->
+        <script type="text/javascript" src="JavaScript/FirebaseCore.js"></script>
+        <script type="text/javascript" src="JavaScript/EnvironmentHelper.js"></script>
+        <script type="text/javascript" src="JavaScript/DevelopmentHelpers.js"></script>
+        <script type="text/javascript" src="JavaScript/Template.js"></script>
+        <script type="text/javascript" src="JavaScript/FirebaseAuthenticationManager.js"></script>
+        <script type="text/javascript" src="JavaScript/ObserverPattern.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/3.6.10/firebase.js"></script>
+
+        <!-- CSS, which has to be pre-loaded. -->
+        <link rel="stylesheet" href="StyleSheets/Vendor/w3css.css"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css"/>
+        <link rel="stylesheet" href="StyleSheets/default.css"/>
+
+        <!-- Head module -->
+        <script type="text/javascript" src="./Modules/Head/head.js"></script>
+        <link rel="stylesheet" href="./Modules/Head/head.css"/>
+
+        <!-- Header module -->
+        <script type="text/javascript" src="./Modules/Header/header.js"></script>
+        <link rel="stylesheet" href="./Modules/Header/header.css"/>
+
+        <!-- Login module -->
+        <script type="text/javascript" src="./Modules/Login/login.js"></script>
+        <link rel="stylesheet" href="./Modules/Login/login.css"/>
+
+        <!-- CustomMessage module -->
+        <script type="text/javascript" src="./Modules/CustomMessage/custom_message.js"></script>
+        <link rel="stylesheet" href="./Modules/CustomMessage/custom_message.css"/>
+
+        <!-- Loader module -->
+        <script type="text/javascript" src="./Modules/Loader/loader.js"></script>
+        <link rel="stylesheet" href="./Modules/Loader/loader.css"/>
+    </body>
+</html>

@@ -1,114 +1,137 @@
 /**
  * @file gulpfile.js
  *
+ * File which exposes deploy functionality for the project. There are two main
+ * procedures - live and development deploy. Both make sure that
+ * they apply the correct API keys as well as database paths.
+ * After a live deploy the procedure makes sure that
+ * live settings are cleared up, so no affection.
+ *
  * @author Bilger Yahov <bayahov1@gmail.com>
  * @version 1.0.0
  * @copyright © 2017 Bilger Yahov, all rights reserved.
  */
 
-// ES6 features only in strict mode.
 'use strict';
 
+// All the development dependencies needed.
 const gulp  = require('gulp');
 const sass  = require('gulp-sass');
 const babel = require('gulp-babel');
 const run_sequence = require('run-sequence');
+const clean  = require('gulp-clean');
 const replace = require('gulp-replace');
 const exec = require('child_process').exec;
-const cofigFileLimtek = require('./configFileLimtek.json');
-const clean  = require('gulp-clean');
 
-// Compile JS ES6 to JS ES5.
-gulp.task('compile_javascript',  function(){
+// Config file, from which the api keys and db paths are taken.
+const configFileLimtek = require('./configFileLimtek.json');
 
-	return gulp.src('./JS_ES6/*.js')
-		.pipe(babel())
-		.pipe(gulp.dest('./Deploy/JS/'));
-});
-
-// Compile SCSS to CSS.
-gulp.task('compile_css', function(){
-
-	return gulp.src('./SCSS/*scss')
-		.pipe(sass().on('error', sass.logError))
-		.pipe(gulp.dest('./Deploy/CSS/'));
-});
-
-// Clean the folder.
+// Clean the folder for a fresh deploy.
 gulp.task('clean_content', function(){
 
     return gulp.src('./Deploy/', {read : false})
         .pipe(clean());
 });
 
-// Copy static files.
+// Clean up the scss files after a successful deploy.
+gulp.task('clean_scss', function(){
+
+    return gulp.src('./Deploy/**/*.scss', {read : false})
+        .pipe(clean());
+});
+
+// Copy static files to the folder which will be publicly available.
 gulp.task('copy_content', function(){
 
-	return gulp.src('./Content/**')
-		.pipe(gulp.dest('./Deploy/'));
+    return gulp.src('./App/**')
+        .pipe(gulp.dest('./Deploy/'));
 });
 
-gulp.task('apply_development_api_key', function(){
+// Compile JS ES6 to JS ES5.
+gulp.task('compile_javascript',  function(){
 
-	return gulp.src('./Deploy/JS/FirebaseAuthenticationManager.js', {base: './'})
-		.pipe(replace(cofigFileLimtek.api_key_default, cofigFileLimtek.api_key_development))
-		.pipe(gulp.dest('./'));
-});
+    // Make sure to take everything from the modules.
+    // Make sure to take only the EcmaScript 6 files, without Vendor folder.
+    const paths = [
+        './Deploy/Modules/**/*.js',
+        './Deploy/JavaScript/*.js'
+    ];
 
-gulp.task('remove_development_api_key', function(){
-
-    return gulp.src('./Deploy/JS/FirebaseAuthenticationManager.js', {base: './'})
-        .pipe(replace(cofigFileLimtek.api_key_development, cofigFileLimtek.api_key_default))
+    return gulp.src(paths, {base: './'})
+        .pipe(babel())
         .pipe(gulp.dest('./'));
 });
 
-gulp.task('apply_live_api_key', function(){
+// Compile SCSS to CSS.
+gulp.task('compile_css', function(){
 
-    return gulp.src('./Deploy/JS/FirebaseAuthenticationManager.js', {base: './'})
-        .pipe(replace(cofigFileLimtek.api_key_default, cofigFileLimtek.api_key_live))
+    // Make sure to take everything from the modules.
+    // Make sure to take only the scss stylesheets, without Vendor folder.
+    const paths = [
+        './Deploy/Modules/**/*.scss',
+        './Deploy/StyleSheets/*.scss'
+    ];
+
+    return gulp.src(paths, {base: './'})
+        .pipe(sass().on('error', sass.logError))
         .pipe(gulp.dest('./'));
-});
-
-gulp.task('remove_live_api_key', function(){
-
-    return gulp.src('./Deploy/JS/FirebaseAuthenticationManager.js', {base: './'})
-        .pipe(replace(cofigFileLimtek.api_key_live, cofigFileLimtek.api_key_default))
-        .pipe(gulp.dest('./'));
-});
-
-/**
- * After Firebase deploys, make sure that you perform applying the dev api key again.
- * Also make sure that this task only deploys the hosting.
- *
- * Database rules and functions should be deployed only by Firebase native CLI.
- */
-
-gulp.task('firebase_deploy', function(){
-
-	return exec('firebase deploy --only hosting', function(err, stdout, stderr){
-
-		if(err){
-
-			console.error(err);
-            return run_sequence('remove_live_api_key', 'apply_development_api_key');
-		}
-
-		console.log(stdout);
-		console.log(stderr);
-		return run_sequence('remove_live_api_key', 'apply_development_api_key');
-    });
 });
 
 // Deploy locally.
 gulp.task('deploy_locally', function(){
 
-	return run_sequence('clean_content', 'copy_content', 'compile_css', 'compile_javascript',
-		'apply_development_api_key');
+    return run_sequence('clean_content', 'copy_content', 'compile_css', 'compile_javascript', 'clean_scss',
+    'set_development_environment');
 });
 
 // Deploy live.
 gulp.task('deploy_live', function(){
 
-    return run_sequence('clean_content', 'copy_content', 'compile_css', 'compile_javascript',
-		'apply_live_api_key', 'firebase_deploy');
+    return run_sequence('clean_content', 'copy_content', 'compile_css', 'compile_javascript', 'clean_scss',
+        'set_live_environment', 'firebase_deploy');
+});
+
+// Set the correct keys and paths for dev env.
+gulp.task('set_development_environment', function () {
+
+    return gulp.src('./Deploy/JavaScript/EnvironmentHelper.js', { base : './' })
+        .pipe(replace(configFileLimtek.firebase.api_keys.default,configFileLimtek.firebase.api_keys.development))
+        .pipe(replace(configFileLimtek.firebase.db_paths.default, configFileLimtek.firebase.db_paths.development))
+        .pipe(gulp.dest('./'));
+});
+
+// Set the correct keys and paths for live env.
+gulp.task('set_live_environment', function () {
+
+    return gulp.src('./Deploy/JavaScript/EnvironmentHelper.js', { base : './' })
+        .pipe(replace(configFileLimtek.firebase.api_keys.default,configFileLimtek.firebase.api_keys.live))
+        .pipe(replace(configFileLimtek.firebase.db_paths.default, configFileLimtek.firebase.db_paths.live))
+        .pipe(gulp.dest('./'));
+});
+
+// Clear live setting after live deployment.
+gulp.task('clear_live_environment', function () {
+
+    return gulp.src('./Deploy/JavaScript/EnvironmentHelper.js', { base : './' })
+        .pipe(replace(configFileLimtek.firebase.api_keys.live,configFileLimtek.firebase.api_keys.development))
+        .pipe(replace(configFileLimtek.firebase.db_paths.live, configFileLimtek.firebase.db_paths.development))
+        .pipe(gulp.dest('./'));
+});
+
+// Firebase hosting deploy. Makes sure that after successful execution
+// the live environment settings are cleared up.
+gulp.task('firebase_deploy', function(){
+
+    return exec('firebase deploy --only hosting', function(err, stdout, stderr){
+
+        if(err){
+
+            console.error(err);
+            return run_sequence('clear_live_environment');
+        }
+
+        console.log(stdout);
+        console.log(stderr);
+        return run_sequence('clear_live_environment');
+    });
 });

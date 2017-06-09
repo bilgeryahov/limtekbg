@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Лимтек Инженеринг - Limtek Engineering</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0 maximum-scale=1"/>
+		<meta charset="utf-8"/>
+		<meta name="description" content="Web store for machinery"/>
+		<meta name="keywords" content="магазин, онлайн, машини, нови, втора употреба, акумулатори, резервни
+              части, лемежи, болтове, гайки"/>
+		<meta name="author" content="Bilger Yahov">
+		<link rel="stylesheet" href="StyleSheets/Vendor/w3css.css"/>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato"/>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat"/>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css"/>
+        <link rel="stylesheet" href="StyleSheets/Default.css"/>
+		<script src="https://www.gstatic.com/firebasejs/3.6.10/firebase.js"></script>
+        <script src="JavaScript/Vendor/MooTools-Core-1.6.0.js"></script>
+        <script src="JavaScript/Vendor/MooTools-More-1.6.0.js"></script>
+		<script src="JavaScript/Vendor/handlebars-v4.0.5.js"></script>
+        <script src="JavaScript/PageDynamicsHandler.js"></script>
+		<script src="JavaScript/FirebaseDatabaseAndStorageManager.js"></script>
+		<script src="JavaScript/ProductsLoader.js"></script>
+		<script src="JavaScript/TemplateProcessor.js"></script>
+		<script src="JavaScript/ProductsPageController.js"></script>
+		<script src="JavaScript/DevelopmentHelpers.js"></script>
+		<script src="JavaScript/CommonReusableUserInterfaceManager.js"></script>
+        <style>
+            body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
+            .w3-navbar,h1,button {font-family: "Montserrat", sans-serif}
+        </style>
+    </head>
+    <body>
+        <!-- Navbar -->
+        <ul class="w3-navbar w3-green w3-card-2 w3-top w3-left-align w3-large">
+            <li class="w3-hide-medium w3-hide-large w3-opennav w3-right">
+                <a class="w3-padding-large w3-hover-white w3-large w3-green" href="#" id="ToggleNavigation"
+                 title="Toggle Navigation Menu">
+                <i class="fa fa-bars"></i>
+                </a>
+            </li>
+            <li class="w3-hide-small"><a href="./index.html" class="w3-padding-large w3-hover-white">Начало</a></li>
+            <li class="w3-hide-small"><a href="./deliveries.html" class="w3-padding-large w3-hover-white">Доставки</a></li>
+            <li class="w3-hide-small"><a href="./contacts.html" class="w3-padding-large w3-hover-white">Контакти</a></li>
+            <li><a href="#" class="w3-padding-large w3-white">Продукти</a></li>
+        </ul>
+        <!-- Navbar on small screens -->
+        <div id="NavDemo" class="w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:51px">
+            <ul class="w3-navbar w3-left-align w3-large w3-white">
+				<li><a class="w3-padding-large" href="./index.html">Начало</a></li>
+                <li><a class="w3-padding-large" href="deliveries.html">Доставки</a></li>
+                <li><a class="w3-padding-large" href="contacts.html">Контакти</a></li>
+            </ul>
+        </div>
+		<div class="w3-container w3-green w3-center w3-padding-64" style="margin-bottom:1rem;">
+            <h1 class="w3-margin">Лимтек Инженеринг</h1>
+            <p class="w3-large">Вашият надежден партньор!</p>
+        </div>
+		<div class="MainWrapper">
+			<div id="ProductImagesPlaceholder" class="w3-modal">
+			</div>
+			<div id="ProductCategoriesPlaceholder" class="w3-container" style="margin: 2em auto 4em;">
+			</div>
+			<div id = "ProductsPlaceholder" class="w3-row-padding w3-container">
+			</div>
+		</div>
+       <div class="w3-container w3-black w3-center w3-opacity w3-padding-64" style="margin-top:1rem;">
+            <h1 class="w3-margin w3-xlarge">Цитат на деня: <span id="Quote">Аз съм много готин пич.</span></h1>
+        </div>
+        <!-- Footer -->
+        <footer class="w3-container w3-padding-32 w3-center w3-opacity">
+            <div class="w3-xlarge w3-padding-32">
+                <a href="#" class="w3-hover-text-indigo"><i class="fa fa-facebook-official"></i></a>
+                <a href="#" class="w3-hover-text-indigo"><i class="fa fa-linkedin"></i></a>
+            </div>
+			<p>
+				Designed with <a href="http://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a>
+				<br/>
+				Powered by <a href="https://firebase.google.com/" target="_blank">Firebase</a> engine
+			</p>
+			<p>Poetry by: Bilger Yahov <br/> All cats and dogs reserved.</p>
+        </footer>
+		<script id="ProductImagesTemplate" type="text/x-handlebars-template">
+			<div class="w3-modal-content">
+				<header class="w3-container w3-green">
+					<span onclick="ProductsPageController.enableProductImagesModal(false)"
+							  class="w3-closebtn">&times;</span>
+					<h2>Изображения</h2>
+				</header>
+				<div class="w3-container">
+					{{#if loading}}
+						<p>Моля изчакайте докато заредим изображенията...</p>
+					{{/if}}
+					{{#if images}}
+						<div class="w3-content w3-display-container" style="max-width:800px">
+							{{#each images}}
+								<img class="mySlides" alt="Product Image" src="{{URL}}" style="width:50%; margin: 1rem auto; display: {{display}}">
+							{{/each}}
+                            <div class="w3-center">
+                                <button class="w3-btn w3-green"
+                                        onclick="ProductsPageController.plusModalImages(-1)">Назад</button>
+                                <button class="w3-btn w3-green"
+                                        onclick="ProductsPageController.plusModalImages(1)">Напред</button>
+                            </div>
+                        </div>
+					{{/if}}
+					{{#if no_images}}
+						<p>
+							Не можахме да изтеглим изображения за този продукт.
+							Съжаляваме за безпокойството.
+						</p>
+					{{/if}}
+                    <br/>
+				</div>
+				<footer class="w3-container w3-green">
+					<p>Благодарим Ви, че избрахте нас!</p>
+				</footer>
+			</div>
+		</script>
+		<script id="ProductsTemplate" type="text/x-handlebars-template">
+			{{#if products}}
+				{{#each products}}
+				<div class="w3-third w3-margin-bottom">
+					<ul class="w3-ul w3-border w3-center w3-hover-shadow">
+						<li class="w3-light-green w3-large w3-padding-32 LightGreenWhiteText">{{name}}</li>
+						<li class="w3-padding-16"><b>Цена:</b><br/> {{price}}</li>
+						<li class="w3-padding-16" style="height: 8em; overflow-y: auto;">
+							<b>Описание:</b><br/>
+							<ul class = "ProductDescription">
+								{{#each description}}
+								<li>{{this}}</li>
+								{{/each}}
+							</ul>
+						</li>
+						<li class="w3-light-grey w3-padding-24">
+							<button id="{{@key}}" class="w3-btn w3-light-green w3-padding LightGreenWhiteText"
+									onclick="ProductsPageController.showProductImages(this.id)">
+								Виж изображения
+							</button>
+						</li>
+					</ul>
+				</div>
+				{{/each}}
+			{{/if}}
+			{{#if no_products}}
+				<div class="w3-panel w3-content w3-pale-red w3-leftbar w3-border w3-border-red">
+					<h2>Няма данни</h2>
+					<p>Няма данни за избраната категория продукти. Съжаляваме за безпокойството!</p>
+				</div>
+			{{/if}}
+		</script>
+		<script id="ProductCategoriesTemplate" type="text/x-handlebars-template">
+			{{#if go_back}}
+				<button class="w3-btn-block w3-black w3-opacity CategoryButton"
+						onclick="ProductsPageController.showMainCategories()">
+					Покажи основни категории
+				</button>
+			{{/if}}
+			{{#if loading}}
+				<div class="w3-panel w3-light-green" style="color: white !important;">
+					<h3>Зареждане на категории продукти...</h3>
+					<p>Моля изчакайте докато заредим категориите с продукти.</p>
+				</div>
+			{{/if}}
+			{{#if categories}}
+				{{#each categories}}
+				<button id="button_{{@key}}" class="w3-btn-block w3-light-green w3-hover-green CategoryButton"
+						onclick="ProductsPageController.actionCategoryButton(this)">
+					{{display_name}}
+					{{#if products_list}}
+					<span style="font-weight:bold;">- Има подкатегории</span>
+					{{/if}}
+				</button>
+				{{/each}}
+			{{/if}}
+		</script>
+		<div id="CustomMessagePlaceholder" class="w3-modal">
+		</div>
+		<script id="CustomMessageTemplate" type="text/x-handlebars-template">
+			<div class="w3-modal-content w3-animate-top w3-card-4">
+				<header class="w3-container w3-red">
+        				<span onclick="CommonReusableUserInterfaceManager.enableCustomMessageModal(false);"
+							  class="w3-closebtn">&times;</span>
+					<h2>Съобщение</h2>
+				</header>
+				<div class="w3-container">
+					<p>{{message}}</p>
+				</div>
+				<footer class="w3-container w3-red">
+					<p>Благодарим Ви, че избрахте нас!</p>
+				</footer>
+			</div>
+		</script>
+</body>
+</html>

@@ -2,12 +2,12 @@
   "name": "functions",
   "description": "Firebase Functions",
   "dependencies": {
-    "firebase": "^3.1",
-    "firebase-admin": "^4.1.4",
-    "firebase-functions": "https://storage.googleapis.com/firebase-preview-drop/node/firebase-functions/firebase-functions-preview.latest.tar.gz",
+    "firebase": "^3.9.0",
+    "firebase-admin": "^4.2.1",
+    "firebase-functions": "^0.5.7",
     "http": "0.0.0",
     "https": "^1.0.0",
-    "nodemailer": "^2.4.1",
+    "nodemailer": "^4.0.1",
     "querystring": "^0.2.0"
   }
 }
