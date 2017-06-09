@@ -107,8 +107,8 @@ module.exports = {
             return;
         }
 
-        // TODO: Activate recaptcha when it is back.
-
+        // //TODO: Activate recaptcha when it is back.
+        //
         // /*
         //  * Deal with reCAPTCHA.
         //  */
@@ -150,11 +150,7 @@ module.exports = {
         //                 return;
         //             }
         //
-        //             // TODO: Remove localhost from the hostname.
-        //             if(obj['success'] === true &&
-        //                 (obj['hostname'].includes(configDetails.reCAPTCHA.hostName.live) ||
-        //                 (obj['hostname'].includes(configDetails.reCAPTCHA.hostName.local)))
-        //             ){
+        //             if(obj['success'] === true && (obj['hostname'].includes(configDetails.reCAPTCHA.hostName.live))) {
         //                 return finishSending();
         //             }
         //

@@ -6,13 +6,12 @@
     "recipient" : "bayahov1@gmail.com"
   },
   "AccessControl":{
-    "AllowOrigin":"http://localhost:5000",
+    "AllowOrigin":"https://limtek-fb748.firebaseapp.com/contacts.html",
     "AllowHeaders": "X-Requested-With"
   },
   "reCAPTCHA": {
     "secretKey" : "6LeNYx8UAAAAAN4l_zsbZN_7lLY10pESj1TAla0_",
     "hostName":{
-      "local":"localhost",
       "live":"limtek-fb748.firebaseapp.com"
     }
   }
