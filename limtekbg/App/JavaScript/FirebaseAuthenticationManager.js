@@ -33,11 +33,6 @@ const FirebaseAuthenticationManager = (function(){
 
             const $self = this;
 
-            let $config  = {};
-            $config.apiKey = EnvironmentHelper.getFirebaseAPIkey();
-
-            firebase.initializeApp($config);
-
             // Initialize the Auth object.
             $self._auth = firebase.auth();
 

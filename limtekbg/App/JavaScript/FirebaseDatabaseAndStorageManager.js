@@ -32,15 +32,6 @@ const FirebaseDatabaseAndStorageManager = (function(){
 
             const $self = this;
 
-            let $config = {
-                databaseURL: "https://limtek-fb748.firebaseio.com",
-                storageBucket: "limtek-fb748.appspot.com"
-            };
-
-            $config.apiKey = EnvironmentHelper.getFirebaseAPIkey();
-
-            firebase.initializeApp($config);
-
             // Initialize the real-time database.
             $self._database = firebase.database();
             $self._databaseRef = $self._database.ref();
