@@ -7,7 +7,8 @@
     },
     "db_paths":{
       "development":"development/",
-      "live":"live/"
+      "live":"live/",
+      "default": "db_path_goes_here"
     }
   },
   "reCAPTCHA": {
