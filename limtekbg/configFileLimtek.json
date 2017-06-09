@@ -2,11 +2,12 @@
   "firebase": {
     "api_keys": {
       "development" : "AIzaSyDV0mt85i0AFHU06uW-VmEwr20ebKPBd14",
-      "live" : "AIzaSyBSeUAE2adT-G2lSRREJhLuNAT5iv5v6HA"
+      "live" : "AIzaSyBSeUAE2adT-G2lSRREJhLuNAT5iv5v6HA",
+      "default": "firebase_api_key_goes_here"
     },
     "db_paths":{
-      "development":"development",
-      "live":"live"
+      "development":"development/",
+      "live":"live/"
     }
   },
   "reCAPTCHA": {
