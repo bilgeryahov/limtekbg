@@ -6,7 +6,7 @@
     "recipient" : "bayahov1@gmail.com"
   },
   "AccessControl":{
-    "AllowOrigin":"https://limtek-fb748.firebaseapp.com/contacts.html",
+    "AllowOrigin":"https://limtek-fb748.firebaseapp.com",
     "AllowHeaders": "X-Requested-With"
   },
   "reCAPTCHA": {
