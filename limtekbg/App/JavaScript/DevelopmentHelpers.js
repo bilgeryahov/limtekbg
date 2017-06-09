@@ -24,6 +24,9 @@ class DevelopmentHelpers {
         // Return value.
         let $path = '';
 
+        // Add the correct DB path to the $path variable.
+        $path += EnvironmentHelper.getDBpath();
+
         // Check if array.
         if(!$nodes[0]){
 

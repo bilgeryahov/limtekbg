@@ -33,10 +33,8 @@ const FirebaseAuthenticationManager = (function(){
 
             const $self = this;
 
-            // For the current time being hard-code the development API key.
-            let $config = {
-                apiKey: "AIzaSyDV0mt85i0AFHU06uW-VmEwr20ebKPBd14"
-            };
+            let $config  = {};
+            $config.api_key = EnvironmentHelper.getFirebaseAPIkey();
 
             firebase.initializeApp($config);
 
