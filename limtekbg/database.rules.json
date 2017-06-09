@@ -1,8 +1,13 @@
 {
   "rules": {
+    ".read" : "root.child('allowedUUIDs').hasChild(auth.uid)",
+    ".write": "root.child('allowedUUIDs').hasChild(auth.uid)",
     "development":{
-      ".read" : false,
-      ".write": false,
+      "products":{
+        ".read": true
+      }
+    },
+    "live":{
       "products":{
         ".read": true
       }
