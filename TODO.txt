@@ -1,5 +1,1 @@
 Think about Firebase Cloud Function outbounding network issue.
-
-Things to think/change when deploying live:
-Firebase api key (dev, live)
-Remove reCAPTCHA localhost from allowed origins (both in the function and online settings)
