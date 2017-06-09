@@ -13,7 +13,6 @@ const sass  = require('gulp-sass');
 const babel = require('gulp-babel');
 const run_sequence = require('run-sequence');
 const clean  = require('gulp-clean');
-const jsonModify = require('gulp-json-modify');
 
 const configFileLimtek = require('./configFileLimtek.json');
 
@@ -78,29 +77,11 @@ gulp.task('deploy_locally', function(){
 // Set the correct keys and paths for dev env.
 gulp.task('set_development_environment', function () {
 
-    return gulp.src(['./deploy_config.json'])
-        .pipe(jsonModify({
-                key: 'firebase_api_key',
-                value: configFileLimtek.firebase.api_keys.development
-            }))
-        .pipe(jsonModify({
-            key: 'firebase_db_path',
-            value: configFileLimtek.firebase.db_paths.development
-        }))
-        .pipe(gulp.dest('./'));
+
 });
 
 // Set the correct keys and paths for live env.
 gulp.task('set_live_environment', function () {
 
-    return gulp.src(['./deploy_config.json'])
-        .pipe(jsonModify({
-            key: 'firebase_api_key',
-            value: configFileLimtek.firebase.api_keys.live
-        }))
-        .pipe(jsonModify({
-            key: 'firebase_db_path',
-            value: configFileLimtek.firebase.db_paths.live
-        }))
-        .pipe(gulp.dest('./'));
+
 });
