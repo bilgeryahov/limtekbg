@@ -37,7 +37,7 @@ const FirebaseDatabaseAndStorageManager = (function(){
                 storageBucket: "limtek-fb748.appspot.com"
             };
 
-            $config.api_key = EnvironmentHelper.getFirebaseAPIkey();
+            $config.apiKey = EnvironmentHelper.getFirebaseAPIkey();
 
             firebase.initializeApp($config);
 

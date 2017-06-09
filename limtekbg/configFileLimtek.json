@@ -1,8 +1,8 @@
 {
   "firebase": {
     "api_keys": {
-      "development" : "AIzaSyDV0mt85i0AFHU06uW-VmEwr20ebKPBd14",
-      "live" : "AIzaSyBSeUAE2adT-G2lSRREJhLuNAT5iv5v6HA",
+      "development" : "AIzaSyA2xeBqWShktNnctQYXQZg5h58m27tWim0",
+      "live" : "AIzaSyAj82J6U7WhLyAE1b_D4fWLquKbTAROBb8",
       "default": "firebase_api_key_goes_here"
     },
     "db_paths":{
