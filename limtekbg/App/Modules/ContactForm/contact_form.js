@@ -133,14 +133,14 @@ const ContactForm = (function(){
             const $self = this;
 
             // Indicate that the send button has been triggered.
-            $self.sendButtonTriggeredState(true);
+            DevelopmentHelpers.setButtonTriggeredState('CFsendButton', true);
 
             // Try to get reCAPTCHA user's response.
             let $reCAPTCHAresponse = grecaptcha.getResponse();
             if(!$reCAPTCHAresponse || $reCAPTCHAresponse === 'undefined' || $reCAPTCHAresponse === ''){
 
                 // Indicate that the sending process has finished.
-                $self.sendButtonTriggeredState(false);
+                DevelopmentHelpers.setButtonTriggeredState('CFsendButton', false);
                 console.error('ContactForm.sendMailToCloudService(): reCAPTCHA skipped!');
                 CustomMessage.showMessage('Отбележете, че не сте робот.');
                 return;
@@ -153,7 +153,7 @@ const ContactForm = (function(){
                 grecaptcha.reset();
 
                 // Indicate that the sending process has finished.
-                $self.sendButtonTriggeredState(false);
+                DevelopmentHelpers.setButtonTriggeredState('CFsendButton', false);
                 console.log('ContactForm.sendMailToCloudService(): Problem with presence' +
                     ' of DOM elements!');
                 return;
@@ -171,7 +171,7 @@ const ContactForm = (function(){
                 grecaptcha.reset();
 
                 // Indicate that the sending process has finished.
-                $self.sendButtonTriggeredState(false);
+                DevelopmentHelpers.setButtonTriggeredState('CFsendButton', false);
                 console.error('ContactForm.sendMailToCloudService(): One of the input fields contains ' +
                     ' semantically not correct information');
                 CustomMessage.showMessage('Въвели сте некоректна информация или символи.');
@@ -197,7 +197,7 @@ const ContactForm = (function(){
                     grecaptcha.reset();
                     CustomMessage.showMessage('Съобщението е изпратено успешно.');
                     // Indicate that the sending process has finished.
-                    $self.sendButtonTriggeredState(false);
+                    DevelopmentHelpers.setButtonTriggeredState('CFsendButton', false);
 
                     $data = JSON.decode($data);
                     if($data.hasOwnProperty('message')){
@@ -210,44 +210,13 @@ const ContactForm = (function(){
                     grecaptcha.reset();
                     CustomMessage.showMessage('Проблем с изпращането на съобщението.');
                     // Indicate that the sending process has finished.
-                    $self.sendButtonTriggeredState(false);
+                    DevelopmentHelpers.setButtonTriggeredState('CFsendButton', false);
 
                     if($xhr){
                         console.error($xhr);
                     }
                 }
             }).send();
-        },
-
-        /**
-         * Indicates that sending the message has been triggered.
-         *
-         * @param $isTriggered
-         *
-         * @return void
-         */
-
-        sendButtonTriggeredState($isTriggered){
-
-            const $self = this;
-
-            // Just in case.
-            $self._cfSendButton = $('CFsendButton');
-            if(!$self._cfSendButton){
-
-                console.error('ContactForm.sendButtonTriggeredState: Button not found!');
-                return;
-            }
-
-            if($isTriggered){
-
-                $self._cfSendButton.innerHTML = 'Моля изчакайте...';
-                $self._cfSendButton.disabled = true;
-                return;
-            }
-
-            $self._cfSendButton.innerHTML = 'Изпрати';
-            $self._cfSendButton.disabled = false;
         }
     };
 
