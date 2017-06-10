@@ -31,7 +31,8 @@ const EnvironmentHelper = (function () {
 
             // Verify live environment
             // TODO: limtek is hardcoded
-            if(this._db_path.includes('live') && window.location.hostname.includes('limtek-fb748')){
+            // TODO: For the current time being live also points to development db path
+            if(this._db_path.includes('development') && window.location.hostname.includes('limtek-fb748')){
 
                 return this._db_path;
             }
