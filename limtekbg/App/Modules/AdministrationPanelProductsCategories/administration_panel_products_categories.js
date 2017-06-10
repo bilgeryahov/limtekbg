@@ -80,12 +80,48 @@ const AdministrationPanelProductsCategories = (function(){
         /**
          * Fetches all the product categories from the Firebase realtime database.
          *
-         *
+         * @return void
          */
 
         fetchProductCategories(){
 
             const $self = this;
+
+            // Set triggered state for the button.
+            DevelopmentHelpers.setButtonTriggeredState('FetchProductCategoriesButton', true);
+
+            let $pathNodes = ['products', 'categories_details'];
+            let $path = DevelopmentHelpers.constructPath($pathNodes);
+            let $extra = {};
+
+            FirebaseDatabaseAndStorageManager.firebaseGET(
+                $path,
+                $extra,
+                function ($error, $data) {
+
+                    if($error){
+
+                        // Clear triggered state button.
+                        DevelopmentHelpers.setButtonTriggeredState('FetchProductCategoriesButton', false);
+
+                        console.log($error);
+                        return;
+                    }
+
+                    // Send the data to the select box.
+                    // The triggered state of the button will be cleared there.
+                    $self.fillSelectBoxWithProductCategories($data);
+                }
+            );
+        },
+
+        /**
+         *
+         * @param $categories
+         */
+
+        fillSelectBoxWithProductCategories($categories){
+
 
         }
     };
