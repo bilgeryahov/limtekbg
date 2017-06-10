@@ -141,4 +141,33 @@ class DevelopmentHelpers {
 
         return $value === Object($value) && Object.prototype.toString.call($value) !== '[object Array]';
     }
+
+    /**
+     * Indicates a button has been triggered or not.
+     *
+     * @param $buttonID
+     * @param $isTriggered
+     *
+     * @return void
+     */
+
+    static setButtonTriggeredState($buttonID, $isTriggered){
+
+        const $button = $($buttonID);
+        if(!$button){
+
+            console.error('DevelopmentHelpers.setButtonTriggeredState(): ' + $buttonID + ' ' +
+                ' cannot be found on the DOM');
+            return;
+        }
+
+
+        if($isTriggered){
+
+            $button.disabled = true;
+            return;
+        }
+
+        $button.disabled = false;
+    }
 }
