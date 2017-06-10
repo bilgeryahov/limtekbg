@@ -176,7 +176,9 @@ const AdministrationPanelProductsCategories = (function(){
 
                 let $option = document.createElement('option');
                 $option.innerHTML = $categories[$member].display_name;
-                $option.value = $categories[$member].display_name;
+
+                // This is the ID of the category.
+                $option.value = $member;
                 $fragment.appendChild($option);
             }
 
@@ -202,7 +204,7 @@ const AdministrationPanelProductsCategories = (function(){
                 return;
             }
 
-            // $self._productCategoriesSelectBox.value -> This will do the job.
+            CustomMessage.showMessage($self._productCategoriesSelectBox.value);
         }
     };
 
