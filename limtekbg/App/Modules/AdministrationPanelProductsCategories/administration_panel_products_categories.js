@@ -188,6 +188,12 @@ const AdministrationPanelProductsCategories = (function(){
             DevelopmentHelpers.setButtonTriggeredState('FetchProductCategoriesButton', false);
         },
 
+        /**
+         * Loads the details for a particular category from the database.
+         *
+         * @return void
+         */
+
         loadCategoryDetails(){
 
             const $self = this;
@@ -204,7 +210,41 @@ const AdministrationPanelProductsCategories = (function(){
                 return;
             }
 
-            CustomMessage.showMessage($self._productCategoriesSelectBox.value);
+            // Make the request to get info for this category.
+            let $pathNodes = ['products', 'categories_details', $self._productCategoriesSelectBox.value];
+            let $path = DevelopmentHelpers.constructPath($pathNodes);
+            let $extra = {};
+
+            FirebaseDatabaseAndStorageManager.firebaseGET(
+                $path,
+                $extra,
+                function ($error, $data) {
+
+                    if($error){
+
+                        // Tell the user that something went wrong while fetching category details.
+                        CustomMessage.showMessage('Възникна проблем при зареждане на детайлти за категорията');
+
+                        console.log($error);
+                        return;
+                    }
+
+                    $self.fillFrontEndCategoryDetails($data);
+                }
+            );
+        },
+
+        /**
+         * Shows category details on the front-end.
+         *
+         * @param $details
+         *
+         * @return void
+         */
+
+        fillFrontEndCategoryDetails($details){
+
+            console.log($details);
         }
     };
 
