@@ -15,11 +15,11 @@
     "categories_details":{
       "e6f452":{
         "parent_id": null,
-        "display_name":"Second hand machines"
+        "display_name":"Машини втора употреба"
       },
       "a2d4g7":{
         "parent_id": "e6f452",
-        "display_name":"Tractors"
+        "display_name":"Трактори"
       }
     }
   }
