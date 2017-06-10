@@ -1,1 +1,5 @@
 Think about Firebase Cloud Function outbounding network issue.
+
+
+
+------ Currently the live db path also points to development -------------
