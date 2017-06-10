@@ -16,6 +16,8 @@ const AdministrationPanelProductsCategories = (function(){
         _placeholderName: 'AdministrationPanelProductsCategoriesPlaceholder',
         _template: null,
 
+        _productCategoriesSelectBox : null,
+
         /**
          * Initializes the main functionality.
          *
@@ -116,13 +118,62 @@ const AdministrationPanelProductsCategories = (function(){
         },
 
         /**
+         * Fills in the categories select box with all the categories
+         * arriving from the database.
          *
          * @param $categories
+         *
+         * @return void
          */
 
         fillSelectBoxWithProductCategories($categories){
 
+            const $self = this;
 
+            if(!$self._productCategoriesSelectBox){
+
+                $self._productCategoriesSelectBox = $('ProductCategoriesSelectBox');
+            }
+
+            if(!$self._productCategoriesSelectBox){
+
+                // Make sure the button triggered state is cleared.
+                DevelopmentHelpers.setButtonTriggeredState('FetchProductCategoriesButton', false);
+
+                console.error('AdministrationPanelProductsCategories.fillSelectBoxWithProductCategories():' +
+                    ' ProductCategoriesSelectBox is missing!');
+                return;
+            }
+
+            // First clear the select box.
+            $self._productCategoriesSelectBox.empty();
+
+            // Add the default.
+            let $defaultOption = document.createElement('option');
+            $defaultOption.innerHTML = 'Избери твоята опция';
+            $defaultOption.selected = true;
+            $defaultOption.disabled = true;
+            $self._productCategoriesSelectBox.appendChild($defaultOption);
+
+            // Add the rest.
+            let $fragment = document.createDocumentFragment();
+            for(let $member in $categories){
+
+                if(!$categories.hasOwnProperty($member)){
+
+                    continue;
+                }
+
+                let $option = document.createElement('option');
+                $option.innerHTML = $categories[$member].display_name;
+                $option.value = $categories[$member].display_name;
+                $fragment.appendChild($option);
+            }
+
+            $self._productCategoriesSelectBox.appendChild($fragment);
+
+            // Make sure the button triggered state is cleared.
+            DevelopmentHelpers.setButtonTriggeredState('FetchProductCategoriesButton', false);
         }
     };
 
