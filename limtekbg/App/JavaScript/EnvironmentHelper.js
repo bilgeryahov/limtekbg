@@ -23,7 +23,20 @@ const EnvironmentHelper = (function () {
 
         getDBpath(){
 
-            return this._db_path;
+            // Verify development environment
+            if(this._db_path.includes('development') && window.location.hostname.includes('localhost')){
+
+                return this._db_path;
+            }
+
+            // Verify live environment
+            // TODO: limtek is hardcoded
+            if(this._db_path.includes('live') && window.location.hostname.includes('limtek-fb748')){
+
+                return this._db_path;
+            }
+
+            return null;
         }
     };
 
