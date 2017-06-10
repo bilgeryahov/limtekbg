@@ -184,6 +184,25 @@ const AdministrationPanelProductsCategories = (function(){
 
             // Make sure the button triggered state is cleared.
             DevelopmentHelpers.setButtonTriggeredState('FetchProductCategoriesButton', false);
+        },
+
+        loadCategoryDetails(){
+
+            const $self = this;
+
+            if(!$self._productCategoriesSelectBox){
+
+                $self._productCategoriesSelectBox = $('ProductCategoriesSelectBox');
+            }
+
+            if(!$self._productCategoriesSelectBox){
+
+                console.error('AdministrationPanelProductsCategories.loadCategoryDetails():' +
+                    ' ProductCategoriesSelectBox is missing!');
+                return;
+            }
+
+            // $self._productCategoriesSelectBox.value -> This will do the job.
         }
     };
 
@@ -207,6 +226,11 @@ const AdministrationPanelProductsCategories = (function(){
         fetchProductCategories(){
 
             Logic.fetchProductCategories();
+        },
+
+        loadCategoryDetails(){
+
+            Logic.loadCategoryDetails();
         }
     }
 })();
