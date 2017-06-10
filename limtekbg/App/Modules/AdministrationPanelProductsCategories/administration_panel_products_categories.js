@@ -35,6 +35,13 @@ const AdministrationPanelProductsCategories = (function(){
                 return;
             }
 
+            if(!CustomMessage){
+
+                console.error('AdministrationPanelProductsCategories.init(): ' +
+                    ' CustomMessage is not present!');
+                return;
+            }
+
             $self.renderTemplate();
         },
 
@@ -105,6 +112,9 @@ const AdministrationPanelProductsCategories = (function(){
 
                         // Clear triggered state button.
                         DevelopmentHelpers.setButtonTriggeredState('FetchProductCategoriesButton', false);
+
+                        // Tell the user that something went wrong while fetching product categories.
+                        CustomMessage.showMessage('Възникна проблем при зареждане на категориите');
 
                         console.log($error);
                         return;
