@@ -244,6 +244,8 @@ const AdministrationPanelProductsCategories = (function(){
          * @param $details
          *
          * @return void
+         *
+         * @NotImplementedFully
          */
 
         fillFrontEndCategoryDetails($details){
