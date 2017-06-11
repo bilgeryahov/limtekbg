@@ -191,7 +191,7 @@ const FirebaseAuthenticationManager = (function(){
                 .catch(function ($error) {
 
                     return $callback($error, null);
-                })
+                });
         }
     };
 
