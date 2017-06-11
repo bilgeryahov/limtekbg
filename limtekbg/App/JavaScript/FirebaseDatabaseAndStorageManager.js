@@ -117,28 +117,33 @@ const FirebaseDatabaseAndStorageManager = (function(){
 
                     return $callback(null, $data);
                 },
-                onFailure: function($error){
+                onFailure: function($xhr){
 
-                    // Check if it says that the token has expired.
-                    if($error.hasOwnProperty('error') && $error.error === 'Auth token is expired'){
+                    if($xhr.hasOwnProperty('response')){
 
-                        // Get token.
-                        FirebaseAuthenticationManager.getUserToken(function ($error, $tokenPresent) {
+                        let $response = JSON.decode($xhr.response);
 
-                            if($error){
+                        // Check if it says that the token has expired.
+                        if($response.hasOwnProperty('error') && $response.error === 'Auth token is expired'){
 
-                                console.error('FirebaseDatabaseAndStorageManager.firebasePUT(): ' + $error);
-                                return $callback('Problem while trying to get token.', null);
-                            }
+                            // Get token.
+                            FirebaseAuthenticationManager.getUserToken(function ($error, $tokenPresent) {
 
-                            $token = sessionStorage.getItem('LimtekCurrentUserToken');
-                            return $request.send();
-                        });
-                    }
-                    else{
+                                if($error){
 
-                        console.error('FirebaseDatabaseAndStorageManager.firebasePUT(): ' + $error);
-                        return $callback('PUT request for ' + $path + ' had an error!', null);
+                                    console.error('FirebaseDatabaseAndStorageManager.firebasePUT(): ' + $error);
+                                    return $callback('Problem while trying to get token.', null);
+                                }
+
+                                $token = sessionStorage.getItem('LimtekCurrentUserToken');
+                                return $request.send();
+                            });
+                        }
+                        else{
+
+                            console.error('FirebaseDatabaseAndStorageManager.firebasePUT(): ' + $response);
+                            return $callback('PUT request for ' + $path + ' had an error!', null);
+                        }
                     }
                 }
             });
