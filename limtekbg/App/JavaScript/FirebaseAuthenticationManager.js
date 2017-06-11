@@ -196,7 +196,7 @@ const FirebaseAuthenticationManager = (function(){
             
             firebase.auth()
                 .currentUser
-                .getToken(true)
+                .getIdToken(true)
                 .then(function ($token) {
 
                     // Save the current user's token.
