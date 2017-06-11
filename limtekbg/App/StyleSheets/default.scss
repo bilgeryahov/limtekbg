@@ -5,29 +5,4 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
 #MainWrapper{
     max-width: 1366px;
     margin: 1rem auto;
-
-    /*
-     * To make sure that the content of an undersection
-     * has a bit of space on the right, in order to accomplish
-     * the same effect as w3-panel does for the products side bar
-     * buttons.
-     */
-
-    .UndersectionContent{
-        margin-right: 16px;
-    }
-}
-
-
-@media only screen and (max-width: 600px) {
-    #MainWrapper{
-
-        /*
-         * On mobile, make sure to clean the margin from the right.
-         */
-
-        .UndersectionContent{
-            margin-right: 0;
-        }
-    }
 }
