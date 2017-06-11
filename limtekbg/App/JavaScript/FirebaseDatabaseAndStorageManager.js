@@ -24,25 +24,26 @@ const FirebaseDatabaseAndStorageManager = (function(){
 
         init: function(){
 
+            if(!FirebaseAuthenticationManager){
 
+                console.error('FirebaseDatabaseAndStorageManager.init(): ' +
+                    'FirebaseAuthenticationManager is missing!');
+                return;
+            }
         },
 
         /**
          * Makes a GET request to the Firebase Real Time database.
          *
-         * @important - if data arrived is null, the function returns null
-         * as well
-         *
-         * @param $path - path to retrieve data from
-         * @param $extra - extra parameters provided
-         * @param $callback - execute after completing the request
+         * @param $path
+         * @param $extra
+         * @param $callback
          *
          * @return void
          */
 
         firebaseGET: function($path, $extra, $callback){
 
-            // Represent the extra parameter as a string.
             let $extraString = '';
 
             for(let $member in $extra){
@@ -56,21 +57,17 @@ const FirebaseDatabaseAndStorageManager = (function(){
             // Remove the last & character.
             $extraString = $extraString.substring(0, $extraString.length-1);
 
-            let $request = new Request({
+            new Request({
                 url: 'https://limtek-fb748.firebaseio.com/' + $path + '.json' + '?' + $extraString,
                 method: 'GET',
                 onSuccess: function($data){
 
-                    // If the data arrived is null, the function returns null as data as well.
-
-                    // Parse the data to a JSON object.
                     $data = JSON.parse($data);
 
-                    /*
-                     * If there is 'shallow: true' in the $extra parameter
-                     * make sure that the :true after each property is turned
-                     * into {}.
-                     */
+                    if($data === null){
+
+                        $data = {};
+                    }
 
                     if($extra.hasOwnProperty('shallow') && $extra['shallow'] === true){
 
@@ -83,25 +80,18 @@ const FirebaseDatabaseAndStorageManager = (function(){
                         }
                     }
 
-                    // Call the callback with the processed data and null for errors.
                     return $callback(null, $data);
                 },
                 onFailure: function($error){
 
-                    // Log the error.
                     console.error('FirebaseDatabaseAndStorageManager.firebaseGET(): ' + $error);
-
-                    // Call the callback with an error and null for data.
                     return $callback('Data for ' + $path + ' did not arrive because an error!', null);
                 }
-            });
-
-            // Fire the XHR request.
-            $request.send();
+            }).send();
         },
 
         /**
-         * Modifies data in Firebase Real-Time database.
+         * Makes a PUT request to the Firebase Real Time database.
          *
          * @param $path
          * @param $data
@@ -110,50 +100,40 @@ const FirebaseDatabaseAndStorageManager = (function(){
          * @return void
          */
 
-        modifyData($path, $data, $callback){
+       firebasePUT($path, $data, $callback){
 
-            firebase.database()
-                .ref($path)
-                .set($data)
-                .then(function ($response) {
+           // Get token.
+           FirebaseAuthenticationManager.getUserToken(function ($error, $token) {
 
-                    return $callback(null, $response);
-                })
-                .catch(function ($error) {
+              if($error){
 
-                    return $callback($error, null);
-                });
-        },
+                  console.error('FirebaseDatabaseAndStorageManager.firebasePUT(): ' + $error);
+                  return $callback('Problem while trying to get token.', null);
+              }
 
-        /**
-         * Retrieves URL for a specific storage item.
-         *
-         * @param $path
-         * @param $callback
-         *
-         * @return void
-         */
+               const $putData = JSON.stringify($data);
 
-        retrieveStorageItemURL($path, $callback){
+               new Request({
+                   url: 'https://limtek-fb748.firebaseio.com/' + $path + '.json?auth=' + $token,
+                   method: 'PUT',
+                   data: $putData,
+                   headers:{
+                       'Content-Type':'application/json; charset=UTF-8'
+                   },
+                   emulation: false,
+                   urlEncoded: false,
+                   onSuccess: function($data){
 
-            const $self= this;
+                       return $callback(null, $data);
+                   },
+                   onFailure: function($error){
 
-            let $itemRef = $self._storageRef.child($path);
-
-            $itemRef.getDownloadURL()
-                .then(function($URL){
-
-                    // Call the callback with the URL and null for errors.
-                    return $callback(null, $URL);
-                })
-                .catch(function($error){
-
-                    console.error('FirebaseDatabaseAndStorageManager.retrieveStorageItemURL(): ' + $error.code);
-
-                    // Call the callback with the error code and null for URL.
-                    return $callback('Data for ' + $path + ' did not arrive because an error!', null);
-                });
-        }
+                       console.error('FirebaseDatabaseAndStorageManager.firebasePUT(): ' + $error);
+                       return $callback('PUT request for ' + $path + ' had an error!', null);
+                   }
+               }).send();
+           });
+       }
     };
 
     return{
@@ -168,14 +148,9 @@ const FirebaseDatabaseAndStorageManager = (function(){
             Logic.firebaseGET($path, $extra, $callback);
         },
 
-        retrieveStorageItemURL($path, $callback){
+        firebasePUT($path, $data, $callback){
 
-            Logic.retrieveStorageItemURL($path, $callback);
-        },
-
-        modifyData($path, $data, $callback){
-
-            Logic.modifyData($path, $data, $callback);
+            Logic.firebasePUT($path, $data, $callback);
         }
     }
 })();
