@@ -248,7 +248,26 @@ const AdministrationPanelProductsCategories = (function(){
 
         fillFrontEndCategoryDetails($details){
 
-            console.log($details);
+            const $self = this;
+
+            // First set the name of the category
+            if(!$self._categoryDetailsNameSaveButton || !$self._categoryDetailsNameInput){
+
+                $self._categoryDetailsNameInput = $('CategoryDetailsNameInput');
+                $self._categoryDetailsNameSaveButton = $('CategoryDetailsNameSaveButton');
+            }
+
+            if(!$self._categoryDetailsNameSaveButton || !$self._categoryDetailsNameInput){
+
+                console.error('AdministrationPanelProductsCategories.fillFrontEndCategoryDetails():' +
+                    ' CategoryDetailsNameInput or CategoryDetailsNameSaveButton is missing!');
+                return;
+            }
+
+            // TODO: This function puts on the front end the details of the chosen category.
+            // TODO: For the current time being only the name of the category has been implemented.
+
+            $self._categoryDetailsNameInput.value = $details.display_name;
         },
 
         /**
@@ -287,6 +306,12 @@ const AdministrationPanelProductsCategories = (function(){
             $self._categoryDetailsNameSaveButton.disabled = true;
         },
 
+        /**
+         * Saves new name for a category.
+         *
+         * @return void
+         */
+
         saveCategoryDetailsName(){
 
             const $self = this;
@@ -303,7 +328,62 @@ const AdministrationPanelProductsCategories = (function(){
                 return;
             }
 
-            CustomMessage.showMessage($self._productCategoriesSelectBox.value);
+            if(!$self._categoryDetailsNameSaveButton || !$self._categoryDetailsNameInput){
+
+                $self._categoryDetailsNameInput = $('CategoryDetailsNameInput');
+                $self._categoryDetailsNameSaveButton = $('CategoryDetailsNameSaveButton');
+            }
+
+            if(!$self._categoryDetailsNameSaveButton || !$self._categoryDetailsNameInput){
+
+                console.error('AdministrationPanelProductsCategories.saveCategoryDetailsName():' +
+                    ' CategoryDetailsNameInput or CategoryDetailsNameSaveButton is missing!');
+                return;
+            }
+
+            // Check if there is actually a chosen category.
+            if($self._productCategoriesSelectBox.value === 'null'){
+
+                CustomMessage.showMessage('Изберете категория!');
+                console.log('AdministrationPanelProductsCategories.saveCategoryDetailsName(): '
+                 + ' No category chosen to have name saved!');
+                return;
+            }
+
+            // Check if there is a name entered.
+            if($self._categoryDetailsNameInput.value === '' || $self._categoryDetailsNameInput.value === null){
+
+                CustomMessage.showMessage('Въведете име!');
+                console.log('AdministrationPanelProductsCategories.saveCategoryDetailsName(): '
+                    + ' No new name chosen to be saved!');
+                return;
+            }
+
+            console.log($self._productCategoriesSelectBox.value);
+
+            // Save the name.
+            let $pathNodes = ['products', 'categories_details', $self._productCategoriesSelectBox.value];
+            let $path = DevelopmentHelpers.constructPath($pathNodes);
+            let $putData = {
+                display_name : $self._categoryDetailsNameInput.value
+            };
+
+            FirebaseDatabaseAndStorageManager.firebasePUT(
+                $path,
+                $putData,
+                function ($error, $data) {
+
+                    if($error){
+
+                        console.log($error);
+                        CustomMessage.showMessage('Проблем при записване на новото име');
+                        return;
+                    }
+
+                    CustomMessage.showMessage('Промените Ви са успешно записани');
+                    console.log($data);
+                }
+            );
         }
     };
 
