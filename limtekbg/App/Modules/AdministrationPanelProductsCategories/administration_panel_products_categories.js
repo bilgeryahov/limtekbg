@@ -245,6 +245,17 @@ const AdministrationPanelProductsCategories = (function(){
         fillFrontEndCategoryDetails($details){
 
             console.log($details);
+        },
+
+        categoryDetailsNameAllowChange($element){
+
+            if($element.checked){
+
+                CustomMessage.showMessage('Чекнат');
+                return;
+            }
+
+            CustomMessage.showMessage('Не - Чекнат');
         }
     };
 
@@ -273,6 +284,11 @@ const AdministrationPanelProductsCategories = (function(){
         loadCategoryDetails(){
 
             Logic.loadCategoryDetails();
+        },
+
+        categoryDetailsNameAllowChange($element){
+
+            Logic.categoryDetailsNameAllowChange($element);
         }
     }
 })();

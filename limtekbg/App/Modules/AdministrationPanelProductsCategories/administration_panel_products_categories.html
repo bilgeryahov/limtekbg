@@ -8,4 +8,14 @@
         <p><button id="FetchProductCategoriesButton" class="w3-btn w3-teal"
             onclick="AdministrationPanelProductsCategories.fetchProductCategories();">Обнови листата</button></p>
     </div>
+
+    <br/>
+
+    <div>
+        <h6>Име на категория:</h6>
+        <input id="CategoryDetailsName" class="w3-input w3-border" type="text" disabled>
+        <input class="w3-check" type="checkbox" onchange="AdministrationPanelProductsCategories.categoryDetailsNameAllowChange(this);">
+        <label>Активирай режим промяна</label>
+        <p><button id="CategoryDetailsNameSaveButton" class="w3-btn w3-teal" disabled>Запиши</button></p>
+    </div>
 </div>
