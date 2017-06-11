@@ -15,8 +15,7 @@ const FirebaseAuthenticationManager = (function(){
      */
 
     const Logic = {
-
-        _auth: {},
+        
         _currentUser: null,
         _authError: null,
 
@@ -33,9 +32,6 @@ const FirebaseAuthenticationManager = (function(){
 
             const $self = this;
 
-            // Initialize the Auth object.
-            $self._auth = firebase.auth();
-
             // Try to set a new Auth ObserverManager.
             try{
 
@@ -49,7 +45,7 @@ const FirebaseAuthenticationManager = (function(){
 
             $self._authObserverManager.clearObservers();
 
-            $self._auth.onAuthStateChanged(function($currentUser){
+            firebase.auth().onAuthStateChanged(function($currentUser){
 
                 if($currentUser){
 
@@ -111,7 +107,7 @@ const FirebaseAuthenticationManager = (function(){
                 return;
             }
 
-            $self._auth.signInWithEmailAndPassword($email, $password)
+            firebase.auth().signInWithEmailAndPassword($email, $password)
                 .catch(function($error){
 
                     $self._authError = 'Проблем при вписване';
@@ -158,7 +154,7 @@ const FirebaseAuthenticationManager = (function(){
 
             const $self = this;
 
-            $self._auth.signOut()
+            firebase.auth().signOut()
                 .catch(function($error){
                     if($error){
 
@@ -173,6 +169,29 @@ const FirebaseAuthenticationManager = (function(){
                         $self._authObserverManager.updateObservers('ERROR 1');
                     }
                 });
+        },
+
+        /**
+         * Gets verification token for the currently signed-in user.
+         *
+         * @param $callback
+         *
+         * @return void
+         */
+
+        getUserToken($callback){
+            
+            firebase.auth()
+                .currentUser
+                .getToken(true)
+                .then(function ($token) {
+
+                    return $callback(null, $token);
+                })
+                .catch(function ($error) {
+
+                    return $callback($error, null);
+                })
         }
     };
 
@@ -206,6 +225,11 @@ const FirebaseAuthenticationManager = (function(){
         logout(){
 
             Logic.logout();
+        },
+
+        getUserToken($callback){
+
+            Logic.getUserToken($callback);
         }
     }
 })();
