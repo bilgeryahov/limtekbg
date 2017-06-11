@@ -18,6 +18,9 @@ const AdministrationPanelProductsCategories = (function(){
 
         _productCategoriesSelectBox : null,
 
+        _categoryDetailsNameInput: null,
+        _categoryDetailsNameSaveButton: null,
+
         /**
          * Initializes the main functionality.
          *
@@ -161,6 +164,7 @@ const AdministrationPanelProductsCategories = (function(){
             // Add the default.
             let $defaultOption = document.createElement('option');
             $defaultOption.innerHTML = 'Избери твоята опция';
+            $defaultOption.value = null;
             $defaultOption.selected = true;
             $defaultOption.disabled = true;
             $self._productCategoriesSelectBox.appendChild($defaultOption);
@@ -247,15 +251,59 @@ const AdministrationPanelProductsCategories = (function(){
             console.log($details);
         },
 
+        /**
+         * Makes sure that the name of a category can be changed and saved.
+         *
+         * @param $element
+         *
+         * @return void
+         */
+
         categoryDetailsNameAllowChange($element){
 
-            if($element.checked){
+            const $self = this;
 
-                CustomMessage.showMessage('Чекнат');
+            if(!$self._categoryDetailsNameSaveButton || !$self._categoryDetailsNameInput){
+
+                $self._categoryDetailsNameInput = $('CategoryDetailsNameInput');
+                $self._categoryDetailsNameSaveButton = $('CategoryDetailsNameSaveButton');
+            }
+
+            if(!$self._categoryDetailsNameSaveButton || !$self._categoryDetailsNameInput){
+
+                console.error('AdministrationPanelProductsCategories.categoryDetailsNameAllowChange():' +
+                    ' CategoryDetailsNameInput or CategoryDetailsNameSaveButton is missing!');
                 return;
             }
 
-            CustomMessage.showMessage('Не - Чекнат');
+            if($element.checked){
+
+                $self._categoryDetailsNameInput.disabled = false;
+                $self._categoryDetailsNameSaveButton.disabled = false;
+                return;
+            }
+
+            $self._categoryDetailsNameInput.disabled = true;
+            $self._categoryDetailsNameSaveButton.disabled = true;
+        },
+
+        saveCategoryDetailsName(){
+
+            const $self = this;
+
+            if(!$self._productCategoriesSelectBox){
+
+                $self._productCategoriesSelectBox = $('ProductCategoriesSelectBox');
+            }
+
+            if(!$self._productCategoriesSelectBox){
+
+                console.error('AdministrationPanelProductsCategories.saveCategoryDetailsName():' +
+                    ' ProductCategoriesSelectBox is missing!');
+                return;
+            }
+
+            CustomMessage.showMessage($self._productCategoriesSelectBox.value);
         }
     };
 
@@ -289,6 +337,11 @@ const AdministrationPanelProductsCategories = (function(){
         categoryDetailsNameAllowChange($element){
 
             Logic.categoryDetailsNameAllowChange($element);
+        },
+
+        saveCategoryDetailsName(){
+
+            Logic.saveCategoryDetailsName();
         }
     }
 })();
