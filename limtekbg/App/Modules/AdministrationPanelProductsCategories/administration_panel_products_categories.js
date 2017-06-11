@@ -342,7 +342,10 @@ const AdministrationPanelProductsCategories = (function(){
             }
 
             // Check if there is actually a chosen category.
-            if($self._productCategoriesSelectBox.value === 'null'){
+            // Very dirty solution 'null'.
+            if($self._productCategoriesSelectBox.value === 'null' ||
+                !$self._productCategoriesSelectBox.value ||
+                 typeof $self._productCategoriesSelectBox.value === 'undefined'){
 
                 CustomMessage.showMessage('Изберете категория!');
                 console.log('AdministrationPanelProductsCategories.saveCategoryDetailsName(): '
@@ -351,15 +354,15 @@ const AdministrationPanelProductsCategories = (function(){
             }
 
             // Check if there is a name entered.
-            if($self._categoryDetailsNameInput.value === '' || $self._categoryDetailsNameInput.value === null){
+            if($self._categoryDetailsNameInput.value === '' ||
+                $self._categoryDetailsNameInput.value === null ||
+                 typeof $self._categoryDetailsNameInput.value === 'undefined'){
 
                 CustomMessage.showMessage('Въведете име!');
                 console.log('AdministrationPanelProductsCategories.saveCategoryDetailsName(): '
                     + ' No new name chosen to be saved!');
                 return;
             }
-
-            console.log($self._productCategoriesSelectBox.value);
 
             // Save the name.
             let $pathNodes = ['products', 'categories_details', $self._productCategoriesSelectBox.value];
