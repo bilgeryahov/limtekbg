@@ -28,7 +28,6 @@ const FirebaseDatabaseAndStorageManager = (function(){
 
                 console.error('FirebaseDatabaseAndStorageManager.init(): ' +
                     'FirebaseAuthenticationManager is missing!');
-                return;
             }
         },
 
@@ -102,37 +101,68 @@ const FirebaseDatabaseAndStorageManager = (function(){
 
        firebasePUT($path, $data, $callback){
 
-           // Get token.
-           FirebaseAuthenticationManager.getUserToken(function ($error, $token) {
+            const $putData = JSON.stringify($data);
+            let $token = sessionStorage.getItem('LimtekCurrentUserToken');
+            if(!$token){
 
-              if($error){
+                // Get token.
+                FirebaseAuthenticationManager.getUserToken(function ($error, $tokenPresent) {
 
-                  console.error('FirebaseDatabaseAndStorageManager.firebasePUT(): ' + $error);
-                  return $callback('Problem while trying to get token.', null);
-              }
+                    if($error){
 
-               const $putData = JSON.stringify($data);
+                        console.error('FirebaseDatabaseAndStorageManager.firebasePUT(): ' + $error);
+                        return $callback('Problem while trying to get token.', null);
+                    }
 
-               new Request({
-                   url: 'https://limtek-fb748.firebaseio.com/' + $path + '.json?auth=' + $token,
-                   method: 'PUT',
-                   data: $putData,
-                   headers:{
-                       'Content-Type':'application/json; charset=UTF-8'
-                   },
-                   emulation: false,
-                   urlEncoded: false,
-                   onSuccess: function($data){
+                    if($tokenPresent){
 
-                       return $callback(null, $data);
-                   },
-                   onFailure: function($error){
+                        $token = sessionStorage.getItem('LimtekCurrentUserToken');
+                        $request.send();
+                    }
+                });
+            }
 
-                       console.error('FirebaseDatabaseAndStorageManager.firebasePUT(): ' + $error);
-                       return $callback('PUT request for ' + $path + ' had an error!', null);
-                   }
-               }).send();
-           });
+            const $request = new Request({
+                url: 'https://limtek-fb748.firebaseio.com/' + $path + '.json?auth=' + $token,
+                method: 'PUT',
+                data: $putData,
+                headers:{
+                    'Content-Type':'application/json; charset=UTF-8'
+                },
+                emulation: false,
+                urlEncoded: false,
+                onSuccess: function($data){
+
+                    return $callback(null, $data);
+                },
+                onFailure: function($error){
+
+                    // Check if it says that the token has expired.
+                    if($error.hasOwnProperty('error') && $error.error === 'Auth token is expired'){
+
+                        // Get token.
+                        FirebaseAuthenticationManager.getUserToken(function ($error, $tokenPresent) {
+
+                            if($error){
+
+                                console.error('FirebaseDatabaseAndStorageManager.firebasePUT(): ' + $error);
+                                return $callback('Problem while trying to get token.', null);
+                            }
+
+                            if($tokenPresent){
+
+                                $token = sessionStorage.getItem('LimtekCurrentUserToken');
+                                return $request.send();
+                            }
+                        });
+                    }
+                    else{
+
+                        console.error('FirebaseDatabaseAndStorageManager.firebasePUT(): ' + $error);
+                        return $callback('PUT request for ' + $path + ' had an error!', null);
+                    }
+                }
+            });
        }
     };
 
