@@ -49,6 +49,10 @@ const FirebaseAuthenticationManager = (function(){
 
                 if($currentUser){
 
+                    // Save the current user's token.
+                    sessionStorage.setItem('LimtekCurrentUserToken', $currentUser._lat);
+
+                    // Notify user is here.
                     $self._currentUser = $currentUser;
                     $self._authObserverManager.updateObservers('USER 1');
                 }
@@ -186,7 +190,10 @@ const FirebaseAuthenticationManager = (function(){
                 .getToken(true)
                 .then(function ($token) {
 
-                    return $callback(null, $token);
+                    // Save the current user's token.
+                    sessionStorage.setItem('LimtekCurrentUserToken', $token);
+
+                    return $callback(null, true);
                 })
                 .catch(function ($error) {
 
