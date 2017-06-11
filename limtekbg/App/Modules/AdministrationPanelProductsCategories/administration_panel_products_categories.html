@@ -3,7 +3,7 @@
         <h4>Избери категория (подкатегория):</h4>
         <select title="SelectCategories" id="ProductCategoriesSelectBox" class="w3-select" name="category"
             onchange="AdministrationPanelProductsCategories.loadCategoryDetails();">
-            <option value="" disabled selected>Избери твоята опция</option>
+            <option value=null disabled selected>Избери твоята опция</option>
         </select>
         <p><button id="FetchProductCategoriesButton" class="w3-btn w3-teal"
             onclick="AdministrationPanelProductsCategories.fetchProductCategories();">Обнови листата</button></p>
@@ -13,9 +13,11 @@
 
     <div>
         <h6>Име на категория:</h6>
-        <input title="CategoryName" id="CategoryDetailsName" class="w3-input w3-border" type="text" disabled>
-        <input title="ActivateCategoryNameChange" class="w3-check" type="checkbox" onchange="AdministrationPanelProductsCategories.categoryDetailsNameAllowChange(this);">
+        <input title="CategoryName" id="CategoryDetailsNameInput" class="w3-input w3-border" type="text" disabled>
+        <input title="ActivateCategoryNameChange" class="w3-check" type="checkbox"
+               onchange="AdministrationPanelProductsCategories.categoryDetailsNameAllowChange(this);">
         <label>Активирай режим промяна</label>
-        <p><button id="CategoryDetailsNameSaveButton" class="w3-btn w3-teal" disabled>Запиши</button></p>
+        <p><button id="CategoryDetailsNameSaveButton" class="w3-btn w3-teal" disabled
+            onclick="AdministrationPanelProductsCategories.saveCategoryDetailsName();">Запиши</button></p>
     </div>
 </div>
