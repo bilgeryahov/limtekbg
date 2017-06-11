@@ -364,6 +364,9 @@ const AdministrationPanelProductsCategories = (function(){
                 return;
             }
 
+            //Make sure the button indicates.
+            DevelopmentHelpers.setButtonTriggeredState('CategoryDetailsNameSaveButton', true);
+
             // Save the name.
             let $pathNodes = ['products', 'categories_details', $self._productCategoriesSelectBox.value];
             let $path = DevelopmentHelpers.constructPath($pathNodes);
@@ -378,11 +381,16 @@ const AdministrationPanelProductsCategories = (function(){
 
                     if($error){
 
+                        // Clear button triggered state.
+                        DevelopmentHelpers.setButtonTriggeredState('CategoryDetailsNameSaveButton', false);
+
                         console.log($error);
                         CustomMessage.showMessage('Проблем при записване на новото име');
                         return;
                     }
 
+                    // Clear button triggered state.
+                    DevelopmentHelpers.setButtonTriggeredState('CategoryDetailsNameSaveButton', false);
                     CustomMessage.showMessage('Промените Ви са успешно записани');
                     console.log($data);
                 }
