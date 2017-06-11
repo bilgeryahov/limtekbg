@@ -16,12 +16,6 @@ const FirebaseDatabaseAndStorageManager = (function(){
 
     const Logic = {
 
-        _database: {},
-        _databaseRef: {},
-
-        _storage: {},
-        _storageRef: {},
-
         /**
          * Initialize.
          *
@@ -30,15 +24,7 @@ const FirebaseDatabaseAndStorageManager = (function(){
 
         init: function(){
 
-            const $self = this;
 
-            // Initialize the real-time database.
-            $self._database = firebase.database();
-            $self._databaseRef = $self._database.ref();
-
-            // Initialize the storage.
-            $self._storage = firebase.storage();
-            $self._storageRef = $self._storage.ref();
         },
 
         /**
@@ -115,6 +101,31 @@ const FirebaseDatabaseAndStorageManager = (function(){
         },
 
         /**
+         * Modifies data in Firebase Real-Time database.
+         *
+         * @param $path
+         * @param $data
+         * @param $callback
+         *
+         * @return void
+         */
+
+        modifyData($path, $data, $callback){
+
+            firebase.database()
+                .ref($path)
+                .set($data)
+                .then(function ($response) {
+
+                    return $callback(null, $response);
+                })
+                .catch(function ($error) {
+
+                    return $callback($error, null);
+                });
+        },
+
+        /**
          * Retrieves URL for a specific storage item.
          *
          * @param $path
@@ -160,6 +171,11 @@ const FirebaseDatabaseAndStorageManager = (function(){
         retrieveStorageItemURL($path, $callback){
 
             Logic.retrieveStorageItemURL($path, $callback);
+        },
+
+        modifyData($path, $data, $callback){
+
+            Logic.modifyData($path, $data, $callback);
         }
     }
 })();
