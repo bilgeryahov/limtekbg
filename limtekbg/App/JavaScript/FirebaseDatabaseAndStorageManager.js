@@ -81,9 +81,10 @@ const FirebaseDatabaseAndStorageManager = (function(){
 
                     return $callback(null, $data);
                 },
-                onFailure: function($error){
+                onFailure: function($xhr){
 
-                    console.error('FirebaseDatabaseAndStorageManager.firebaseGET(): ' + $error);
+                    console.error('FirebaseDatabaseAndStorageManager.firebaseGET(): ');
+                    console.error($xhr);
                     return $callback('Data for ' + $path + ' did not arrive because an error!', null);
                 }
             }).send();
