@@ -32,8 +32,6 @@ const ContactForm = (function(){
 
         _cfSendButton         : {},
 
-        _recaptchaApiLoaded: false,
-
         /**
          * Initializes the main functionality.
          *
@@ -219,27 +217,6 @@ const ContactForm = (function(){
                     }
                 }
             }).send();
-        },
-
-        /**
-         * Loads the reCAPTCHA API after the ContactForm module
-         * is for sure initialized and displayed.
-         *
-         * @return void
-         */
-
-        loadRecaptchaApi(){
-
-            const $self = this;
-            if(!$self._recaptchaApiLoaded){
-
-                let $head= document.getElementsByTagName('head')[0];
-                let $script= document.createElement('script');
-                $script.type= 'text/javascript';
-                $script.src= 'https://www.google.com/recaptcha/api.js';
-                $head.appendChild($script);
-                $self._recaptchaApiLoaded = true;
-            }
         }
     };
 
@@ -253,11 +230,6 @@ const ContactForm = (function(){
         sendMailToCloudService(){
 
             Logic.sendMailToCloudService();
-        },
-
-        loadRecaptchaApi(){
-
-            Logic.loadRecaptchaApi();
         }
     }
 })();
