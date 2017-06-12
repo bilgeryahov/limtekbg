@@ -119,31 +119,28 @@ const FirebaseDatabaseAndStorageManager = (function(){
                 },
                 onFailure: function($xhr){
 
-                    if($xhr.hasOwnProperty('response')){
+                    let $response = JSON.decode($xhr.response);
 
-                        let $response = JSON.decode($xhr.response);
+                    // Check if it says that the token has expired.
+                    if($response.hasOwnProperty('error') && $response.error === 'Auth token is expired'){
 
-                        // Check if it says that the token has expired.
-                        if($response.hasOwnProperty('error') && $response.error === 'Auth token is expired'){
+                        // Get token.
+                        FirebaseAuthenticationManager.getUserToken(function ($error, $tokenPresent) {
 
-                            // Get token.
-                            FirebaseAuthenticationManager.getUserToken(function ($error, $tokenPresent) {
+                            if($error){
 
-                                if($error){
+                                console.error('FirebaseDatabaseAndStorageManager.firebasePUT(): ' + $error);
+                                return $callback('Problem while trying to get token.', null);
+                            }
 
-                                    console.error('FirebaseDatabaseAndStorageManager.firebasePUT(): ' + $error);
-                                    return $callback('Problem while trying to get token.', null);
-                                }
+                            $token = sessionStorage.getItem('LimtekCurrentUserToken');
+                            return $request.send();
+                        });
+                    }
+                    else{
 
-                                $token = sessionStorage.getItem('LimtekCurrentUserToken');
-                                return $request.send();
-                            });
-                        }
-                        else{
-
-                            console.error('FirebaseDatabaseAndStorageManager.firebasePUT(): ' + $response);
-                            return $callback('PUT request for ' + $path + ' had an error!', null);
-                        }
+                        console.error('FirebaseDatabaseAndStorageManager.firebasePUT(): ' + $response);
+                        return $callback('PUT request for ' + $path + ' had an error!', null);
                     }
                 }
             });
