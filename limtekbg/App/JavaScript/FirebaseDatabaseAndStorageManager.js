@@ -137,12 +137,12 @@ const FirebaseDatabaseAndStorageManager = (function(){
                             $request.options.url = 'https://limtek-fb748.firebaseio.com/' + $path + '.json?auth=' + $token;
                             return $request.send();
                         });
-                    }
-                    else{
 
-                        console.error('FirebaseDatabaseAndStorageManager.firebasePUT(): ' + $xhr.response);
-                        return $callback('PUT request for ' + $path + ' had an error!', null);
+                        return;
                     }
+
+                    console.error('FirebaseDatabaseAndStorageManager.firebasePUT(): ' + $xhr.response);
+                    return $callback('PUT request for ' + $path + ' had an error!', null);
                 }
             });
 
@@ -161,12 +161,12 @@ const FirebaseDatabaseAndStorageManager = (function(){
                     $request.options.url = 'https://limtek-fb748.firebaseio.com/' + $path + '.json?auth=' + $token;
                     return $request.send();
                 });
-            }
-            else{
 
-                // There is a token.
-                $request.send();
+                return;
             }
+
+            // There is a token.
+            $request.send();
        }
     };
 
