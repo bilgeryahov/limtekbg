@@ -275,6 +275,8 @@ const ContactForm = (function(){
             // Check if the script exists.
             if (document.querySelectorAll('script[src="https://www.google.com/recaptcha/api.js"]').length > 0) {
 
+                // The recaptcha api is there, just to be sure, lock the button.
+                DevelopmentHelpers.setButtonTriggeredState('MakeContactFormBoxVisibleButton', true);
                 $self._contactFormBox.style.display = 'block';
                 $self._recaptchaApiLoaded = true;
                 return;
