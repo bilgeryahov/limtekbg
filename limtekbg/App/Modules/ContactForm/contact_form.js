@@ -254,7 +254,6 @@ const ContactForm = (function(){
 
             if($self._recaptchaApiLoaded){
 
-                CustomMessage.showMessage('Контактната форма е заредена');
                 return;
             }
 
