@@ -49,19 +49,6 @@ const FirebaseAuthenticationManager = (function(){
 
                 if($currentUser){
 
-                    if($currentUser._lat){
-
-                        // Save the current user's token.
-                        sessionStorage.setItem('LimtekCurrentUserToken', $currentUser._lat);
-                    }
-                    else{
-
-                        console.error('FirebaseAuthenticationManager: The $currentUser ' +
-                            'does not have a property called _lat. The token cannot be saved ' +
-                            'on login.');
-                    }
-
-                    // Notify user is here.
                     $self._currentUser = $currentUser;
                     $self._authObserverManager.updateObservers('USER 1');
                 }
@@ -196,7 +183,7 @@ const FirebaseAuthenticationManager = (function(){
             
             firebase.auth()
                 .currentUser
-                .getToken(true)
+                .getIdToken(true)
                 .then(function ($token) {
 
                     // Save the current user's token.
