@@ -273,11 +273,10 @@ const ContactForm = (function(){
             $self.loadRecaptchaApi();
 
             // Check if the script exists.
-            if (document.querySelectorAll(`script[src="https://www.google.com/recaptcha/api.js"]`).length > 0) {
+            if (document.querySelectorAll('script[src="https://www.google.com/recaptcha/api.js"]').length > 0) {
 
                 $self._contactFormBox.style.display = 'block';
                 $self._recaptchaApiLoaded = true;
-
                 return;
             }
 
