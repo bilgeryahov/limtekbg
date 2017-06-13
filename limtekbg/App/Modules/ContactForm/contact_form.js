@@ -32,9 +32,6 @@ const ContactForm = (function(){
 
         _cfSendButton         : {},
 
-        _recaptchaApiLoaded: false,
-        _contactFormBox: null,
-
         /**
          * Initializes the main functionality.
          *
@@ -226,6 +223,11 @@ const ContactForm = (function(){
          * Loads the reCAPTCHA API after the ContactForm module
          * is for sure initialized and displayed.
          *
+         * Currently uses a tricky solution. An img tag is loaded
+         * on the DOM from this module's template, which has its
+         * src attribute empty. Taking advantage of onerror
+         * event, we make sure that this function gets called.
+         *
          * @return void
          */
 
@@ -236,57 +238,6 @@ const ContactForm = (function(){
             $script.type= 'text/javascript';
             $script.src= 'https://www.google.com/recaptcha/api.js';
             $head.appendChild($script);
-        },
-
-        /**
-         * Makes sure that the recaptcha API script
-         * gets loaded and the ContactFormBox gets visible.
-         *
-         * Checks if everything goes fine. If does not
-         * displays a message.
-         *
-         * @return void
-         */
-
-        makeContactFormBoxVisible(){
-
-            const $self = this;
-
-            if($self._recaptchaApiLoaded){
-
-                CustomMessage.showMessage('Контактната форма е заредена');
-                return;
-            }
-
-            if(!$self._contactFormBox){
-
-                $self._contactFormBox = $('ContactFormBox');
-            }
-
-            if(!$self._contactFormBox){
-
-                CustomMessage.showMessage('Имаше проблем при зареждане на формата. ' +
-                    'Моля опитайте да презаредите страницата.');
-                console.log('ContactForm.makeContactFormBoxVisible(): ' +
-                    'ContactFormBox is not present on the DOM!');
-                return;
-            }
-
-            $self.loadRecaptchaApi();
-
-            // Check if the script exists.
-            if (document.querySelectorAll('script[src="https://www.google.com/recaptcha/api.js"]').length > 0) {
-
-                // The recaptcha api is there, just to be sure, lock the button.
-                DevelopmentHelpers.setButtonTriggeredState('MakeContactFormBoxVisibleButton', true);
-                $self._contactFormBox.style.display = 'block';
-                $self._recaptchaApiLoaded = true;
-                return;
-            }
-
-            CustomMessage.showMessage('Имаше проблем при зареждане на формата. Моля опитайте отново.');
-            console.error('ContactForm.makeContactFormBoxVisible(): ' +
-             ' the reCAPTCHA API script has not been loaded!');
         }
     };
 
@@ -302,9 +253,9 @@ const ContactForm = (function(){
             Logic.sendMailToCloudService();
         },
 
-        makeContactFormBoxVisible(){
+        loadRecaptchaApi(){
 
-            Logic.makeContactFormBoxVisible();
+            Logic.loadRecaptchaApi();
         }
     }
 })();
