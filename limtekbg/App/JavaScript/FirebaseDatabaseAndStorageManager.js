@@ -136,7 +136,7 @@ const FirebaseDatabaseAndStorageManager = (function(){
 
                             $token = sessionStorage.getItem('LimtekCurrentUserToken');
                             $request.options.url = 'https://limtek-fb748.firebaseio.com/' + $path + '.json?auth=' + $token;
-                            return $request.send();
+                            $request.send();
                         });
 
                         return;
@@ -160,7 +160,7 @@ const FirebaseDatabaseAndStorageManager = (function(){
 
                     $token = sessionStorage.getItem('LimtekCurrentUserToken');
                     $request.options.url = 'https://limtek-fb748.firebaseio.com/' + $path + '.json?auth=' + $token;
-                    return $request.send();
+                    $request.send();
                 });
 
                 return;
