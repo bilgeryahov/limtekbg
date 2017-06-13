@@ -156,6 +156,7 @@ const ContactForm = (function(){
                 DevelopmentHelpers.setButtonTriggeredState('CFsendButton', false);
                 console.log('ContactForm.sendMailToCloudService(): Problem with presence' +
                     ' of DOM elements!');
+                CustomMessage.showMessage('Проблем при зареждането на страницата. Моля обновете страницата.');
                 return;
             }
 
@@ -199,10 +200,8 @@ const ContactForm = (function(){
                     // Indicate that the sending process has finished.
                     DevelopmentHelpers.setButtonTriggeredState('CFsendButton', false);
 
-                    $data = JSON.decode($data);
-                    if($data.hasOwnProperty('message')){
-                        console.log('ContactForm.sendMailToCloudService(): ' + $data.message);
-                    }
+                    // Data is usually a string. It should not contain sensitive info. Print it.
+                    console.log('ContactForm.sendMailToCloudService(): ' + $data);
                 },
                 onFailure($xhr){
 
@@ -213,6 +212,7 @@ const ContactForm = (function(){
                     DevelopmentHelpers.setButtonTriggeredState('CFsendButton', false);
 
                     if($xhr){
+                        console.error('ContactForm.sendMailToCloudService(): ');
                         console.error($xhr);
                     }
                 }
