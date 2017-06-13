@@ -265,6 +265,8 @@ const ContactForm = (function(){
 
             if(!$self._contactFormBox){
 
+                CustomMessage.showMessage('Имаше проблем при зареждане на формата. ' +
+                    'Моля опитайте да презаредите страницата.');
                 console.log('ContactForm.makeContactFormBoxVisible(): ' +
                     'ContactFormBox is not present on the DOM!');
                 return;

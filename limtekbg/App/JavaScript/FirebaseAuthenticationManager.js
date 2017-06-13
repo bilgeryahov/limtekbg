@@ -54,6 +54,9 @@ const FirebaseAuthenticationManager = (function(){
                 }
                 else{
 
+                    // When the user logs out, make sure to clean his token.
+                    sessionStorage.removeItem('LimtekCurrentUserToken');
+
                     $self._currentUser = null;
                     $self._authObserverManager.updateObservers('USER 0');
                 }
