@@ -4,7 +4,7 @@
  * AdministrationPanelProductsCategories module controller.
  *
  * @author Bilger Yahov <bayahov1@gmail.com>
- * @version 1.0.0
+ * @version 1.1.0
  * @copyright © 2017 Bilger Yahov, all rights reserved.
  */
 
@@ -16,6 +16,7 @@ const AdministrationPanelProductsCategories = (function(){
         _placeholderName: 'AdministrationPanelProductsCategoriesPlaceholder',
         _template: null,
 
+        // Below the attributes are grouped.
         _productCategoriesSelectBox : null,
 
         _categoryDetailsNameInput: null,
@@ -123,8 +124,11 @@ const AdministrationPanelProductsCategories = (function(){
                         return;
                     }
 
-                    // Send the data to the select box.
-                    // The triggered state of the button will be cleared there.
+                    /*
+                     * Send the data to the select box.
+                     * The triggered state of the button will be cleared there.
+                     */
+
                     $self.fillSelectBoxWithProductCategories($data);
                 }
             );
@@ -152,7 +156,7 @@ const AdministrationPanelProductsCategories = (function(){
 
                 // Make sure the button triggered state is cleared.
                 DevelopmentHelpers.setButtonTriggeredState('FetchProductCategoriesButton', false);
-
+                CustomMessage.showMessage('Възникна проблем. Моля обновете страницата.');
                 console.error('AdministrationPanelProductsCategories.fillSelectBoxWithProductCategories():' +
                     ' ProductCategoriesSelectBox is missing!');
                 return;
@@ -179,6 +183,8 @@ const AdministrationPanelProductsCategories = (function(){
                 }
 
                 let $option = document.createElement('option');
+
+                // The text of the option itself is the name of the category.
                 $option.innerHTML = $categories[$member].display_name;
 
                 // This is the ID of the category.
@@ -207,10 +213,16 @@ const AdministrationPanelProductsCategories = (function(){
                 $self._productCategoriesSelectBox = $('ProductCategoriesSelectBox');
             }
 
+            /*
+             * This check might kick-in only in case that the select box does not carry
+             * the ID.
+             */
+
             if(!$self._productCategoriesSelectBox){
 
+                CustomMessage.showMessage('Възникна грешка. Извиняваме се за неудобството.');
                 console.error('AdministrationPanelProductsCategories.loadCategoryDetails():' +
-                    ' ProductCategoriesSelectBox is missing!');
+                    ' ProductCategoriesSelectBox does not carry the needed ID!');
                 return;
             }
 
@@ -241,68 +253,102 @@ const AdministrationPanelProductsCategories = (function(){
         /**
          * Shows category details on the front-end.
          *
+         * This function goes through a set of defensive checks
+         * to make sure that all the populated front-end items
+         * are actually present.
+         *
+         * In case of missing front-end elements, the process
+         * will not continue. The user will be informed and
+         * correct console error will be shown.
+         *
          * @param $details
          *
          * @return void
          *
-         * @NotImplementedFully
+         * @StillToImplement
          */
 
         fillFrontEndCategoryDetails($details){
 
             const $self = this;
 
-            // First set the name of the category
-            if(!$self._categoryDetailsNameSaveButton || !$self._categoryDetailsNameInput){
+            if(!$self._categoryDetailsNameInput){
 
                 $self._categoryDetailsNameInput = $('CategoryDetailsNameInput');
-                $self._categoryDetailsNameSaveButton = $('CategoryDetailsNameSaveButton');
             }
 
-            if(!$self._categoryDetailsNameSaveButton || !$self._categoryDetailsNameInput){
+            if(!$self._categoryDetailsNameInput){
 
+                CustomMessage.showMessage('Възникна проблем. Моля обновете страницата.');
                 console.error('AdministrationPanelProductsCategories.fillFrontEndCategoryDetails():' +
-                    ' CategoryDetailsNameInput or CategoryDetailsNameSaveButton is missing!');
+                    ' CategoryDetailsNameInput is missing!');
                 return;
             }
 
-            // TODO: This function puts on the front end the details of the chosen category.
-            // TODO: For the current time being only the name of the category has been implemented.
+            // TODO: Add the rest of the elements, which are needed for the change process.
 
             $self._categoryDetailsNameInput.value = $details.display_name;
         },
 
         /**
-         * Makes sure that the name of a category can be changed and saved.
+         * Makes sure that the details of a category can be changed and saved.
+         *
+         * This function takes all the elements from the DOM,
+         * which will be needed to successfully perform a change.
+         *
+         * In case of missing front-end elements, the process
+         * will not continue. The user will be informed and
+         * correct console error will be shown.
          *
          * @param $element
          *
          * @return void
+         *
+         * @StillToFinish
          */
 
-        categoryDetailsNameAllowChange($element){
+        categoryDetailsAllowChange($element){
 
             const $self = this;
 
-            if(!$self._categoryDetailsNameSaveButton || !$self._categoryDetailsNameInput){
+            if(!$self._categoryDetailsNameSaveButton){
 
-                $self._categoryDetailsNameInput = $('CategoryDetailsNameInput');
                 $self._categoryDetailsNameSaveButton = $('CategoryDetailsNameSaveButton');
             }
 
-            if(!$self._categoryDetailsNameSaveButton || !$self._categoryDetailsNameInput){
+            if(!$self._categoryDetailsNameSaveButton){
 
+                CustomMessage.showMessage('Възникна проблем. Моля обновете страницата.');
                 console.error('AdministrationPanelProductsCategories.categoryDetailsNameAllowChange():' +
-                    ' CategoryDetailsNameInput or CategoryDetailsNameSaveButton is missing!');
+                    ' CategoryDetailsNameSaveButton is missing!');
                 return;
             }
 
+            if(!$self._categoryDetailsNameInput){
+
+                $self._categoryDetailsNameInput = $('CategoryDetailsNameInput');
+            }
+
+            if(!$self._categoryDetailsNameInput){
+
+                CustomMessage.showMessage('Възникна проблем. Моля обновете страницата.');
+                console.error('AdministrationPanelProductsCategories.categoryDetailsNameAllowChange():' +
+                    ' CategoryDetailsNameInput is missing!');
+                return;
+            }
+
+            // TODO: Add the rest of the elements, which are needed for the change process.
+
             if($element.checked){
+
+                // TODO: Add the rest.
 
                 $self._categoryDetailsNameInput.disabled = false;
                 $self._categoryDetailsNameSaveButton.disabled = false;
                 return;
             }
+
+            // TODO: Add the rest.
 
             $self._categoryDetailsNameInput.disabled = true;
             $self._categoryDetailsNameSaveButton.disabled = true;
@@ -325,6 +371,7 @@ const AdministrationPanelProductsCategories = (function(){
 
             if(!$self._productCategoriesSelectBox){
 
+                CustomMessage.showMessage('Възникна проблем. Моля обновете страницата.');
                 console.error('AdministrationPanelProductsCategories.saveCategoryDetailsName():' +
                     ' ProductCategoriesSelectBox is missing!');
                 return;
@@ -338,6 +385,7 @@ const AdministrationPanelProductsCategories = (function(){
 
             if(!$self._categoryDetailsNameSaveButton || !$self._categoryDetailsNameInput){
 
+                CustomMessage.showMessage('Възникна проблем. Моля обновете страницата.');
                 console.error('AdministrationPanelProductsCategories.saveCategoryDetailsName():' +
                     ' CategoryDetailsNameInput or CategoryDetailsNameSaveButton is missing!');
                 return;
@@ -427,9 +475,9 @@ const AdministrationPanelProductsCategories = (function(){
             Logic.loadCategoryDetails();
         },
 
-        categoryDetailsNameAllowChange($element){
+        categoryDetailsAllowChange($element){
 
-            Logic.categoryDetailsNameAllowChange($element);
+            Logic.categoryDetailsAllowChange($element);
         },
 
         saveCategoryDetailsName(){
