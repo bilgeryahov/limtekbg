@@ -8,20 +8,21 @@
         <p><button id="FetchProductCategoriesButton" class="w3-btn w3-teal"
             onclick="AdministrationPanelProductsCategories.fetchProductCategories();">Обнови листата</button></p>
     </div>
-
     <br/>
-
     <div>
         <h6>Име на категория:</h6>
         <input title="CategoryName" id="CategoryDetailsNameInput" class="w3-input w3-border" type="text" disabled>
         <p><button id="CategoryDetailsNameSaveButton" class="w3-btn w3-teal" disabled
             onclick="AdministrationPanelProductsCategories.saveCategoryDetailsName();">Запиши</button></p>
-        <input title="ActivateCategoryNameChange" class="w3-check" type="checkbox"
-               onchange="AdministrationPanelProductsCategories.categoryDetailsNameAllowChange(this);">
+    </div>
+    <!-- Common Notice -->
+    <div>
+        <input title="ActivateCategoryDetailsChange" class="w3-check" type="checkbox"
+               onchange="AdministrationPanelProductsCategories.categoryDetailsAllowChange(this);">
         <label>Активирай режим промяна</label>
         <div class="Notice">
             <i class="fa fa-close"></i>
-            <span>Не забравяйте, че след всяка промяна на името, листата с категориите горе трябва
+            <span>Не забравяйте, че след всяка промяна, листата с категориите горе, трябва
             да се обнови ръчно.</span>
         </div>
     </div>
