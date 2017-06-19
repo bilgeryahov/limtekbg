@@ -123,6 +123,12 @@ gulp.task('check_rights_production', function () {
        console.log(stdout);
        console.log(stderr);
 
+	if(!stdout.includes('Project ID / Instance')){
+
+		console.log('Unexpected output');
+            	return;
+	}
+
        if(stdout.includes('production-project')){
 
            console.log('You are allowed to deploy on production.');
@@ -161,6 +167,12 @@ gulp.task('check_rights_development', function () {
 
         console.log(stdout);
         console.log(stderr);
+
+	if(!stdout.includes('Project ID / Instance')){
+
+		console.log('Unexpected output');
+            	return;
+	}
 
         if(stdout.includes('production-project')){
 
