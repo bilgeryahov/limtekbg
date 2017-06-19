@@ -133,26 +133,11 @@ gulp.task('check_rights_production', function () {
 
            console.log('You are allowed to deploy on production.');
            return runSequence('clean_content', 'copy_content', 'compile_css', 'compile_javascript', 'clean_scss',
-               'set_live_environment', 'firebase_deploy');
+               'set_live_environment');
        }
 
        console.log('You are not allowed to deploy on production.');
    });
-});
-
-gulp.task('firebase_deploy', function(){
-
-    return exec('firebase deploy --only hosting', function(err, stdout, stderr){
-
-        if(err){
-
-            console.error(err);
-            return;
-        }
-
-        console.log(stdout);
-        console.log(stderr);
-    });
 });
 
 gulp.task('check_rights_development', function () {
