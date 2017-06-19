@@ -129,7 +129,7 @@ gulp.task('check_rights_production', function () {
            return;
        }
 
-       if(stdout.includes('production-project')){
+       if(stdout.includes('Production-Project')){
 
            console.log('You are allowed to deploy on production.');
            return runSequence('clean_content', 'copy_content', 'compile_css', 'compile_javascript', 'clean_scss',
@@ -174,7 +174,7 @@ gulp.task('check_rights_development', function () {
             return;
         }
 
-        if(stdout.includes('production-project')){
+        if(stdout.includes('Production-Project')){
 
             console.log('You are not allowed to deploy on development.');
             return;
