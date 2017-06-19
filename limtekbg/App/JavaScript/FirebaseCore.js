@@ -4,7 +4,7 @@
  * Initializes Firebase.
  *
  * @author Bilger Yahov <bayahov1@gmail.com>
- * @version 1.0.0
+ * @version 2.0.0
  * @copyright © 2017 Bilger Yahov, all rights reserved.
  */
 
@@ -14,14 +14,13 @@ const FirebaseCore = (function () {
 
         init(){
 
-            const config = {
-                apiKey: EnvironmentHelper.getFirebaseAPIkey(),
-                authDomain: "limtek-fb748.firebaseapp.com",
-                databaseURL: "https://limtek-fb748.firebaseio.com",
-                projectId: "limtek-fb748",
-                storageBucket: "limtek-fb748.appspot.com",
-                messagingSenderId: "876594439093"
-            };
+            if(!EnvironmentHelper){
+
+                console.error('FirebaseCore.init(): EnvironmentHelper is not present!');
+                return;
+            }
+
+            const config = EnvironmentHelper.getFirebaseSettings();
 
             firebase.initializeApp(config);
         }

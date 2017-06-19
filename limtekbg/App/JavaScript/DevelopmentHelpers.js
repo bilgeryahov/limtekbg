@@ -4,7 +4,7 @@
  * Class which exposes functionality to make the development process easier.
  *
  * @author Bilger Yahov <bayahov1@gmail.com>
- * @version 1.0.0
+ * @version 1.0.1
  * @copyright © 2016 - 2017 Bilger Yahov, all rights reserved.
  */
 
@@ -23,9 +23,6 @@ class DevelopmentHelpers {
 
         // Return value.
         let $path = '';
-
-        // Add the correct DB path to the $path variable.
-        $path += EnvironmentHelper.getDBpath();
 
         // Check if array.
         if(!$nodes[0]){
