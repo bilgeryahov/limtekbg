@@ -1,14 +1,20 @@
 {
   "firebase": {
-    "api_keys": {
-      "development" : "AIzaSyA2xeBqWShktNnctQYXQZg5h58m27tWim0",
-      "live" : "AIzaSyAj82J6U7WhLyAE1b_D4fWLquKbTAROBb8",
-      "default": "firebase_api_key_goes_here"
+    "development":{
+      "apiKey": "AIzaSyA2xeBqWShktNnctQYXQZg5h58m27tWim0",
+      "authDomain": "limtek-fb748.firebaseapp.com",
+      "databaseURL": "https://limtek-fb748.firebaseio.com",
+      "projectId": "limtek-fb748",
+      "storageBucket": "limtek-fb748.appspot.com",
+      "messagingSenderId": "876594439093"
     },
-    "db_paths":{
-      "development":"development/",
-      "live":"development/",
-      "default": "db_path_goes_here"
+    "live":{
+      "apiKey": "",
+      "authDomain": "",
+      "databaseURL": "",
+      "projectId": "",
+      "storageBucket": "",
+      "messagingSenderId": ""
     }
   },
   "reCAPTCHA": {
