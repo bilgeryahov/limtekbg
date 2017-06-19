@@ -72,20 +72,6 @@ gulp.task('compile_css', function(){
         .pipe(gulp.dest('./'));
 });
 
-// Deploy locally.
-gulp.task('deploy_locally', function(){
-
-    return runSequence('clean_content', 'copy_content', 'compile_css', 'compile_javascript', 'clean_scss',
-    'set_development_environment');
-});
-
-// Deploy live.
-gulp.task('deploy_live', function(){
-
-    return runSequence('clean_content', 'copy_content', 'compile_css', 'compile_javascript', 'clean_scss',
-        'set_live_environment', 'firebase_deploy');
-});
-
 // Set the correct keys for dev env.
 gulp.task('set_development_environment', function () {
 
@@ -110,4 +96,80 @@ gulp.task('set_live_environment', function () {
             )
         )
         .pipe(gulp.dest('./'));
+});
+
+// Deploy locally.
+gulp.task('deploy_locally', function(){
+
+    return runSequence('check_rights_development');
+});
+
+// Deploy live.
+gulp.task('deploy_live', function(){
+
+    return runSequence('check_rights_production');
+});
+
+gulp.task('check_rights_production', function () {
+
+   return exec('firebase list --interactive', function (err, stdout, stderr) {
+
+       if(err){
+
+           console.error(err);
+           return;
+       }
+
+       console.log(stdout);
+       console.log(stderr);
+
+       if(stdout.includes('production-project')){
+
+           console.log('You are allowed to deploy on production.');
+           return runSequence('clean_content', 'copy_content', 'compile_css', 'compile_javascript', 'clean_scss',
+               'set_live_environment', 'firebase_deploy');
+       }
+
+       console.log('You are not allowed to deploy on production.');
+   });
+});
+
+gulp.task('firebase_deploy', function(){
+
+    return exec('firebase deploy --only hosting', function(err, stdout, stderr){
+
+        if(err){
+
+            console.error(err);
+            return;
+        }
+
+        console.log(stdout);
+        console.log(stderr);
+    });
+});
+
+gulp.task('check_rights_development', function () {
+
+    return exec('firebase list --interactive', function (err, stdout, stderr) {
+
+        if(err){
+
+            console.error(err);
+            return;
+        }
+
+        console.log(stdout);
+        console.log(stderr);
+
+        if(stdout.includes('production-project')){
+
+            console.log('You are not allowed to deploy on development.');
+            return;
+        }
+
+        console.log('You are allowed to deploy on development.');
+        return runSequence('clean_content', 'copy_content', 'compile_css', 'compile_javascript', 'clean_scss',
+            'set_development_environment');
+    });
 });
