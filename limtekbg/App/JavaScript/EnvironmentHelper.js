@@ -1,11 +1,8 @@
 /**
  * @file EnvironmentHelper.js
  *
- * Based on the environment provides API keys, Database paths and much more.
- * All those settings get set up while deploying.
- *
  * @author Bilger Yahov <bayahov1@gmail.com>
- * @version 1.0.0
+ * @version 2.0.0
  * @copyright © 2017 Bilger Yahov, all rights reserved.
  */
 
@@ -13,44 +10,74 @@ const EnvironmentHelper = (function () {
 
     const Logic = {
 
-        _firebase_api_key: 'firebase_api_key_goes_here',
-        _db_path: 'db_path_goes_here',
+        _apiKey: 'apiKey_goes_here',
+        _authDomain: 'authDomain_goes_here',
+        _databaseURL: 'databaseURL_goes_here',
+        _projectId: 'projectId_goes_here',
+        _storageBucket: 'storageBucket_goes_here',
+        _messagingSenderId: 'messagingSenderId_goes_here',
 
-        getFirebaseAPIkey(){
+        getApiKey(){
 
-            return this._firebase_api_key;
+            return this._apiKey;
         },
 
-        getDBpath(){
+        getAuthDomain(){
 
-            // Verify development environment
-            if(this._db_path.includes('development') && window.location.hostname.includes('localhost')){
+            return this._authDomain;
+        },
 
-                return this._db_path;
-            }
+        getDatabaseURL(){
 
-            // Verify live environment
-            // TODO: limtek is hardcoded
-            // TODO: For the current time being live also points to development db path
-            if(this._db_path.includes('development') && window.location.hostname.includes('limtek-fb748')){
+            return this._databaseURL;
+        },
 
-                return this._db_path;
-            }
+        getProjectId(){
 
-            return null;
+            return this._projectId;
+        },
+
+        getStorageBucket(){
+
+            return this._storageBucket;
+        },
+
+        getMessagingSenderId(){
+
+            return this._messagingSenderId;
         }
     };
 
     return{
 
-        getFirebaseAPIkey(){
+        getApiKey(){
 
-            return Logic.getFirebaseAPIkey();
+            return Logic.getApiKey();
         },
 
-        getDBpath(){
+        getAuthDomain(){
 
-            return Logic.getDBpath();
+            return Logic.getAuthDomain();
+        },
+
+        getDatabaseURL(){
+
+            return Logic.getDatabaseURL();
+        },
+
+        getProjectId(){
+
+            return Logic.getProjectId();
+        },
+
+        getStorageBucket(){
+
+            return Logic.getStorageBucket();
+        },
+
+        getMessagingSenderId(){
+
+            return Logic.getMessagingSenderId();
         }
     }
 })();
