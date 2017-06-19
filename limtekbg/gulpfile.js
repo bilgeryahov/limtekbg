@@ -123,11 +123,11 @@ gulp.task('check_rights_production', function () {
        console.log(stdout);
        console.log(stderr);
 
-	if(!stdout.includes('Project ID / Instance')){
+       if(!stdout.includes('Project ID / Instance')){
 
-		console.log('Unexpected output');
-            	return;
-	}
+           console.log('Unexpected output');
+           return;
+       }
 
        if(stdout.includes('production-project')){
 
@@ -168,11 +168,11 @@ gulp.task('check_rights_development', function () {
         console.log(stdout);
         console.log(stderr);
 
-	if(!stdout.includes('Project ID / Instance')){
+        if(!stdout.includes('Project ID / Instance')){
 
-		console.log('Unexpected output');
-            	return;
-	}
+            console.log('Unexpected output');
+            return;
+        }
 
         if(stdout.includes('production-project')){
 
