@@ -15,6 +15,14 @@
       "projectId": "",
       "storageBucket": "",
       "messagingSenderId": ""
+    },
+    "placeholder":{
+      "apiKey": "apiKey_goes_here",
+      "authDomain": "authDomain_goes_here",
+      "databaseURL": "databaseURL_goes_here",
+      "projectId": "projectId_goes_here",
+      "storageBucket": "storageBucket_goes_here",
+      "messagingSenderId": "messagingSenderId_goes_here"
     }
   },
   "reCAPTCHA": {
