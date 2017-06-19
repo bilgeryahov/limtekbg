@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "limtek-fb748"
+    "default": "limtek-fb748",
+    "production": "limtek-production-projec-872c9"
   }
 }
