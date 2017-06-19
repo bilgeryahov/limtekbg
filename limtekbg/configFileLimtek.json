@@ -9,12 +9,12 @@
       "messagingSenderId": "876594439093"
     },
     "live":{
-      "apiKey": "",
-      "authDomain": "",
-      "databaseURL": "",
-      "projectId": "",
-      "storageBucket": "",
-      "messagingSenderId": ""
+      "apiKey": "AIzaSyBZqfCYZFmNcaSfPNnY3miWuqFXT8ttvCA",
+      "authDomain": "limtek-production-projec-872c9.firebaseapp.com",
+      "databaseURL": "https://limtek-production-projec-872c9.firebaseio.com",
+      "projectId": "limtek-production-projec-872c9",
+      "storageBucket": "limtek-production-projec-872c9.appspot.com",
+      "messagingSenderId": "572755180176"
     },
     "placeholder": "'firebase_settings_go_here'"
   },
