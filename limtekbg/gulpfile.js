@@ -12,10 +12,11 @@
 const gulp  = require('gulp');
 const sass  = require('gulp-sass');
 const babel = require('gulp-babel');
-const run_sequence = require('run-sequence');
+const runSequence = require('run-sequence');
 const clean  = require('gulp-clean');
 const replace = require('gulp-replace');
 const exec = require('child_process').exec;
+const stringifyObject = require('stringify-object');
 
 // Config file, from which the api keys and db paths are taken.
 const configFileLimtek = require('./configFileLimtek.json');
@@ -74,14 +75,14 @@ gulp.task('compile_css', function(){
 // Deploy locally.
 gulp.task('deploy_locally', function(){
 
-    return run_sequence('clean_content', 'copy_content', 'compile_css', 'compile_javascript', 'clean_scss',
+    return runSequence('clean_content', 'copy_content', 'compile_css', 'compile_javascript', 'clean_scss',
     'set_development_environment');
 });
 
 // Deploy live.
 gulp.task('deploy_live', function(){
 
-    return run_sequence('clean_content', 'copy_content', 'compile_css', 'compile_javascript', 'clean_scss',
+    return runSequence('clean_content', 'copy_content', 'compile_css', 'compile_javascript', 'clean_scss',
         'set_live_environment', 'firebase_deploy');
 });
 
@@ -89,18 +90,12 @@ gulp.task('deploy_live', function(){
 gulp.task('set_development_environment', function () {
 
     return gulp.src('./Deploy/JavaScript/EnvironmentHelper.js', { base : './' })
-        .pipe(replace(configFileLimtek.firebase.placeholder.apiKey,
-                        configFileLimtek.firebase.development.apiKey))
-        .pipe(replace(configFileLimtek.firebase.placeholder.authDomain,
-                        configFileLimtek.firebase.development.authDomain))
-        .pipe(replace(configFileLimtek.firebase.placeholder.databaseURL,
-            configFileLimtek.firebase.development.databaseURL))
-        .pipe(replace(configFileLimtek.firebase.placeholder.messagingSenderId,
-            configFileLimtek.firebase.development.messagingSenderId))
-        .pipe(replace(configFileLimtek.firebase.placeholder.projectId,
-            configFileLimtek.firebase.development.projectId))
-        .pipe(replace(configFileLimtek.firebase.placeholder.storageBucket,
-            configFileLimtek.firebase.development.storageBucket))
+        .pipe(replace(configFileLimtek.firebase.placeholder,
+            stringifyObject(
+                configFileLimtek.firebase.development,
+                {singleQuotes: true})
+            )
+        )
         .pipe(gulp.dest('./'));
 });
 
@@ -108,17 +103,11 @@ gulp.task('set_development_environment', function () {
 gulp.task('set_live_environment', function () {
 
     return gulp.src('./Deploy/JavaScript/EnvironmentHelper.js', { base : './' })
-        .pipe(replace(configFileLimtek.firebase.placeholder.apiKey,
-            configFileLimtek.firebase.live.apiKey))
-        .pipe(replace(configFileLimtek.firebase.placeholder.authDomain,
-            configFileLimtek.firebase.live.authDomain))
-        .pipe(replace(configFileLimtek.firebase.placeholder.databaseURL,
-            configFileLimtek.firebase.live.databaseURL))
-        .pipe(replace(configFileLimtek.firebase.placeholder.messagingSenderId,
-            configFileLimtek.firebase.live.messagingSenderId))
-        .pipe(replace(configFileLimtek.firebase.placeholder.projectId,
-            configFileLimtek.firebase.live.projectId))
-        .pipe(replace(configFileLimtek.firebase.placeholder.storageBucket,
-            configFileLimtek.firebase.live.storageBucket))
+        .pipe(replace(configFileLimtek.firebase.placeholder,
+            stringifyObject(
+                configFileLimtek.firebase.live,
+                {singleQuotes: true})
+            )
+        )
         .pipe(gulp.dest('./'));
 });
