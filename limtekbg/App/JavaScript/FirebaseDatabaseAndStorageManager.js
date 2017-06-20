@@ -28,6 +28,16 @@ const FirebaseDatabaseAndStorageManager = (function(){
 
                 console.error('FirebaseDatabaseAndStorageManager.init(): ' +
                     'FirebaseAuthenticationManager is missing!');
+
+                return;
+            }
+
+            if(!EnvironmentHelper){
+
+                console.error('FirebaseDatabaseAndStorageManager.init(): ' +
+                    'EnvironmentHelper is missing!');
+
+                return;
             }
         },
 
@@ -57,7 +67,7 @@ const FirebaseDatabaseAndStorageManager = (function(){
             $extraString = $extraString.substring(0, $extraString.length-1);
 
             new Request({
-                url: 'https://limtek-fb748.firebaseio.com/' + $path + '.json' + '?' + $extraString,
+                url: EnvironmentHelper.getFirebaseSettings().databaseURL + $path + '.json' + '?' + $extraString,
                 method: 'GET',
                 onSuccess: function($data){
 
@@ -106,7 +116,7 @@ const FirebaseDatabaseAndStorageManager = (function(){
             let $token = sessionStorage.getItem('LimtekCurrentUserToken');
 
             const $request = new Request({
-                url: 'https://limtek-fb748.firebaseio.com/' + $path + '.json?auth=' + $token,
+                url: EnvironmentHelper.getFirebaseSettings().databaseURL + $path + '.json?auth=' + $token,
                 method: 'PUT',
                 data: $putData,
                 headers:{
@@ -135,7 +145,7 @@ const FirebaseDatabaseAndStorageManager = (function(){
                             }
 
                             $token = sessionStorage.getItem('LimtekCurrentUserToken');
-                            $request.options.url = 'https://limtek-fb748.firebaseio.com/' + $path + '.json?auth=' + $token;
+                            $request.options.url = EnvironmentHelper.getFirebaseSettings().databaseURL + $path + '.json?auth=' + $token;
                             $request.send();
                         });
 
@@ -159,7 +169,7 @@ const FirebaseDatabaseAndStorageManager = (function(){
                     }
 
                     $token = sessionStorage.getItem('LimtekCurrentUserToken');
-                    $request.options.url = 'https://limtek-fb748.firebaseio.com/' + $path + '.json?auth=' + $token;
+                    $request.options.url = EnvironmentHelper.getFirebaseSettings().databaseURL + $path + '.json?auth=' + $token;
                     $request.send();
                 });
 
