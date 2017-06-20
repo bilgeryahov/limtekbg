@@ -123,12 +123,15 @@ gulp.task('check_rights_production', function () {
        console.log(stdout);
        console.log(stderr);
 
+       // Small check to make sure that the output
+       // contains actual projects.
        if(!stdout.includes('Project ID / Instance')){
 
            console.log('Unexpected output');
            return;
        }
 
+       // Make sure that the profile is for production projects.
        if(stdout.includes('Production-Project')){
 
            console.log('You are allowed to deploy on production.');
@@ -136,6 +139,7 @@ gulp.task('check_rights_production', function () {
                'set_live_environment');
        }
 
+       // There is no production project(s), not the correct profile.
        console.log('You are not allowed to deploy on production.');
    });
 });
