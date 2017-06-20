@@ -6,13 +6,13 @@
     "recipient" : "bayahov1@gmail.com"
   },
   "AccessControl":{
-    "AllowOrigin":"https://limtek-fb748.firebaseapp.com",
+    "AllowOrigin":"https://limtek-production-projec-872c9.firebaseapp.com",
     "AllowHeaders": "X-Requested-With"
   },
   "reCAPTCHA": {
     "secretKey" : "6LeNYx8UAAAAAN4l_zsbZN_7lLY10pESj1TAla0_",
     "hostName":{
-      "live":"limtek-fb748.firebaseapp.com"
+      "live":"limtek-production-projec-872c9.firebaseapp.com"
     }
   }
 }
