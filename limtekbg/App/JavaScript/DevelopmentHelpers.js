@@ -22,7 +22,7 @@ class DevelopmentHelpers {
     static constructPath($nodes){
 
         // Return value.
-        let $path = '';
+        let $path = '/';
 
         // Check if array.
         if(!$nodes[0]){
