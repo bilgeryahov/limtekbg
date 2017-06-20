@@ -150,7 +150,10 @@ module.exports = {
         //                 return;
         //             }
         //
-        //             if(obj['success'] === true && (obj['hostname'].includes(configDetails.reCAPTCHA.hostName.live))) {
+        //             if(obj['success'] === true &&
+        //                                  (obj['hostname'].includes(configDetails.reCAPTCHA.hostName.live) ||
+        //                                  (obj['hostname'].includes(configDetails.reCAPTCHA.hostName.development)))
+        //             ){
         //                 return finishSending();
         //             }
         //
@@ -229,6 +232,7 @@ module.exports = {
             });
         };
 
+        // Todo: Remove when recaptcha is back.
         return finishSending();
     }
 };
