@@ -6,7 +6,7 @@
     "recipient" : "bayahov1@gmail.com"
   },
   "AccessControl":{
-    "AllowOrigin":"https://limtek-production-projec-872c9.firebaseapp.com, http://localhost:5000",
+    "AllowOrigin":"*",
     "AllowHeaders": "X-Requested-With"
   },
   "reCAPTCHA": {
