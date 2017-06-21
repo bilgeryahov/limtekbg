@@ -145,8 +145,8 @@ const FirebaseDatabaseAndStorageManager = (function(){
                                 return $callback('Problem while trying to get token.', null);
                             }
 
-                            let $apiKey = EnvironmentHelper.getFirebaseSettings().apiKey;
-                            let $token = sessionStorage.getItem('LimtekToken-' + $apiKey);
+                            $apiKey = EnvironmentHelper.getFirebaseSettings().apiKey;
+                            $token = sessionStorage.getItem('LimtekToken-' + $apiKey);
                             $request.options.url = EnvironmentHelper.getFirebaseSettings().databaseURL + $path + '.json?auth=' + $token;
                             $request.send();
                         });
@@ -170,8 +170,8 @@ const FirebaseDatabaseAndStorageManager = (function(){
                         return $callback('Problem while trying to get token.', null);
                     }
 
-                    let $apiKey = EnvironmentHelper.getFirebaseSettings().apiKey;
-                    let $token = sessionStorage.getItem('LimtekToken-' + $apiKey);
+                    $apiKey = EnvironmentHelper.getFirebaseSettings().apiKey;
+                    $token = sessionStorage.getItem('LimtekToken-' + $apiKey);
                     $request.options.url = EnvironmentHelper.getFirebaseSettings().databaseURL + $path + '.json?auth=' + $token;
                     $request.send();
                 });
