@@ -22,6 +22,9 @@ const AdministrationPanelProductsCategories = (function(){
         _categoryDetailsNameInput: null,
         _categoryDetailsNameSaveButton: null,
 
+        _categoryDetailsParentSelect: null,
+        _categoryDetailsParentSaveButton: null,
+
         /**
          * Initializes the main functionality.
          *
@@ -337,6 +340,32 @@ const AdministrationPanelProductsCategories = (function(){
                 return;
             }
 
+            if(!$self._categoryDetailsParentSaveButton){
+
+                $self._categoryDetailsParentSaveButton = $('CategoryDetailsParentSaveButton');
+            }
+
+            if(!$self._categoryDetailsParentSaveButton){
+
+                CustomMessage.showMessage('Възникна проблем. Моля обновете страницата.');
+                console.error('AdministrationPanelProductsCategories.categoryDetailsNameAllowChange():' +
+                    ' CategoryDetailsParentSaveButton is missing!');
+                return;
+            }
+
+            if(!$self._categoryDetailsParentSelect){
+
+                $self._categoryDetailsParentSelect = $('CategoryDetailsParentSelect');
+            }
+
+            if(!$self._categoryDetailsParentSelect){
+
+                CustomMessage.showMessage('Възникна проблем. Моля обновете страницата.');
+                console.error('AdministrationPanelProductsCategories.categoryDetailsNameAllowChange():' +
+                    ' CategoryDetailsParentSelect is missing!');
+                return;
+            }
+
             // TODO: Add the rest of the elements, which are needed for the change process.
 
             if($element.checked){
@@ -345,6 +374,8 @@ const AdministrationPanelProductsCategories = (function(){
 
                 $self._categoryDetailsNameInput.disabled = false;
                 $self._categoryDetailsNameSaveButton.disabled = false;
+                $self._categoryDetailsParentSelect.disabled = false;
+                $self._categoryDetailsParentSaveButton.disabled = false;
                 return;
             }
 
@@ -352,6 +383,8 @@ const AdministrationPanelProductsCategories = (function(){
 
             $self._categoryDetailsNameInput.disabled = true;
             $self._categoryDetailsNameSaveButton.disabled = true;
+            $self._categoryDetailsParentSelect.disabled = true;
+            $self._categoryDetailsParentSaveButton.disabled = true;
         },
 
         /**

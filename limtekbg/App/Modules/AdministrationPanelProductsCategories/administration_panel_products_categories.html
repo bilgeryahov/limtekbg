@@ -15,6 +15,14 @@
         <p><button id="CategoryDetailsNameSaveButton" class="w3-btn w3-teal" disabled
             onclick="AdministrationPanelProductsCategories.saveCategoryDetailsName();">Запиши</button></p>
     </div>
+    <div>
+        <h6>Тази категория е под-категория на:</h6>
+        <select title="CategoryParent" id="CategoryDetailsParentSelect" class="w3-select" name="category"
+                onchange="" disabled>
+        </select>
+        <p><button id="CategoryDetailsParentSaveButton" class="w3-btn w3-teal" disabled
+                   onclick="">Запиши</button></p>
+    </div>
     <!-- Common Notice -->
     <div>
         <input title="ActivateCategoryDetailsChange" class="w3-check" type="checkbox"
