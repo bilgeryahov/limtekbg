@@ -113,7 +113,8 @@ const FirebaseDatabaseAndStorageManager = (function(){
        firebasePUT($path, $data, $callback){
 
             const $putData = JSON.stringify($data);
-            let $token = sessionStorage.getItem('LimtekCurrentUserToken');
+            let $apiKey = EnvironmentHelper.getFirebaseSettings().apiKey;
+            let $token = sessionStorage.getItem('LimtekToken-' + $apiKey);
 
             const $request = new Request({
                 url: EnvironmentHelper.getFirebaseSettings().databaseURL + $path + '.json?auth=' + $token,
@@ -144,7 +145,8 @@ const FirebaseDatabaseAndStorageManager = (function(){
                                 return $callback('Problem while trying to get token.', null);
                             }
 
-                            $token = sessionStorage.getItem('LimtekCurrentUserToken');
+                            let $apiKey = EnvironmentHelper.getFirebaseSettings().apiKey;
+                            let $token = sessionStorage.getItem('LimtekToken-' + $apiKey);
                             $request.options.url = EnvironmentHelper.getFirebaseSettings().databaseURL + $path + '.json?auth=' + $token;
                             $request.send();
                         });
@@ -168,7 +170,8 @@ const FirebaseDatabaseAndStorageManager = (function(){
                         return $callback('Problem while trying to get token.', null);
                     }
 
-                    $token = sessionStorage.getItem('LimtekCurrentUserToken');
+                    let $apiKey = EnvironmentHelper.getFirebaseSettings().apiKey;
+                    let $token = sessionStorage.getItem('LimtekToken-' + $apiKey);
                     $request.options.url = EnvironmentHelper.getFirebaseSettings().databaseURL + $path + '.json?auth=' + $token;
                     $request.send();
                 });

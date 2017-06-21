@@ -32,6 +32,12 @@ const FirebaseAuthenticationManager = (function(){
 
             const $self = this;
 
+            if(!EnvironmentHelper){
+
+                console.error('FirebaseAuthenticationManager.init(): EnvironmentHelper is not present!');
+                return;
+            }
+
             // Try to set a new Auth ObserverManager.
             try{
 
@@ -55,7 +61,8 @@ const FirebaseAuthenticationManager = (function(){
                 else{
 
                     // When the user logs out, make sure to clean his token.
-                    sessionStorage.removeItem('LimtekCurrentUserToken');
+                    let $apiKey = EnvironmentHelper.getFirebaseSettings().apiKey;
+                    sessionStorage.removeItem('LimtekToken-' + $apiKey);
 
                     $self._currentUser = null;
                     $self._authObserverManager.updateObservers('USER 0');
@@ -183,14 +190,15 @@ const FirebaseAuthenticationManager = (function(){
          */
 
         getUserToken($callback){
-            
+
             firebase.auth()
                 .currentUser
                 .getIdToken(true)
                 .then(function ($token) {
 
                     // Save the current user's token.
-                    sessionStorage.setItem('LimtekCurrentUserToken', $token);
+                    let $apiKey = EnvironmentHelper.getFirebaseSettings().apiKey;
+                    sessionStorage.setItem('LimtekToken-' + $apiKey, $token);
 
                     return $callback(null, true);
                 })
