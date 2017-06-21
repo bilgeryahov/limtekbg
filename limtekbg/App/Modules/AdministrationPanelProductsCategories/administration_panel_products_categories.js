@@ -96,6 +96,9 @@ const AdministrationPanelProductsCategories = (function(){
         /**
          * Fetches all the product categories from the Firebase realtime database.
          *
+         * Gets called from the button on the front-end.
+         * Gets called whenever a change is made.
+         *
          * @return void
          */
 
