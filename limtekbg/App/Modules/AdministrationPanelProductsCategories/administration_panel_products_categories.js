@@ -106,6 +106,10 @@ const AdministrationPanelProductsCategories = (function(){
             // Set triggered state for the button.
             DevelopmentHelpers.setButtonTriggeredState('FetchProductCategoriesButton', true);
 
+            // Preparation.
+            $self.categoryDetailsAllowChange( { checked : false } );
+            $self.categoryDetailsClearValues();
+
             let $pathNodes = ['products', 'categories_details'];
             let $path = DevelopmentHelpers.constructPath($pathNodes);
             let $extra = {};
@@ -314,6 +318,18 @@ const AdministrationPanelProductsCategories = (function(){
 
             const $self = this;
 
+            /*
+             * Make sure if the call for this function comes from
+             * another function, but not the checkbox itself,
+             * the checkbox gets also the value of the element passed
+             * as parameter.
+             */
+
+            if($element.id !== 'CategoryDetailsAllowChangeCheckbox'){
+
+                $('CategoryDetailsAllowChangeCheckbox').checked = $element.checked;
+            }
+
             if(!$self._categoryDetailsNameSaveButton){
 
                 $self._categoryDetailsNameSaveButton = $('CategoryDetailsNameSaveButton');
@@ -385,6 +401,52 @@ const AdministrationPanelProductsCategories = (function(){
             $self._categoryDetailsNameSaveButton.disabled = true;
             $self._categoryDetailsParentSelect.disabled = true;
             $self._categoryDetailsParentSaveButton.disabled = true;
+        },
+
+        /**
+         * Clears the values of all the category detail elements.
+         *
+         * @return void
+         *
+         * @stillToImplement
+         */
+
+        categoryDetailsClearValues(){
+
+            const $self = this;
+
+            if(!$self._categoryDetailsNameInput){
+
+                $self._categoryDetailsNameInput = $('CategoryDetailsNameInput');
+            }
+
+            if(!$self._categoryDetailsNameInput){
+
+                CustomMessage.showMessage('Възникна проблем. Моля обновете страницата.');
+                console.error('AdministrationPanelProductsCategories.categoryDetailsClearValues():' +
+                    ' CategoryDetailsNameInput is missing!');
+                return;
+            }
+
+            if(!$self._categoryDetailsParentSelect){
+
+                $self._categoryDetailsParentSelect = $('CategoryDetailsParentSelect');
+            }
+
+            if(!$self._categoryDetailsParentSelect){
+
+                CustomMessage.showMessage('Възникна проблем. Моля обновете страницата.');
+                console.error('AdministrationPanelProductsCategories.categoryDetailsClearValues():' +
+                    ' CategoryDetailsParentSelect is missing!');
+                return;
+            }
+
+            // TODO: Add the rest of the elements.
+
+            $self._categoryDetailsNameInput.value = null;
+            $self._categoryDetailsParentSelect.empty();
+
+            // TODO: Add the rest.
         },
 
         /**
@@ -475,6 +537,10 @@ const AdministrationPanelProductsCategories = (function(){
                     // Clear button triggered state.
                     DevelopmentHelpers.setButtonTriggeredState('CategoryDetailsNameSaveButton', false);
                     CustomMessage.showMessage('Промените Ви са успешно записани');
+
+                    // After a successful save, update the products.
+                    $self.fetchProductCategories();
+
                     console.log($data);
                 }
             );
