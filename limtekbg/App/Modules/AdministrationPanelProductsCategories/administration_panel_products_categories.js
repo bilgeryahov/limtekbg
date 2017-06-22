@@ -106,10 +106,14 @@ const AdministrationPanelProductsCategories = (function(){
 
             const $self = this;
 
-            // Set triggered state for the button.
+            /*
+             * Even though if the trigger is another function, make sure
+             * that the button cannot be pressed.
+             */
+
             DevelopmentHelpers.setButtonTriggeredState('FetchProductCategoriesButton', true);
 
-            // Preparation.
+            // Preparation. Lock the controls and clear all values.
             $self.categoryDetailsAllowChange( { checked : false } );
             $self.categoryDetailsClearValues();
 
@@ -231,7 +235,6 @@ const AdministrationPanelProductsCategories = (function(){
 
                         // Tell the user that something went wrong while fetching category details.
                         CustomMessage.showMessage('Възникна проблем при зареждане на детайлти за категорията');
-
                         console.log($error);
                         return;
                     }
