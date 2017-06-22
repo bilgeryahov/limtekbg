@@ -523,7 +523,7 @@ const AdministrationPanelProductsCategories = (function(){
             }
 
             // Check if there is actually a chosen category.
-            // Very dirty solution 'null'.
+            // TODO: Very dirty solution 'null'.
             if($self._productCategoriesSelectBox.value === 'null' ||
                 !$self._productCategoriesSelectBox.value ||
                  typeof $self._productCategoriesSelectBox.value === 'undefined'){
