@@ -4,7 +4,7 @@
  * AdministrationPanelProductsCategories module controller.
  *
  * @author Bilger Yahov <bayahov1@gmail.com>
- * @version 1.1.0
+ * @version 1.2.0
  * @copyright © 2017 Bilger Yahov, all rights reserved.
  */
 
@@ -157,18 +157,11 @@ const AdministrationPanelProductsCategories = (function(){
 
             const $self = this;
 
-            if(!$self._productCategoriesSelectBox){
-
-                $self._productCategoriesSelectBox = $('ProductCategoriesSelectBox');
-            }
-
-            if(!$self._productCategoriesSelectBox){
+            if(!$self.gatherDOMelements()){
 
                 // Make sure the button triggered state is cleared.
                 DevelopmentHelpers.setButtonTriggeredState('FetchProductCategoriesButton', false);
                 CustomMessage.showMessage('Възникна проблем. Моля обновете страницата.');
-                console.error('AdministrationPanelProductsCategories.fillSelectBoxWithProductCategories():' +
-                    ' ProductCategoriesSelectBox is missing!');
                 return;
             }
 
@@ -218,21 +211,9 @@ const AdministrationPanelProductsCategories = (function(){
 
             const $self = this;
 
-            if(!$self._productCategoriesSelectBox){
-
-                $self._productCategoriesSelectBox = $('ProductCategoriesSelectBox');
-            }
-
-            /*
-             * This check might kick-in only in case that the select box does not carry
-             * the ID.
-             */
-
-            if(!$self._productCategoriesSelectBox){
+            if(!$self.gatherDOMelements()){
 
                 CustomMessage.showMessage('Възникна грешка. Извиняваме се за неудобството.');
-                console.error('AdministrationPanelProductsCategories.loadCategoryDetails():' +
-                    ' ProductCategoriesSelectBox does not carry the needed ID!');
                 return;
             }
 
@@ -263,14 +244,6 @@ const AdministrationPanelProductsCategories = (function(){
         /**
          * Shows category details on the front-end.
          *
-         * This function goes through a set of defensive checks
-         * to make sure that all the populated front-end items
-         * are actually present.
-         *
-         * In case of missing front-end elements, the process
-         * will not continue. The user will be informed and
-         * correct console error will be shown.
-         *
          * @param $details
          *
          * @return void
@@ -282,33 +255,18 @@ const AdministrationPanelProductsCategories = (function(){
 
             const $self = this;
 
-            if(!$self._categoryDetailsNameInput){
-
-                $self._categoryDetailsNameInput = $('CategoryDetailsNameInput');
-            }
-
-            if(!$self._categoryDetailsNameInput){
+            if(!$self.gatherDOMelements()){
 
                 CustomMessage.showMessage('Възникна проблем. Моля обновете страницата.');
-                console.error('AdministrationPanelProductsCategories.fillFrontEndCategoryDetails():' +
-                    ' CategoryDetailsNameInput is missing!');
                 return;
             }
 
-            // TODO: Add the rest of the elements, which are needed for the change process.
-
             $self._categoryDetailsNameInput.value = $details.display_name;
+            // TODO: Add the rest of the elements.
         },
 
         /**
          * Makes sure that the details of a category can be changed and saved.
-         *
-         * This function takes all the elements from the DOM,
-         * which will be needed to successfully perform a change.
-         *
-         * In case of missing front-end elements, the process
-         * will not continue. The user will be informed and
-         * correct console error will be shown.
          *
          * @param $element
          *
@@ -333,77 +291,27 @@ const AdministrationPanelProductsCategories = (function(){
                 $('CategoryDetailsAllowChangeCheckbox').checked = $element.checked;
             }
 
-            if(!$self._categoryDetailsNameSaveButton){
-
-                $self._categoryDetailsNameSaveButton = $('CategoryDetailsNameSaveButton');
-            }
-
-            if(!$self._categoryDetailsNameSaveButton){
+            if(!$self.gatherDOMelements()){
 
                 CustomMessage.showMessage('Възникна проблем. Моля обновете страницата.');
-                console.error('AdministrationPanelProductsCategories.categoryDetailsNameAllowChange():' +
-                    ' CategoryDetailsNameSaveButton is missing!');
                 return;
             }
-
-            if(!$self._categoryDetailsNameInput){
-
-                $self._categoryDetailsNameInput = $('CategoryDetailsNameInput');
-            }
-
-            if(!$self._categoryDetailsNameInput){
-
-                CustomMessage.showMessage('Възникна проблем. Моля обновете страницата.');
-                console.error('AdministrationPanelProductsCategories.categoryDetailsNameAllowChange():' +
-                    ' CategoryDetailsNameInput is missing!');
-                return;
-            }
-
-            if(!$self._categoryDetailsParentSaveButton){
-
-                $self._categoryDetailsParentSaveButton = $('CategoryDetailsParentSaveButton');
-            }
-
-            if(!$self._categoryDetailsParentSaveButton){
-
-                CustomMessage.showMessage('Възникна проблем. Моля обновете страницата.');
-                console.error('AdministrationPanelProductsCategories.categoryDetailsNameAllowChange():' +
-                    ' CategoryDetailsParentSaveButton is missing!');
-                return;
-            }
-
-            if(!$self._categoryDetailsParentSelect){
-
-                $self._categoryDetailsParentSelect = $('CategoryDetailsParentSelect');
-            }
-
-            if(!$self._categoryDetailsParentSelect){
-
-                CustomMessage.showMessage('Възникна проблем. Моля обновете страницата.');
-                console.error('AdministrationPanelProductsCategories.categoryDetailsNameAllowChange():' +
-                    ' CategoryDetailsParentSelect is missing!');
-                return;
-            }
-
-            // TODO: Add the rest of the elements, which are needed for the change process.
 
             if($element.checked){
-
-                // TODO: Add the rest.
 
                 $self._categoryDetailsNameInput.disabled = false;
                 $self._categoryDetailsNameSaveButton.disabled = false;
                 $self._categoryDetailsParentSelect.disabled = false;
                 $self._categoryDetailsParentSaveButton.disabled = false;
+                // TODO: Add the rest.
                 return;
             }
-
-            // TODO: Add the rest.
 
             $self._categoryDetailsNameInput.disabled = true;
             $self._categoryDetailsNameSaveButton.disabled = true;
             $self._categoryDetailsParentSelect.disabled = true;
             $self._categoryDetailsParentSaveButton.disabled = true;
+            // TODO: Add the rest.
         },
 
         /**
@@ -418,37 +326,14 @@ const AdministrationPanelProductsCategories = (function(){
 
             const $self = this;
 
-            if(!$self._categoryDetailsNameInput){
-
-                $self._categoryDetailsNameInput = $('CategoryDetailsNameInput');
-            }
-
-            if(!$self._categoryDetailsNameInput){
+            if(!$self.gatherDOMelements()){
 
                 CustomMessage.showMessage('Възникна проблем. Моля обновете страницата.');
-                console.error('AdministrationPanelProductsCategories.categoryDetailsClearValues():' +
-                    ' CategoryDetailsNameInput is missing!');
                 return;
             }
-
-            if(!$self._categoryDetailsParentSelect){
-
-                $self._categoryDetailsParentSelect = $('CategoryDetailsParentSelect');
-            }
-
-            if(!$self._categoryDetailsParentSelect){
-
-                CustomMessage.showMessage('Възникна проблем. Моля обновете страницата.');
-                console.error('AdministrationPanelProductsCategories.categoryDetailsClearValues():' +
-                    ' CategoryDetailsParentSelect is missing!');
-                return;
-            }
-
-            // TODO: Add the rest of the elements.
 
             $self._categoryDetailsNameInput.value = null;
             $self._categoryDetailsParentSelect.empty();
-
             // TODO: Add the rest.
         },
 
@@ -462,30 +347,9 @@ const AdministrationPanelProductsCategories = (function(){
 
             const $self = this;
 
-            if(!$self._productCategoriesSelectBox){
-
-                $self._productCategoriesSelectBox = $('ProductCategoriesSelectBox');
-            }
-
-            if(!$self._productCategoriesSelectBox){
+            if(!$self.gatherDOMelements()){
 
                 CustomMessage.showMessage('Възникна проблем. Моля обновете страницата.');
-                console.error('AdministrationPanelProductsCategories.saveCategoryDetailsName():' +
-                    ' ProductCategoriesSelectBox is missing!');
-                return;
-            }
-
-            if(!$self._categoryDetailsNameSaveButton || !$self._categoryDetailsNameInput){
-
-                $self._categoryDetailsNameInput = $('CategoryDetailsNameInput');
-                $self._categoryDetailsNameSaveButton = $('CategoryDetailsNameSaveButton');
-            }
-
-            if(!$self._categoryDetailsNameSaveButton || !$self._categoryDetailsNameInput){
-
-                CustomMessage.showMessage('Възникна проблем. Моля обновете страницата.');
-                console.error('AdministrationPanelProductsCategories.saveCategoryDetailsName():' +
-                    ' CategoryDetailsNameInput or CategoryDetailsNameSaveButton is missing!');
                 return;
             }
 
@@ -547,6 +411,83 @@ const AdministrationPanelProductsCategories = (function(){
                     console.log($data);
                 }
             );
+        },
+
+        /**
+         * Gathers all the elements from the DOM. Usually each element should
+         * be cached after the initial fetch, so this function should not
+         * be a time-consuming operation.
+         *
+         * @return {boolean}
+         */
+
+        gatherDOMelements(){
+
+            const $self = this;
+
+            if(!$self._productCategoriesSelectBox){
+
+                $self._productCategoriesSelectBox = $('ProductCategoriesSelectBox');
+            }
+
+            if(!$self._productCategoriesSelectBox){
+
+                console.error('AdministrationPanelProductsCategories.gatherDOMelements(): ' +
+                    'ProductCategoriesSelectBox is missing!');
+                return false;
+            }
+
+            if(!$self._categoryDetailsNameInput){
+
+                $self._categoryDetailsNameInput = $('CategoryDetailsNameInput');
+            }
+
+            if(!$self._categoryDetailsNameInput){
+
+                console.error('AdministrationPanelProductsCategories.gatherDOMelements(): ' +
+                    'CategoryDetailsNameInput is missing!');
+                return false;
+            }
+
+            if(!$self._categoryDetailsNameSaveButton){
+
+                $self._categoryDetailsNameSaveButton = $('CategoryDetailsNameSaveButton');
+            }
+
+            if(!$self._categoryDetailsNameSaveButton){
+
+                console.error('AdministrationPanelProductsCategories.gatherDOMelements(): ' +
+                    'CategoryDetailsNameSaveButton is missing!');
+                return false;
+            }
+
+            if(!$self._categoryDetailsParentSelect){
+
+                $self._categoryDetailsParentSelect = $('CategoryDetailsParentSelect');
+            }
+
+            if(!$self._categoryDetailsParentSelect){
+
+                console.error('AdministrationPanelProductsCategories.gatherDOMelements(): ' +
+                    'CategoryDetailsParentSelect is missing!');
+                return false;
+            }
+
+            if(!$self._categoryDetailsParentSaveButton){
+
+                $self._categoryDetailsParentSaveButton = $('CategoryDetailsParentSaveButton');
+            }
+
+            if(!$self._categoryDetailsParentSaveButton){
+
+                console.error('AdministrationPanelProductsCategories.gatherDOMelements(): ' +
+                    'CategoryDetailsParentSaveButton is missing!');
+                return false;
+            }
+
+            // TODO: Add rest of the elements.
+
+            return true;
         }
     };
 
