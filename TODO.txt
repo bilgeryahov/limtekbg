@@ -1,8 +1,5 @@
 Think about Firebase Cloud Function outbounding network issue.
 
-The product-categories js file fetches dom elements constantly
-almost in every function.
-
 Environment issues:
 From the Development project running 'firebase deploy' would host the development project
 online. This is something preferebly to disallow.
