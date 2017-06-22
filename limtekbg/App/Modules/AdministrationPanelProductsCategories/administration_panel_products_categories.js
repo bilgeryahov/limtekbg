@@ -275,6 +275,7 @@ const AdministrationPanelProductsCategories = (function(){
 
                 console.error('AdministrationPanelProductsCategories.fillParentCategorySelectBox(): ' +
                     ' The product details list has not been saved.');
+                CustomMessage.showMessage('Възникна грешка. Извиняваме се за неудобството.');
                 return;
             }
 
@@ -508,6 +509,19 @@ const AdministrationPanelProductsCategories = (function(){
                 return;
             }
 
+            /*
+             * Since while saving an object we need it as a whole,
+             * we need to take it from the list here.
+             */
+
+            if(!$self._productCategoriesList){
+
+                console.error('AdministrationPanelProductsCategories.saveCategoryDetailsName(): ' +
+                    ' The product details list has not been saved.');
+                CustomMessage.showMessage('Възникна грешка. Извиняваме се за неудобството.');
+                return;
+            }
+
             // Check if there is actually a chosen category.
             // Very dirty solution 'null'.
             if($self._productCategoriesSelectBox.value === 'null' ||
@@ -534,12 +548,32 @@ const AdministrationPanelProductsCategories = (function(){
             //Make sure the button indicates.
             DevelopmentHelpers.setButtonTriggeredState('CategoryDetailsNameSaveButton', true);
 
+            // Find the currently chosen category.
+            let $currentChosenCategoryObj = null;
+
+            for(let $member in $self._productCategoriesList){
+
+                if(!$self._productCategoriesList.hasOwnProperty($member)){
+
+                    continue;
+                }
+
+                // Check if this is the one on the main category select box at the top.
+                if($member === $self._productCategoriesSelectBox.value){
+
+                    // Found.
+                    $currentChosenCategoryObj = $self._productCategoriesList[$member];
+                    break;
+                }
+            }
+
             // Save the name.
             let $pathNodes = ['products', 'categories_details', $self._productCategoriesSelectBox.value];
             let $path = DevelopmentHelpers.constructPath($pathNodes);
-            let $putData = {
-                display_name : $self._categoryDetailsNameInput.value
-            };
+            let $putData = $currentChosenCategoryObj;
+
+            // Change the new value.
+            $putData.display_name = $self._categoryDetailsNameInput.value;
 
             FirebaseDatabaseAndStorageManager.firebasePUT(
                 $path,
@@ -558,6 +592,133 @@ const AdministrationPanelProductsCategories = (function(){
 
                     // Clear button triggered state.
                     DevelopmentHelpers.setButtonTriggeredState('CategoryDetailsNameSaveButton', false);
+                    CustomMessage.showMessage('Промените Ви са успешно записани');
+
+                    // After a successful save, update the products.
+                    $self.fetchProductCategories();
+
+                    console.log($data);
+                }
+            );
+        },
+
+        /**
+         * Saves new parent category for a
+         * selected category.
+         *
+         * @return void
+         */
+
+        saveCategoryDetailsParent(){
+
+            const $self = this;
+
+            if(!$self.gatherDOMelements()){
+
+                CustomMessage.showMessage('Възникна грешка. Извиняваме се за неудобството.');
+                return;
+            }
+
+            /*
+             * Since while saving an object we need it as a whole,
+             * we need to take it from the list here.
+             */
+
+            if(!$self._productCategoriesList){
+
+                console.error('AdministrationPanelProductsCategories.saveCategoryDetailsParent(): ' +
+                    ' The product details list has not been saved.');
+                CustomMessage.showMessage('Възникна грешка. Извиняваме се за неудобството.');
+                return;
+            }
+
+            // Check if there is actually a chosen category.
+            // TODO: Very dirty solution 'null'.
+            if($self._productCategoriesSelectBox.value === 'null' ||
+                !$self._productCategoriesSelectBox.value ||
+                typeof $self._productCategoriesSelectBox.value === 'undefined'){
+
+                CustomMessage.showMessage('Изберете категория!');
+                console.log('AdministrationPanelProductsCategories.saveCategoryDetailsParent(): '
+                    + ' No category chosen to have parent category saved!');
+                return;
+            }
+
+            /*
+             * Check if there is parent category selected.
+             * This check is more specific, since 'null' as value
+             * will be accepted.
+             * This means to delete the parent category.
+             */
+
+            if($self._categoryDetailsParentSelect.innerHTML === '' ||
+                typeof $self._categoryDetailsParentSelect.value === 'undefined'){
+
+                CustomMessage.showMessage('Изберете категория родител!');
+                console.log('AdministrationPanelProductsCategories.saveCategoryDetailsParent(): '
+                    + ' No new parent category chosen to be saved!');
+                return;
+            }
+
+            //Make sure the button indicates.
+            DevelopmentHelpers.setButtonTriggeredState('CategoryDetailsParentSaveButton', true);
+
+            // Find the currently chosen category.
+            let $currentChosenCategoryObj = null;
+
+            for(let $member in $self._productCategoriesList){
+
+                if(!$self._productCategoriesList.hasOwnProperty($member)){
+
+                    continue;
+                }
+
+                // Check if this is the one on the main category select box at the top.
+                if($member === $self._productCategoriesSelectBox.value){
+
+                    // Found.
+                    $currentChosenCategoryObj = $self._productCategoriesList[$member];
+                    break;
+                }
+            }
+
+            // Save the parent id.
+            let $pathNodes = ['products', 'categories_details', $self._productCategoriesSelectBox.value];
+            let $path = DevelopmentHelpers.constructPath($pathNodes);
+            let $putData = $currentChosenCategoryObj;
+
+            /*
+             * TODO: Following:
+             * null value in a select box gets converted to a string...
+             */
+
+            if($self._categoryDetailsParentSelect.value === 'null' ||
+                $self._categoryDetailsParentSelect.value === null){
+
+                $putData.parent_id = null;
+            }
+            else{
+
+                $putData.parent_id = $self._categoryDetailsParentSelect.value;
+            }
+
+            FirebaseDatabaseAndStorageManager.firebasePUT(
+                $path,
+                $putData,
+                function ($error, $data) {
+
+                    if($error){
+
+                        // Clear button triggered state.
+                        DevelopmentHelpers.setButtonTriggeredState('CategoryDetailsParentSaveButton', false);
+
+                        console.log($error);
+                        CustomMessage.showMessage('Проблем при записване на новата категория родител.');
+                        return;
+                    }
+
+                    // Clear button triggered state.
+                    DevelopmentHelpers.setButtonTriggeredState('CategoryDetailsParentSaveButton', false);
                     CustomMessage.showMessage('Промените Ви са успешно записани');
 
                     // After a successful save, update the products.
@@ -681,6 +842,11 @@ const AdministrationPanelProductsCategories = (function(){
         saveCategoryDetailsName(){
 
             Logic.saveCategoryDetailsName();
+        },
+
+        saveCategoryDetailsParent(){
+
+            Logic.saveCategoryDetailsParent();
         }
     }
 })();
