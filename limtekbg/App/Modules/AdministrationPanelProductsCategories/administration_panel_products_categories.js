@@ -16,6 +16,8 @@ const AdministrationPanelProductsCategories = (function(){
         _placeholderName: 'AdministrationPanelProductsCategoriesPlaceholder',
         _template: null,
 
+        _productCategoriesList: null,
+
         // Below the attributes are grouped.
         _productCategoriesSelectBox : null,
 
@@ -139,6 +141,14 @@ const AdministrationPanelProductsCategories = (function(){
                     }
 
                     /*
+                     * The product categories are being cached after each
+                     * fetch process. So they can be used from other functions
+                     * as well.
+                     */
+
+                    $self._productCategoriesList = $data;
+
+                    /*
                      * Send the data to the select box.
                      * The triggered state of the button will be cleared there.
                      */
@@ -165,7 +175,7 @@ const AdministrationPanelProductsCategories = (function(){
 
                 // Make sure the button triggered state is cleared.
                 DevelopmentHelpers.setButtonTriggeredState('FetchProductCategoriesButton', false);
-                CustomMessage.showMessage('Възникна проблем. Моля обновете страницата.');
+                CustomMessage.showMessage('Възникна грешка. Извиняваме се за неудобството.');
                 return;
             }
 
@@ -245,6 +255,147 @@ const AdministrationPanelProductsCategories = (function(){
         },
 
         /**
+         * Fills in the parent category select box.
+         *
+         * @return void
+         */
+
+        fillParentCategorySelectBox(){
+
+            const $self = this;
+
+            if(!$self.gatherDOMelements()){
+
+                CustomMessage.showMessage('Възникна грешка. Извиняваме се за неудобството.');
+                return;
+            }
+
+            // Check if there is product categories data.
+            if(!$self._productCategoriesList){
+
+                console.error('AdministrationPanelProductsCategories.fillParentCategorySelectBox(): ' +
+                    ' The product details list has not been saved.');
+                return;
+            }
+
+            // Find the currently chosen category.
+            let $currentChosenCategoryObj = null;
+
+            for(let $member in $self._productCategoriesList){
+
+                if(!$self._productCategoriesList.hasOwnProperty($member)){
+
+                    continue;
+                }
+
+                // Check if this is the one on the main category select box at the top.
+                if($member === $self._productCategoriesSelectBox.value){
+
+                    // Found.
+                    $currentChosenCategoryObj = $self._productCategoriesList[$member];
+                    break;
+                }
+            }
+
+            // Empty the old values.
+            $self._categoryDetailsParentSelect.empty();
+
+            // Create the default (chosen, parent).
+            let $defaultOption = document.createElement('option');
+            $defaultOption.selected = true;
+
+            /*
+             * We do not make this disabled, since
+             * we want to make sure that if the user
+             * clicks on the select box by mistake, they
+             * can still choose the selected item itself.
+             */
+
+            // Find its parent.
+            let $parentCategory = null;
+
+            if(!$currentChosenCategoryObj.parent_id){
+
+                // No parent.
+                $defaultOption.innerHTML = 'Няма категория родител';
+                $defaultOption.value = null;
+            }
+            else{
+
+                // There is a parent.
+                for(let $member in $self._productCategoriesList){
+
+                    if(!$self._productCategoriesList.hasOwnProperty($member)){
+
+                        continue;
+                    }
+
+                    // Is this my parent?
+                    if($member === $currentChosenCategoryObj.parent_id){
+
+                        // Cache the parent category.
+                        $parentCategory = $self._productCategoriesList[$member];
+
+                        // Set the values.
+                        $defaultOption.innerHTML = $self._productCategoriesList[$member].display_name;
+                        $defaultOption.value = $member;
+                        break;
+                    }
+                }
+            }
+
+            // Append the parent.
+            $self._categoryDetailsParentSelect.appendChild($defaultOption);
+
+            // Add rest of the values (options).
+            let $fragment = document.createDocumentFragment();
+
+            for(let $member in $self._productCategoriesList){
+
+                let $option = null;
+
+                if(!$self._productCategoriesList.hasOwnProperty($member)){
+
+                    continue;
+                }
+
+                // We do not want to see the current chosen one itself.
+                if($self._productCategoriesList[$member] === $currentChosenCategoryObj){
+
+                    continue;
+                }
+
+                // Make sure you do not take the parent.
+                if($parentCategory && $self._productCategoriesList[$member] === $parentCategory){
+
+                    /*
+                     * There is a parent category.
+                     * We want to make sure that the user has the
+                     * option to remove it.
+                     */
+
+                    $option = document.createElement('option');
+                    $option.innerHTML = 'Няма категория родител';
+                    $option.value = null;
+                    $fragment.appendChild($option);
+                    continue;
+                }
+
+                $option = document.createElement('option');
+
+                // The text of the option itself is the name of the category.
+                $option.innerHTML = $self._productCategoriesList[$member].display_name;
+
+                // This is the ID of the category.
+                $option.value = $member;
+                $fragment.appendChild($option);
+            }
+
+            // Append the rest.
+            $self._categoryDetailsParentSelect.appendChild($fragment);
+        },
+
+        /**
          * Shows category details on the front-end.
          *
          * @param $details
@@ -260,11 +411,12 @@ const AdministrationPanelProductsCategories = (function(){
 
             if(!$self.gatherDOMelements()){
 
-                CustomMessage.showMessage('Възникна проблем. Моля обновете страницата.');
+                CustomMessage.showMessage('Възникна грешка. Извиняваме се за неудобството.');
                 return;
             }
 
             $self._categoryDetailsNameInput.value = $details.display_name;
+            $self.fillParentCategorySelectBox();
             // TODO: Add the rest of the elements.
         },
 
@@ -296,7 +448,7 @@ const AdministrationPanelProductsCategories = (function(){
 
             if(!$self.gatherDOMelements()){
 
-                CustomMessage.showMessage('Възникна проблем. Моля обновете страницата.');
+                CustomMessage.showMessage('Възникна грешка. Извиняваме се за неудобството.');
                 return;
             }
 
@@ -331,7 +483,7 @@ const AdministrationPanelProductsCategories = (function(){
 
             if(!$self.gatherDOMelements()){
 
-                CustomMessage.showMessage('Възникна проблем. Моля обновете страницата.');
+                CustomMessage.showMessage('Възникна грешка. Извиняваме се за неудобството.');
                 return;
             }
 
@@ -352,7 +504,7 @@ const AdministrationPanelProductsCategories = (function(){
 
             if(!$self.gatherDOMelements()){
 
-                CustomMessage.showMessage('Възникна проблем. Моля обновете страницата.');
+                CustomMessage.showMessage('Възникна грешка. Извиняваме се за неудобството.');
                 return;
             }
 
