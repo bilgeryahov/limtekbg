@@ -268,9 +268,6 @@ const AdministrationPanelProductsCategories = (function(){
         /**
          * Fills in the parent category select box.
          *
-         * TODO: Continue checking from that one.
-         *
-         *
          * @return void
          */
 
@@ -421,6 +418,7 @@ const AdministrationPanelProductsCategories = (function(){
 
             const $self = this;
 
+            // If you use DOM elements, make sure they are OKAY!
             if(!$self.gatherDOMelements()){
 
                 CustomMessage.showMessage('Възникна грешка. Извиняваме се за неудобството.');
@@ -455,6 +453,7 @@ const AdministrationPanelProductsCategories = (function(){
                 }
             }
 
+            // If there are no categories, with parent the current chosen category.
             if($subcategories.length === 0){
 
                 $subcategories.push('Тази категория няма под-категории');
@@ -525,6 +524,7 @@ const AdministrationPanelProductsCategories = (function(){
                 $('CategoryDetailsAllowChangeCheckbox').checked = $element.checked;
             }
 
+            // If you use DOM elements, make sure they are OKAY!
             if(!$self.gatherDOMelements()){
 
                 CustomMessage.showMessage('Възникна грешка. Извиняваме се за неудобството.');
@@ -564,6 +564,7 @@ const AdministrationPanelProductsCategories = (function(){
 
             const $self = this;
 
+            // If you use DOM elements, make sure they are OKAY!
             if(!$self.gatherDOMelements()){
 
                 CustomMessage.showMessage('Възникна грешка. Извиняваме се за неудобството.');
@@ -587,6 +588,7 @@ const AdministrationPanelProductsCategories = (function(){
 
             const $self = this;
 
+            // If you use DOM elements, make sure they are OKAY!
             if(!$self.gatherDOMelements()){
 
                 CustomMessage.showMessage('Възникна грешка. Извиняваме се за неудобството.');
@@ -702,6 +704,7 @@ const AdministrationPanelProductsCategories = (function(){
 
             const $self = this;
 
+            // If you use DOM elements, make sure they are OKAY!
             if(!$self.gatherDOMelements()){
 
                 CustomMessage.showMessage('Възникна грешка. Извиняваме се за неудобството.');
@@ -832,6 +835,7 @@ const AdministrationPanelProductsCategories = (function(){
 
             const $self = this;
 
+            // If you use DOM elements, make sure they are OKAY!
             if(!$self.gatherDOMelements()){
 
                 CustomMessage.showMessage('Възникна грешка. Извиняваме се за неудобството.');
