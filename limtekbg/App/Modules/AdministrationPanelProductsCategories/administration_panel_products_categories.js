@@ -141,7 +141,7 @@ const AdministrationPanelProductsCategories = (function(){
                         // Tell the user that something went wrong while fetching product categories.
                         CustomMessage.showMessage('Възникна проблем при зареждане на категориите');
 
-                        console.log($error);
+                        console.error($error);
                         return;
                     }
 
@@ -252,7 +252,7 @@ const AdministrationPanelProductsCategories = (function(){
 
                         // Tell the user that something went wrong while fetching category details.
                         CustomMessage.showMessage('Възникна проблем при зареждане на детайлти за категорията');
-                        console.log($error);
+                        console.error($error);
                         return;
                     }
 
@@ -665,7 +665,7 @@ const AdministrationPanelProductsCategories = (function(){
                         // Clear button triggered state.
                         DevelopmentHelpers.setButtonTriggeredState('CategoryDetailsNameSaveButton', false);
 
-                        console.log($error);
+                        console.error($error);
                         CustomMessage.showMessage('Проблем при записване на новото име');
                         return;
                     }
@@ -796,7 +796,7 @@ const AdministrationPanelProductsCategories = (function(){
                         // Clear button triggered state.
                         DevelopmentHelpers.setButtonTriggeredState('CategoryDetailsParentSaveButton', false);
 
-                        console.log($error);
+                        console.error($error);
                         CustomMessage.showMessage('Проблем при записване на новата категория родител.');
                         return;
                     }
@@ -936,7 +936,7 @@ const AdministrationPanelProductsCategories = (function(){
                         // Clear button triggered state.
                         DevelopmentHelpers.setButtonTriggeredState('CategoryDeleteButton', false);
 
-                        console.log($error);
+                        console.error($error);
                         CustomMessage.showMessage('Проблем при изтриването на категорията');
                         return;
                     }

@@ -173,7 +173,7 @@ const FirebaseAuthenticationManager = (function(){
                         if($error && $error.code){
 
                             console.error('FirebaseAuthenticationManager.logout(): ');
-                            console.log($error);
+                            console.error($error);
                         }
 
                         $self._authObserverManager.updateObservers('ERROR 1');
