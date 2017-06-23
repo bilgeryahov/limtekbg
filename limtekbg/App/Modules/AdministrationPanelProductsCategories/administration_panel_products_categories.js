@@ -4,7 +4,7 @@
  * AdministrationPanelProductsCategories module controller.
  *
  * @author Bilger Yahov <bayahov1@gmail.com>
- * @version 1.2.0
+ * @version 1.3.0
  * @copyright © 2017 Bilger Yahov, all rights reserved.
  */
 
@@ -15,6 +15,8 @@ const AdministrationPanelProductsCategories = (function(){
         _templatePath: './Modules/AdministrationPanelProductsCategories/administration_panel_products_categories.html',
         _placeholderName: 'AdministrationPanelProductsCategoriesPlaceholder',
         _template: null,
+
+        _allDOMelementsPresent: false,
 
         _productCategoriesList: null,
 
@@ -176,6 +178,7 @@ const AdministrationPanelProductsCategories = (function(){
 
             const $self = this;
 
+            // If you use DOM elements, make sure they are OKAY!
             if(!$self.gatherDOMelements()){
 
                 // Make sure the button triggered state is cleared.
@@ -232,6 +235,7 @@ const AdministrationPanelProductsCategories = (function(){
 
             const $self = this;
 
+            // If you use DOM elements, make sure they are OKAY!
             if(!$self.gatherDOMelements()){
 
                 CustomMessage.showMessage('Възникна грешка. Извиняваме се за неудобството.');
@@ -264,6 +268,9 @@ const AdministrationPanelProductsCategories = (function(){
         /**
          * Fills in the parent category select box.
          *
+         * TODO: Continue checking from that one.
+         *
+         *
          * @return void
          */
 
@@ -271,6 +278,7 @@ const AdministrationPanelProductsCategories = (function(){
 
             const $self = this;
 
+            // If you use DOM elements, make sure they are OKAY!
             if(!$self.gatherDOMelements()){
 
                 CustomMessage.showMessage('Възникна грешка. Извиняваме се за неудобството.');
@@ -478,6 +486,7 @@ const AdministrationPanelProductsCategories = (function(){
 
             const $self = this;
 
+            // If you use DOM elements, make sure they are OKAY!
             if(!$self.gatherDOMelements()){
 
                 CustomMessage.showMessage('Възникна грешка. Извиняваме се за неудобството.');
@@ -954,9 +963,11 @@ const AdministrationPanelProductsCategories = (function(){
         },
 
         /**
-         * Gathers all the elements from the DOM. Usually each element should
-         * be cached after the initial fetch, so this function should not
-         * be a time-consuming operation.
+         * Fetches all the DOM elements.
+         *
+         * If the function executes properly and fetches all DOM elements,
+         * the _allDOMelementsPresent flag is set to true, so this function
+         * does not take execution time anymore.
          *
          * @return {boolean}
          */
@@ -964,6 +975,11 @@ const AdministrationPanelProductsCategories = (function(){
         gatherDOMelements(){
 
             const $self = this;
+
+            if($self._allDOMelementsPresent){
+
+                return true;
+            }
 
             if(!$self._productCategoriesSelectBox){
 
@@ -1063,6 +1079,14 @@ const AdministrationPanelProductsCategories = (function(){
 
             // TODO: Add rest of the elements.
 
+            /*
+             * Once all DOM elements are cached, make sure
+             * that this operation stops.
+             */
+
+            $self._allDOMelementsPresent = true;
+
+            // Finish
             return true;
         }
     };
