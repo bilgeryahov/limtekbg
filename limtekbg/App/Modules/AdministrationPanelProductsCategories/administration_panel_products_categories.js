@@ -29,6 +29,9 @@ const AdministrationPanelProductsCategories = (function(){
 
         _categoryDetailsSubcategories: null,
 
+        _categoryForDelete: null,
+        _categoryDeleteButton: null,
+
         /**
          * Initializes the main functionality.
          *
@@ -525,6 +528,8 @@ const AdministrationPanelProductsCategories = (function(){
                 $self._categoryDetailsNameSaveButton.disabled = false;
                 $self._categoryDetailsParentSelect.disabled = false;
                 $self._categoryDetailsParentSaveButton.disabled = false;
+                $self._categoryForDelete.disabled = false;
+                $self._categoryDeleteButton.disabled = false;
                 // TODO: Add the rest.
                 return;
             }
@@ -533,6 +538,8 @@ const AdministrationPanelProductsCategories = (function(){
             $self._categoryDetailsNameSaveButton.disabled = true;
             $self._categoryDetailsParentSelect.disabled = true;
             $self._categoryDetailsParentSaveButton.disabled = true;
+            $self._categoryForDelete.disabled = true;
+            $self._categoryDeleteButton.disabled = true;
             // TODO: Add the rest.
         },
 
@@ -557,6 +564,7 @@ const AdministrationPanelProductsCategories = (function(){
             $self._categoryDetailsNameInput.value = null;
             $self._categoryDetailsParentSelect.empty();
             $self._categoryDetailsSubcategories.empty();
+            $self._categoryForDelete.value = null;
             // TODO: Add the rest.
         },
 
@@ -806,6 +814,146 @@ const AdministrationPanelProductsCategories = (function(){
         },
 
         /**
+         * Deletes a particular category.
+         *
+         * @return void
+         */
+
+        deleteCategory(){
+
+            const $self = this;
+
+            if(!$self.gatherDOMelements()){
+
+                CustomMessage.showMessage('Възникна грешка. Извиняваме се за неудобството.');
+                return;
+            }
+
+            /*
+             * Since while modifying an object we need it as a whole,
+             * we need to take it from the list here.
+             */
+
+            if(!$self._productCategoriesList){
+
+                console.error('AdministrationPanelProductsCategories.deleteCategory(): ' +
+                    ' The product details list has not been saved.');
+                CustomMessage.showMessage('Възникна грешка. Извиняваме се за неудобството.');
+                return;
+            }
+
+            /*
+             * Check if there is a selected category.
+             * Not very comfortable to work with, but if the
+             * value of the 'option' element is null, then the value
+             * of the 'select' element gets 'null' as string.
+             */
+
+            if($self._productCategoriesSelectBox.value === 'null' ||
+                !$self._productCategoriesSelectBox.value ||
+                typeof $self._productCategoriesSelectBox.value === 'undefined'){
+
+                CustomMessage.showMessage('Изберете категория!');
+                console.log('AdministrationPanelProductsCategories.deleteCategory(): '
+                    + ' No category chosen to be deleted!');
+                return;
+            }
+
+            // Check if there is a name confirmed.
+            if($self._categoryForDelete.value === '' ||
+                $self._categoryForDelete.value === null ||
+                typeof $self._categoryForDelete.value === 'undefined' ||
+                $self._categoryForDelete.value !==
+                $self._productCategoriesSelectBox.options[$self._productCategoriesSelectBox.selectedIndex].innerHTML){
+
+                CustomMessage.showMessage('Потвърдете името на категорията за изтриване!');
+                console.log('AdministrationPanelProductsCategories.deleteCategory(): '
+                    + ' No name confirmed to be deleted!');
+                return;
+            }
+
+            //Make sure the button indicates.
+            DevelopmentHelpers.setButtonTriggeredState('CategoryDeleteButton', true);
+
+            // Since we will be performing multi-location update, we need to combine them together.
+            let $locationUpdatePairs = {};
+
+            // Delete the category (Main update).
+            let $pathNodes = ['products', 'categories_details', $self._productCategoriesSelectBox.value];
+            let $path = DevelopmentHelpers.constructPath($pathNodes);
+            let $putData = null;
+
+            // Add the main update.
+            $locationUpdatePairs[$path] = $putData;
+
+            // Now all the dependent sub-categories (cascade updates).
+            let $currentChosenCategoryID = $self._productCategoriesSelectBox.value;
+
+            // Find all the categories, which have this category as a parent.
+            let $subcategories = {};
+
+            for(let $member in $self._productCategoriesList){
+
+                if(!$self._productCategoriesList.hasOwnProperty($member)){
+
+                    continue;
+                }
+
+                if($self._productCategoriesList[$member].parent_id === $currentChosenCategoryID){
+
+                    $subcategories[$member] = ($self._productCategoriesList[$member]);
+                }
+            }
+
+            // Prepare all the sub-category updates.
+            for(let $member in $subcategories){
+
+                if(!$subcategories.hasOwnProperty($member)){
+
+                    continue;
+                }
+
+                $pathNodes = ['products', 'categories_details', $member];
+                $path = DevelopmentHelpers.constructPath($pathNodes);
+
+                // Always use the whole object.
+                $putData = $subcategories[$member];
+
+                // Delete the parent.
+                $putData.parent_id = null;
+
+                // Add to the combination.
+                $locationUpdatePairs[$path] = $putData;
+            }
+
+            // Fire the update.
+            FirebaseDatabaseAndStorageManager.firebasePerformMultiLocationUpdate(
+                $locationUpdatePairs,
+                function ($error, $data) {
+
+                    if($error){
+
+                        // Clear button triggered state.
+                        DevelopmentHelpers.setButtonTriggeredState('CategoryDeleteButton', false);
+
+                        console.log($error);
+                        CustomMessage.showMessage('Проблем при изтриването на категорията');
+                        return;
+                    }
+
+                    // Clear button triggered state.
+                    DevelopmentHelpers.setButtonTriggeredState('CategoryDeleteButton', false);
+                    CustomMessage.showMessage('Категорията е успешно изтрита');
+
+                    // After a successful save, update the products.
+                    $self.fetchProductCategories();
+
+                    console.log($data);
+                }
+            );
+        },
+
+        /**
          * Gathers all the elements from the DOM. Usually each element should
          * be cached after the initial fetch, so this function should not
          * be a time-consuming operation.
@@ -889,6 +1037,30 @@ const AdministrationPanelProductsCategories = (function(){
                 return false;
             }
 
+            if(!$self._categoryForDelete){
+
+                $self._categoryForDelete = $('CategoryForDelete');
+            }
+
+            if(!$self._categoryForDelete){
+
+                console.error('AdministrationPanelProductsCategories.gatherDOMelements(): ' +
+                    'CategoryForDelete is missing!');
+                return false;
+            }
+
+            if(!$self._categoryDeleteButton){
+
+                $self._categoryDeleteButton = $('CategoryDeleteButton');
+            }
+
+            if(!$self._categoryDeleteButton){
+
+                console.error('AdministrationPanelProductsCategories.gatherDOMelements(): ' +
+                    'CategoryDeleteButton is missing!');
+                return false;
+            }
+
             // TODO: Add rest of the elements.
 
             return true;
@@ -935,6 +1107,11 @@ const AdministrationPanelProductsCategories = (function(){
         saveCategoryDetailsParent(){
 
             Logic.saveCategoryDetailsParent();
+        },
+
+        deleteCategory(){
+
+            Logic.deleteCategory();
         }
     }
 })();
