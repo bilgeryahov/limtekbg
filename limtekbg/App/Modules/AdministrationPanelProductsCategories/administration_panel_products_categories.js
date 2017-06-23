@@ -187,6 +187,8 @@ const AdministrationPanelProductsCategories = (function(){
             $defaultOption.innerHTML = 'Избери твоята опция';
             $defaultOption.value = null;
             $defaultOption.selected = true;
+
+            // Make sure that this option cannot be checked again.
             $defaultOption.disabled = true;
             $self._productCategoriesSelectBox.appendChild($defaultOption);
 
@@ -345,7 +347,7 @@ const AdministrationPanelProductsCategories = (function(){
                 }
             }
 
-            // Append the parent.
+            // Append the parent (or the no-parent option).
             $self._categoryDetailsParentSelect.appendChild($defaultOption);
 
             // Add rest of the values (options).
