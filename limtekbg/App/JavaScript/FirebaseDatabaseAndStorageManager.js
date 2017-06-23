@@ -186,6 +186,16 @@ const FirebaseDatabaseAndStorageManager = (function(){
         /**
          * Using the Firebase API, performs a multi-location (bulk) update.
          *
+         * The $locationUpdatePairs parameter should be an object with the following structure:
+         *
+         * {
+         *      "/products/categories_details/abv123" : "null",
+         *      "/products/categories_details/rty456" : { "display_name" : "Tractors", "parent_id" : null }
+         * }
+         *
+         * So, simply the object should contain all the paths of the objects to be modified - as keys
+         * and the data that we want to modify - as values.
+         *
          * @param $locationUpdatePairs
          * @param $callback
          *
