@@ -181,7 +181,32 @@ const FirebaseDatabaseAndStorageManager = (function(){
 
             // There is a token.
             $request.send();
-       }
+       },
+
+        /**
+         * Using the Firebase API, performs a multi-location (bulk) update.
+         *
+         * @param $locationUpdatePairs
+         * @param $callback
+         *
+         * @return void
+         */
+
+        firebasePerformMultiLocationUpdate($locationUpdatePairs, $callback){
+
+           firebase
+               .database()
+               .ref()
+               .update($locationUpdatePairs)
+               .then(function ($data) {
+
+                   return $callback($data);
+               })
+               .catch(function ($error) {
+
+                   return $callback($error);
+               });
+        }
     };
 
     return{
@@ -199,6 +224,11 @@ const FirebaseDatabaseAndStorageManager = (function(){
         firebasePUT($path, $data, $callback){
 
             Logic.firebasePUT($path, $data, $callback);
+        },
+
+        firebasePerformMultiLocationUpdate($locationUpdatePairs, $callback){
+
+            Logic.firebasePerformMultiLocationUpdate($locationUpdatePairs, $callback);
         }
     }
 })();
