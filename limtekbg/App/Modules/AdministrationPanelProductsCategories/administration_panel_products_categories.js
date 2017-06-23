@@ -27,6 +27,8 @@ const AdministrationPanelProductsCategories = (function(){
         _categoryDetailsParentSelect: null,
         _categoryDetailsParentSaveButton: null,
 
+        _categoryDetailsSubcategories: null,
+
         /**
          * Initializes the main functionality.
          *
@@ -399,6 +401,67 @@ const AdministrationPanelProductsCategories = (function(){
         },
 
         /**
+         * Fills in the list with sub-categories of a category.
+         *
+         * @return void
+         */
+
+        fillSubcategoriesList(){
+
+            const $self = this;
+
+            if(!$self.gatherDOMelements()){
+
+                CustomMessage.showMessage('Възникна грешка. Извиняваме се за неудобството.');
+                return;
+            }
+
+            // Check if there is product categories data.
+            if(!$self._productCategoriesList){
+
+                console.error('AdministrationPanelProductsCategories.fillSubcategoriesList(): ' +
+                    ' The product details list has not been saved.');
+                CustomMessage.showMessage('Възникна грешка. Извиняваме се за неудобството.');
+                return;
+            }
+
+            // Get the current chosen category's ID.
+            let $currentChosenCategoryID = $self._productCategoriesSelectBox.value;
+
+            // Find all the categories, which have this category as a parent.
+            let $subcategories = [];
+
+            for(let $member in $self._productCategoriesList){
+
+                if(!$self._productCategoriesList.hasOwnProperty($member)){
+
+                    continue;
+                }
+
+                if($self._productCategoriesList[$member].parent_id === $currentChosenCategoryID){
+
+                    $subcategories.push($self._productCategoriesList[$member].display_name);
+                }
+            }
+
+            if($subcategories.length === 0){
+
+                $subcategories.push('Тази категория няма под-категории');
+            }
+
+            // Empty the UL first.
+            $self._categoryDetailsSubcategories.empty();
+
+            // For each subcategory, create a LI element.
+            $subcategories.forEach(function ($element) {
+
+                let $li = document.createElement('li');
+                $li.innerHTML = $element;
+                $self._categoryDetailsSubcategories.appendChild($li);
+            });
+        },
+
+        /**
          * Shows category details on the front-end.
          *
          * @param $details
@@ -420,6 +483,7 @@ const AdministrationPanelProductsCategories = (function(){
 
             $self._categoryDetailsNameInput.value = $details.display_name;
             $self.fillParentCategorySelectBox();
+            $self.fillSubcategoriesList();
             // TODO: Add the rest of the elements.
         },
 
@@ -492,6 +556,7 @@ const AdministrationPanelProductsCategories = (function(){
 
             $self._categoryDetailsNameInput.value = null;
             $self._categoryDetailsParentSelect.empty();
+            $self._categoryDetailsSubcategories.empty();
             // TODO: Add the rest.
         },
 
@@ -809,6 +874,18 @@ const AdministrationPanelProductsCategories = (function(){
 
                 console.error('AdministrationPanelProductsCategories.gatherDOMelements(): ' +
                     'CategoryDetailsParentSaveButton is missing!');
+                return false;
+            }
+
+            if(!$self._categoryDetailsSubcategories){
+
+                $self._categoryDetailsSubcategories = $('CategoryDetailsSubcategories');
+            }
+
+            if(!$self._categoryDetailsSubcategories){
+
+                console.error('AdministrationPanelProductsCategories.gatherDOMelements(): ' +
+                    'CategoryDetailsSubcategories is missing!');
                 return false;
             }
 
