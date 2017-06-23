@@ -524,8 +524,13 @@ const AdministrationPanelProductsCategories = (function(){
                 return;
             }
 
-            // Check if there is actually a chosen category.
-            // TODO: Very dirty solution 'null'.
+            /*
+             * Check if there is a selected category.
+             * Not very comfortable to work with, but if the
+             * value of the 'option' element is null, then the value
+             * of the 'select' element gets 'null' as string.
+             */
+
             if($self._productCategoriesSelectBox.value === 'null' ||
                 !$self._productCategoriesSelectBox.value ||
                  typeof $self._productCategoriesSelectBox.value === 'undefined'){
@@ -574,7 +579,7 @@ const AdministrationPanelProductsCategories = (function(){
             let $path = DevelopmentHelpers.constructPath($pathNodes);
             let $putData = $currentChosenCategoryObj;
 
-            // Change the new value.
+            // Change the name to the new value.
             $putData.display_name = $self._categoryDetailsNameInput.value;
 
             FirebaseDatabaseAndStorageManager.firebasePUT(
@@ -634,8 +639,13 @@ const AdministrationPanelProductsCategories = (function(){
                 return;
             }
 
-            // Check if there is actually a chosen category.
-            // TODO: Very dirty solution 'null'.
+            /*
+             * Check if there is a selected category.
+             * Not very comfortable to work with, but if the
+             * value of the 'option' element is null, then the value
+             * of the 'select' element gets 'null' as string.
+             */
+
             if($self._productCategoriesSelectBox.value === 'null' ||
                 !$self._productCategoriesSelectBox.value ||
                 typeof $self._productCategoriesSelectBox.value === 'undefined'){
@@ -690,7 +700,6 @@ const AdministrationPanelProductsCategories = (function(){
             let $putData = $currentChosenCategoryObj;
 
             /*
-             * TODO: Following:
              * null value in a select box gets converted to a string...
              */
 
