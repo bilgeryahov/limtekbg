@@ -663,7 +663,7 @@ const AdministrationPanelProductsCategories = (function(){
              * This means to delete the parent category.
              */
 
-            if($self._categoryDetailsParentSelect.innerHTML === '' ||
+            if($self._categoryDetailsParentSelect.value === '' ||
                 typeof $self._categoryDetailsParentSelect.value === 'undefined'){
 
                 CustomMessage.showMessage('Изберете категория родител!');
