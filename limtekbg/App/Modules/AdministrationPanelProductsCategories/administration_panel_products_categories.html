@@ -2,7 +2,15 @@
     <ul class="w3-ul">
         <li class="w3-padding-16">
             <div class="DetailsBoxContent">
-                <h4>Избери категория (под-категория):</h4>
+                <h4>Създай нова категория:</h4>
+                <input title="CategoryNewName" id="CategoryNewNameInput" class="w3-input w3-border" type="text">
+                <p><button id="CategorNewCreateButton" class="w3-btn w3-blue"
+                           onclick="AdministrationPanelProductsCategories.createNewCategory();">Създай</button></p>
+            </div>
+        </li>
+        <li class="w3-padding-16">
+            <div class="DetailsBoxContent">
+                <h4>Избери категория:</h4>
                 <select title="SelectCategories" id="ProductCategoriesSelectBox" class="w3-select" name="category"
                     onchange="AdministrationPanelProductsCategories.loadCategoryDetails();">
                     <option value=null disabled selected>Избери твоята опция</option>
