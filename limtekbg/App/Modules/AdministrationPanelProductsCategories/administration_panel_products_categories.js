@@ -16,6 +16,9 @@ const AdministrationPanelProductsCategories = (function(){
         _placeholderName: 'AdministrationPanelProductsCategoriesPlaceholder',
         _template: null,
 
+        // Indicates whether or not an update after a change has failed.
+        _updateCategoriesFailed: false,
+
         _allDOMelementsPresent: false,
 
         _productCategoriesList: null,
@@ -109,10 +112,12 @@ const AdministrationPanelProductsCategories = (function(){
          * Gets called from the button on the front-end.
          * Gets called whenever a change is made.
          *
+         * @param $isUpdate
+         *
          * @return void
          */
 
-        fetchProductCategories(){
+        fetchProductCategories($isUpdate){
 
             const $self = this;
 
@@ -139,11 +144,20 @@ const AdministrationPanelProductsCategories = (function(){
 
                         // Clear triggered state button.
                         DevelopmentHelpers.setButtonTriggeredState('FetchProductCategoriesButton', false);
+                        console.error($error);
+
+                        if($isUpdate){
+
+                            // Tell the user that something went wrong while updating after the last change.
+                            CustomMessage.showMessage('Възникна проблем при ' +
+                                ' обновяване на категориите след последната Ви промяна. Презаредете страницата' +
+                                ' и продължете с работата си.');
+                            $self._updateCategoriesFailed = true;
+                            return;
+                        }
 
                         // Tell the user that something went wrong while fetching product categories.
                         CustomMessage.showMessage('Възникна проблем при зареждане на категориите');
-
-                        console.error($error);
                         return;
                     }
 
@@ -154,6 +168,9 @@ const AdministrationPanelProductsCategories = (function(){
                      */
 
                     $self._productCategoriesList = $data;
+
+                    // Make sure to clear the update failed flag.
+                    $self._updateCategoriesFailed = false;
 
                     /*
                      * Send the data to the select box.
@@ -531,6 +548,16 @@ const AdministrationPanelProductsCategories = (function(){
 
             const $self = this;
 
+            // Is everything up-to-date?
+            if($self._updateCategoriesFailed){
+
+                // Tell the user that something went wrong while updating after the last change.
+                CustomMessage.showMessage('Възникна проблем при ' +
+                    ' обновяване на категориите след последната Ви промяна. Презаредете страницата' +
+                    ' и продължете с работата си.');
+                return;
+            }
+
             // If you use DOM elements, make sure they are OKAY!
             if(!$self.gatherDOMelements()){
 
@@ -628,7 +655,7 @@ const AdministrationPanelProductsCategories = (function(){
                     CustomMessage.showMessage('Промените Ви са успешно записани');
 
                     // After a successful save, update the products.
-                    $self.fetchProductCategories();
+                    $self.fetchProductCategories(true);
 
                     console.log($data);
                 }
@@ -648,6 +675,16 @@ const AdministrationPanelProductsCategories = (function(){
         deleteCategory(){
 
             const $self = this;
+
+            // Is everything up-to-date?
+            if($self._updateCategoriesFailed){
+
+                // Tell the user that something went wrong while updating after the last change.
+                CustomMessage.showMessage('Възникна проблем при ' +
+                    ' обновяване на категориите след последната Ви промяна. Презаредете страницата' +
+                    ' и продължете с работата си.');
+                return;
+            }
 
             // If you use DOM elements, make sure they are OKAY!
             if(!$self.gatherDOMelements()){
@@ -773,7 +810,7 @@ const AdministrationPanelProductsCategories = (function(){
                     CustomMessage.showMessage('Категорията е успешно изтрита');
 
                     // After a successful save, update the products.
-                    $self.fetchProductCategories();
+                    $self.fetchProductCategories(true);
 
                     console.log($data);
                 }
@@ -789,6 +826,16 @@ const AdministrationPanelProductsCategories = (function(){
         createNewCategory(){
 
             const $self = this;
+
+            // Is everything up-to-date?
+            if($self._updateCategoriesFailed){
+
+                // Tell the user that something went wrong while updating after the last change.
+                CustomMessage.showMessage('Възникна проблем при ' +
+                    ' обновяване на категориите след последната Ви промяна. Презаредете страницата' +
+                    ' и продължете с работата си.');
+                return;
+            }
 
             // If you use DOM elements, make sure they are OKAY!
             if(!$self.gatherDOMelements()){
@@ -844,7 +891,7 @@ const AdministrationPanelProductsCategories = (function(){
                     CustomMessage.showMessage('Категорията е успешно създадена.');
 
                     // After a successful save, update the products.
-                    $self.fetchProductCategories();
+                    $self.fetchProductCategories(true);
 
                     console.log($data);
                 }
@@ -1007,9 +1054,9 @@ const AdministrationPanelProductsCategories = (function(){
             Logic.hideMe();
         },
 
-        fetchProductCategories(){
+        fetchProductCategories($isUpdate){
 
-            Logic.fetchProductCategories();
+            Logic.fetchProductCategories($isUpdate);
         },
 
         loadCategoryDetails(){
