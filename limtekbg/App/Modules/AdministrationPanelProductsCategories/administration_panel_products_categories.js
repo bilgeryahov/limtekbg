@@ -21,6 +21,10 @@ const AdministrationPanelProductsCategories = (function(){
         _productCategoriesList: null,
 
         // Below the attributes are grouped.
+
+        _categoryNewNameInput: null,
+        _categorNewCreateButton: null,
+
         _productCategoriesSelectBox : null,
 
         _categoryDetailsNameInput: null,
@@ -971,6 +975,77 @@ const AdministrationPanelProductsCategories = (function(){
         },
 
         /**
+         * Creates a new category entry in the Databse.
+         *
+         * @return void
+         */
+
+        createNewCategory(){
+
+            const $self = this;
+
+            // If you use DOM elements, make sure they are OKAY!
+            if(!$self.gatherDOMelements()){
+
+                CustomMessage.showMessage('Възникна грешка. Извиняваме се за неудобството.');
+                return;
+            }
+
+            // Check if there is value inside the textbox.
+            if($self._categoryNewNameInput.value === '' ||
+                typeof $self._categoryNewNameInput.value === 'undefined' ||
+                $self._categoryNewNameInput.value === null){
+
+                CustomMessage.showMessage('Въведете име за новата категория!');
+                console.log('AdministrationPanelProductsCategories.createNewCategory(): '
+                    + ' No category name chosen for creation!');
+                return;
+            }
+
+            DevelopmentHelpers.setButtonTriggeredState('CategorNewCreateButton', true);
+
+            // Create the DB entry.
+            let $pathNodes = ['products', 'categories_details'];
+            let $path = DevelopmentHelpers.constructPath($pathNodes);
+            let $postData = {
+              display_name : $self._categoryNewNameInput.value
+            };
+
+            FirebaseDatabaseAndStorageManager.firebasePOST(
+                $path,
+                $postData,
+                function ($error, $data) {
+
+                    if($error){
+
+                        // Clear button triggered state.
+                        DevelopmentHelpers.setButtonTriggeredState('CategorNewCreateButton', false);
+
+                        // Now clear the input value.
+                        $self._categoryNewNameInput.value = '';
+
+                        console.error($error);
+                        CustomMessage.showMessage('Проблем при създаването на новата категория.');
+                        return;
+                    }
+
+                    // Clear button triggered state.
+                    DevelopmentHelpers.setButtonTriggeredState('CategorNewCreateButton', false);
+
+                    // Now clear the input value.
+                    $self._categoryNewNameInput.value = '';
+
+                    CustomMessage.showMessage('Категорията е успешно създадена.');
+
+                    // After a successful save, update the products.
+                    $self.fetchProductCategories();
+
+                    console.log($data);
+                }
+            );
+        },
+
+        /**
          * Fetches all the DOM elements.
          *
          * If the function executes properly and fetches all DOM elements,
@@ -1085,7 +1160,29 @@ const AdministrationPanelProductsCategories = (function(){
                 return false;
             }
 
-            // TODO: Add rest of the elements.
+            if(!$self._categorNewCreateButton){
+
+                $self._categorNewCreateButton = $('CategorNewCreateButton');
+            }
+
+            if(!$self._categorNewCreateButton){
+
+                console.error('AdministrationPanelProductsCategories.gatherDOMelements(): ' +
+                    'CategorNewCreateButton is missing!');
+                return false;
+            }
+
+            if(!$self._categoryNewNameInput){
+
+                $self._categoryNewNameInput = $('CategoryNewNameInput');
+            }
+
+            if(!$self._categoryNewNameInput){
+
+                console.error('AdministrationPanelProductsCategories.gatherDOMelements(): ' +
+                    'CategoryNewNameInput is missing!');
+                return false;
+            }
 
             /*
              * Once all DOM elements are cached, make sure
@@ -1144,6 +1241,11 @@ const AdministrationPanelProductsCategories = (function(){
         deleteCategory(){
 
             Logic.deleteCategory();
+        },
+
+        createNewCategory(){
+
+            Logic.createNewCategory();
         }
     }
 })();
