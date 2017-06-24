@@ -184,6 +184,89 @@ const FirebaseDatabaseAndStorageManager = (function(){
        },
 
         /**
+         * Makes a POST request to the Firebase Real Time database.
+         *
+         * @param $path
+         * @param $data
+         * @param $callback
+         *
+         * @return void
+         */
+
+        firebasePOST($path, $data, $callback){
+
+            const $postData = JSON.stringify($data);
+            let $apiKey = EnvironmentHelper.getFirebaseSettings().apiKey;
+            let $token = sessionStorage.getItem('LimtekToken-' + $apiKey);
+
+            const $request = new Request({
+                url: EnvironmentHelper.getFirebaseSettings().databaseURL + $path + '.json?auth=' + $token,
+                method: 'POST',
+                data: $postData,
+                headers:{
+                    'Content-Type':'application/json; charset=UTF-8'
+                },
+                emulation: false,
+                urlEncoded: false,
+                onSuccess: function($data){
+
+                    return $callback(null, $data);
+                },
+                onFailure: function($xhr){
+
+                    let $response = JSON.decode($xhr.response);
+
+                    // Check if it says that the token has expired.
+                    if($response.hasOwnProperty('error') && $response.error === 'Auth token is expired'){
+
+                        // Get token.
+                        FirebaseAuthenticationManager.getUserToken(function ($error, $tokenPresent) {
+
+                            if($error){
+
+                                console.error('FirebaseDatabaseAndStorageManager.firebasePOST(): ' + $error);
+                                return $callback('Problem while trying to get token.', null);
+                            }
+
+                            $apiKey = EnvironmentHelper.getFirebaseSettings().apiKey;
+                            $token = sessionStorage.getItem('LimtekToken-' + $apiKey);
+                            $request.options.url = EnvironmentHelper.getFirebaseSettings().databaseURL + $path + '.json?auth=' + $token;
+                            $request.send();
+                        });
+
+                        return;
+                    }
+
+                    console.error('FirebaseDatabaseAndStorageManager.firebasePOST(): ' + $xhr.response);
+                    return $callback('POST request for ' + $path + ' had an error!', null);
+                }
+            });
+
+            if(!$token || $token === '' || typeof $token === 'undefined'){
+
+                // Get token.
+                FirebaseAuthenticationManager.getUserToken(function ($error, $tokenPresent) {
+
+                    if($error){
+
+                        console.error('FirebaseDatabaseAndStorageManager.firebasePOST(): ' + $error);
+                        return $callback('Problem while trying to get token.', null);
+                    }
+
+                    $apiKey = EnvironmentHelper.getFirebaseSettings().apiKey;
+                    $token = sessionStorage.getItem('LimtekToken-' + $apiKey);
+                    $request.options.url = EnvironmentHelper.getFirebaseSettings().databaseURL + $path + '.json?auth=' + $token;
+                    $request.send();
+                });
+
+                return;
+            }
+
+            // There is a token.
+            $request.send();
+        },
+
+        /**
          * Using the Firebase API, performs a multi-location (bulk) update.
          *
          * The $locationUpdatePairs parameter should be an object with the following structure:
@@ -234,6 +317,11 @@ const FirebaseDatabaseAndStorageManager = (function(){
         firebasePUT($path, $data, $callback){
 
             Logic.firebasePUT($path, $data, $callback);
+        },
+
+        firebasePOST($path, $data, $callback){
+
+            Logic.firebasePOST($path, $data, $callback);
         },
 
         firebasePerformMultiLocationUpdate($locationUpdatePairs, $callback){
