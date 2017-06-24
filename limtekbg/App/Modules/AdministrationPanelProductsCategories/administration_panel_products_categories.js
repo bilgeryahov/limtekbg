@@ -260,6 +260,10 @@ const AdministrationPanelProductsCategories = (function(){
                         return;
                     }
 
+                    // First clear whatever is there.
+                    $self.categoryDetailsClearValues();
+
+                    // Then fill.
                     $self.fillFrontEndCategoryDetails($data);
                 }
             );
