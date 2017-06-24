@@ -1,7 +1,7 @@
 <div class="UndersectionContent">
-    <ul class="w3-ul">
+    <ul class="w3-ul w3-hoverable">
         <li class="w3-padding-16">
-            <div class="DetailsBoxContent">
+            <div>
                 <h4>Създай нова категория:</h4>
                 <input title="CategoryNewName" id="CategoryNewNameInput" class="w3-input w3-border" type="text">
                 <p><button id="CategorNewCreateButton" class="w3-btn w3-blue"
@@ -9,7 +9,7 @@
             </div>
         </li>
         <li class="w3-padding-16">
-            <div class="DetailsBoxContent">
+            <div>
                 <h4>Избери категория:</h4>
                 <select title="SelectCategories" id="ProductCategoriesSelectBox" class="w3-select" name="category"
                     onchange="AdministrationPanelProductsCategories.loadCategoryDetails();">
@@ -20,43 +20,24 @@
             </div>
         </li>
         <li class="w3-padding-16">
-            <!-- Common Notice -->
-            <div class="DetailsBoxContent">
-                <input title="ActivateCategoryDetailsChange" id="CategoryDetailsAllowChangeCheckbox" class="w3-check" type="checkbox"
-                       onchange="AdministrationPanelProductsCategories.categoryDetailsAllowChange(this);">
-                <label>Активирай режим промяна (След всяка промяна, която извършите, листата се обновява автоматично).</label>
-            </div>
-        </li>
-        <li class="w3-padding-16">
-            <div class="DetailsBoxContent">
+            <div>
                 <h6>Име на категория:</h6>
-                <input title="CategoryName" id="CategoryDetailsNameInput" class="w3-input w3-border" type="text" disabled>
-                <p><button id="CategoryDetailsNameSaveButton" class="w3-btn w3-teal" disabled
-                           onclick="AdministrationPanelProductsCategories.saveCategoryDetailsName();">Запиши</button></p>
-            </div>
-        </li>
-        <li class="w3-padding-16">
-            <div class="DetailsBoxContent">
+                <input title="CategoryName" id="CategoryDetailsNameInput" class="w3-input w3-border" type="text"/>
                 <h6>Тази категория е под-категория на:</h6>
-                <select title="CategoryParent" id="CategoryDetailsParentSelect" class="w3-select" name="category"
-                        disabled>
+                <select title="CategoryParent" id="CategoryDetailsParentSelect" class="w3-select" name="category">
                 </select>
-                <p><button id="CategoryDetailsParentSaveButton" class="w3-btn w3-teal" disabled
-                           onclick="AdministrationPanelProductsCategories.saveCategoryDetailsParent();">Запиши</button></p>
-            </div>
-        </li>
-        <li class="w3-padding-16">
-            <div class="DetailsBoxContent">
-                <h6>Тази категория съдържа следните под-категории:</h6>
+                <h6>Тази категория съдържа следните под-категории (зареди категория, за да се покаже лист):</h6>
                 <ul id="CategoryDetailsSubcategories">
                 </ul>
+                <p><button id="CategoryDetailsSaveButton" class="w3-btn w3-teal"
+                           onclick="AdministrationPanelProductsCategories.saveCategoryDetails();">Запиши</button></p>
             </div>
         </li>
         <li class="w3-padding-16">
-            <div class="DetailsBoxContent">
+            <div>
                 <h6>За да изтриете избраната категория, моля напишете нейното име в това поле: </h6>
-                <input title="CategoryNameForDelete" id="CategoryForDelete" class="w3-input w3-border" type="text" disabled>
-                <p><button id="CategoryDeleteButton" class="w3-btn w3-red" disabled
+                <input title="CategoryNameForDelete" id="CategoryForDelete" class="w3-input w3-border" type="text">
+                <p><button id="CategoryDeleteButton" class="w3-btn w3-red"
                            onclick="AdministrationPanelProductsCategories.deleteCategory();">Изтрий</button></p>
             </div>
         </li>
