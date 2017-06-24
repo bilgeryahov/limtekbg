@@ -21,6 +21,7 @@
         </li>
         <li class="w3-padding-16">
             <div>
+                <h4>Информация за категория</h4>
                 <h6>Име на категория:</h6>
                 <input title="CategoryName" id="CategoryDetailsNameInput" class="w3-input w3-border" type="text"/>
                 <h6>Тази категория е под-категория на:</h6>
@@ -35,7 +36,9 @@
         </li>
         <li class="w3-padding-16">
             <div>
-                <h6>За да изтриете избраната категория, моля напишете нейното име в това поле: </h6>
+                <h4>Изтрий категория:</h4>
+                <span>Изтриването на категория става след като изберете такава по горе. За да
+                потвърдите Вашето решение, трябва да напишете нейното име тук:</span>
                 <input title="CategoryNameForDelete" id="CategoryForDelete" class="w3-input w3-border" type="text">
                 <p><button id="CategoryDeleteButton" class="w3-btn w3-red"
                            onclick="AdministrationPanelProductsCategories.deleteCategory();">Изтрий</button></p>
