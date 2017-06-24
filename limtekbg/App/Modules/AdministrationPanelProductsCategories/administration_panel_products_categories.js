@@ -272,12 +272,10 @@ const AdministrationPanelProductsCategories = (function(){
         /**
          * Fills in the parent category select box.
          *
-         * @param $details
-         *
          * @return void
          */
 
-        fillParentCategorySelectBox($details){
+        fillParentCategorySelectBox(){
 
             const $self = this;
 
@@ -297,6 +295,25 @@ const AdministrationPanelProductsCategories = (function(){
                 return;
             }
 
+            // Find the currently chosen category.
+            let $currentChosenCategoryObj = null;
+
+            for(let $member in $self._productCategoriesList){
+
+                if(!$self._productCategoriesList.hasOwnProperty($member)){
+
+                    continue;
+                }
+
+                // Check if this is the one on the main category select box at the top.
+                if($member === $self._productCategoriesSelectBox.value){
+
+                    // Found.
+                    $currentChosenCategoryObj = $self._productCategoriesList[$member];
+                    break;
+                }
+            }
+
             // Empty the old values.
             $self._categoryDetailsParentSelect.empty();
 
@@ -313,7 +330,7 @@ const AdministrationPanelProductsCategories = (function(){
              * can still choose the selected item itself.
              */
 
-            if(!$details.parent_id){
+            if(!$currentChosenCategoryObj.parent_id){
 
                 // No parent.
                 $defaultOption.innerHTML = 'Няма категория родител';
@@ -330,7 +347,7 @@ const AdministrationPanelProductsCategories = (function(){
                     }
 
                     // Is this my parent?
-                    if($member === $details.parent_id){
+                    if($member === $currentChosenCategoryObj.parent_id){
 
                         // Cache the parent category.
                         $parentCategory = $self._productCategoriesList[$member];
@@ -359,7 +376,7 @@ const AdministrationPanelProductsCategories = (function(){
                 }
 
                 // We do not want to see the current chosen one itself.
-                if($self._productCategoriesList[$member] === $details){
+                if($self._productCategoriesList[$member] === $currentChosenCategoryObj){
 
                     continue;
                 }
@@ -477,7 +494,7 @@ const AdministrationPanelProductsCategories = (function(){
             }
 
             $self._categoryDetailsNameInput.value = $details.display_name;
-            $self.fillParentCategorySelectBox($details);
+            $self.fillParentCategorySelectBox();
             $self.fillSubcategoriesList();
         },
 
