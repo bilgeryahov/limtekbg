@@ -8,13 +8,14 @@ body > header{
 #MainWrapper{
   /*
      * To make sure that the content of an undersection
-     * has a bit of space on the right, in order to accomplish
-     * the same effect as w3-panel does for the products side bar
-     * buttons.
+     * has a bit of space on the right and on the top,
+     * in order to accomplish the same effect as w3-panel
+     * does for the products side bar buttons.
      */
 
   .UndersectionContent{
     margin-right: 16px;
+    margin-top: 16px;
   }
 
   .DetailsBoxContent{
@@ -26,11 +27,12 @@ body > header{
   #MainWrapper{
 
     /*
-     * On mobile, make sure to clean the margin from the right.
+     * On mobile, make sure to clean the margin from the right and top.
      */
 
     .UndersectionContent{
       margin-right: 0;
+      margin-top: 0;
     }
   }
 }

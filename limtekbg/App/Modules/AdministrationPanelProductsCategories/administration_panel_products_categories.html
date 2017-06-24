@@ -1,43 +1,56 @@
-<div class="w3-panel w3-light-grey UndersectionContent">
-    <div class="DetailsBoxContent">
-        <h4>Избери категория (под-категория):</h4>
-        <select title="SelectCategories" id="ProductCategoriesSelectBox" class="w3-select" name="category"
-            onchange="AdministrationPanelProductsCategories.loadCategoryDetails();">
-            <option value=null disabled selected>Избери твоята опция</option>
-        </select>
-        <p><button id="FetchProductCategoriesButton" class="w3-btn w3-teal"
-            onclick="AdministrationPanelProductsCategories.fetchProductCategories();">Обнови листата</button></p>
-    </div>
-    <!-- Common Notice -->
-    <div class="DetailsBoxContent">
-        <input title="ActivateCategoryDetailsChange" id="CategoryDetailsAllowChangeCheckbox" class="w3-check" type="checkbox"
-               onchange="AdministrationPanelProductsCategories.categoryDetailsAllowChange(this);">
-        <label>Активирай режим промяна (След всяка промяна, която извършите, листата се обновява автоматично).</label>
-    </div>
-    <br/>
-    <div class="DetailsBoxContent">
-        <h6>Име на категория:</h6>
-        <input title="CategoryName" id="CategoryDetailsNameInput" class="w3-input w3-border" type="text" disabled>
-        <p><button id="CategoryDetailsNameSaveButton" class="w3-btn w3-teal" disabled
-            onclick="AdministrationPanelProductsCategories.saveCategoryDetailsName();">Запиши</button></p>
-    </div>
-    <div class="DetailsBoxContent">
-        <h6>Тази категория е под-категория на:</h6>
-        <select title="CategoryParent" id="CategoryDetailsParentSelect" class="w3-select" name="category"
-                 disabled>
-        </select>
-        <p><button id="CategoryDetailsParentSaveButton" class="w3-btn w3-teal" disabled
-                   onclick="AdministrationPanelProductsCategories.saveCategoryDetailsParent();">Запиши</button></p>
-    </div>
-    <div class="DetailsBoxContent">
-        <h6>Тази категория съдържа следните под-категории:</h6>
-        <ul id="CategoryDetailsSubcategories">
-        </ul>
-    </div>
-    <div class="DetailsBoxContent">
-        <h6>За да изтриете избраната категория, моля напишете нейното име в това поле: </h6>
-        <input title="CategoryNameForDelete" id="CategoryForDelete" class="w3-input w3-border" type="text" disabled>
-        <p><button id="CategoryDeleteButton" class="w3-btn w3-red" disabled
-                   onclick="AdministrationPanelProductsCategories.deleteCategory();">Изтрий</button></p>
-    </div>
+<div class="UndersectionContent">
+    <ul class="w3-ul">
+        <li class="w3-padding-16">
+            <div class="DetailsBoxContent">
+                <h4>Избери категория (под-категория):</h4>
+                <select title="SelectCategories" id="ProductCategoriesSelectBox" class="w3-select" name="category"
+                    onchange="AdministrationPanelProductsCategories.loadCategoryDetails();">
+                    <option value=null disabled selected>Избери твоята опция</option>
+                </select>
+                <p><button id="FetchProductCategoriesButton" class="w3-btn w3-teal"
+                    onclick="AdministrationPanelProductsCategories.fetchProductCategories();">Обнови листата</button></p>
+            </div>
+        </li>
+        <li class="w3-padding-16">
+            <!-- Common Notice -->
+            <div class="DetailsBoxContent">
+                <input title="ActivateCategoryDetailsChange" id="CategoryDetailsAllowChangeCheckbox" class="w3-check" type="checkbox"
+                       onchange="AdministrationPanelProductsCategories.categoryDetailsAllowChange(this);">
+                <label>Активирай режим промяна (След всяка промяна, която извършите, листата се обновява автоматично).</label>
+            </div>
+        </li>
+        <li class="w3-padding-16">
+            <div class="DetailsBoxContent">
+                <h6>Име на категория:</h6>
+                <input title="CategoryName" id="CategoryDetailsNameInput" class="w3-input w3-border" type="text" disabled>
+                <p><button id="CategoryDetailsNameSaveButton" class="w3-btn w3-teal" disabled
+                           onclick="AdministrationPanelProductsCategories.saveCategoryDetailsName();">Запиши</button></p>
+            </div>
+        </li>
+        <li class="w3-padding-16">
+            <div class="DetailsBoxContent">
+                <h6>Тази категория е под-категория на:</h6>
+                <select title="CategoryParent" id="CategoryDetailsParentSelect" class="w3-select" name="category"
+                        disabled>
+                </select>
+                <p><button id="CategoryDetailsParentSaveButton" class="w3-btn w3-teal" disabled
+                           onclick="AdministrationPanelProductsCategories.saveCategoryDetailsParent();">Запиши</button></p>
+            </div>
+        </li>
+        <li class="w3-padding-16">
+            <div class="DetailsBoxContent">
+                <h6>Тази категория съдържа следните под-категории:</h6>
+                <ul id="CategoryDetailsSubcategories">
+                </ul>
+            </div>
+        </li>
+        <li class="w3-padding-16">
+            <div class="DetailsBoxContent">
+                <h6>За да изтриете избраната категория, моля напишете нейното име в това поле: </h6>
+                <input title="CategoryNameForDelete" id="CategoryForDelete" class="w3-input w3-border" type="text" disabled>
+                <p><button id="CategoryDeleteButton" class="w3-btn w3-red" disabled
+                           onclick="AdministrationPanelProductsCategories.deleteCategory();">Изтрий</button></p>
+            </div>
+        </li>
+    </ul>
 </div>
