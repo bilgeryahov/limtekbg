@@ -640,19 +640,6 @@ const AdministrationPanelProductsCategories = (function(){
             }
 
             /*
-             * Since while modifying an object we need it as a whole,
-             * we need to take it from the list here.
-             */
-
-            if(!$self._productCategoriesList){
-
-                console.error('AdministrationPanelProductsCategories.deleteCategory(): ' +
-                    ' The product details list has not been saved.');
-                CustomMessage.showMessage('Възникна грешка. Извиняваме се за неудобството.');
-                return;
-            }
-
-            /*
              * Check if there is a selected category.
              * Not very comfortable to work with, but if the
              * value of the 'option' element is null, then the value
@@ -679,6 +666,19 @@ const AdministrationPanelProductsCategories = (function(){
                 CustomMessage.showMessage('Потвърдете името на категорията за изтриване!');
                 console.log('AdministrationPanelProductsCategories.deleteCategory(): '
                     + ' No name confirmed to be deleted!');
+                return;
+            }
+
+            /*
+             * Since while modifying an object we need it as a whole,
+             * we need to take it from the list here.
+             */
+
+            if(!$self._productCategoriesList){
+
+                console.error('AdministrationPanelProductsCategories.deleteCategory(): ' +
+                    ' The product details list has not been saved.');
+                CustomMessage.showMessage('Възникна грешка. Извиняваме се за неудобството.');
                 return;
             }
 
