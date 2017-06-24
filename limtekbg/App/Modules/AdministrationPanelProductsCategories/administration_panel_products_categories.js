@@ -28,12 +28,9 @@ const AdministrationPanelProductsCategories = (function(){
         _productCategoriesSelectBox : null,
 
         _categoryDetailsNameInput: null,
-        _categoryDetailsNameSaveButton: null,
-
         _categoryDetailsParentSelect: null,
-        _categoryDetailsParentSaveButton: null,
-
         _categoryDetailsSubcategories: null,
+        _categoryDetailsSaveButton: null,
 
         _categoryForDelete: null,
         _categoryDeleteButton: null,
@@ -1064,6 +1061,30 @@ const AdministrationPanelProductsCategories = (function(){
                 return true;
             }
 
+            if(!$self._categorNewCreateButton){
+
+                $self._categorNewCreateButton = $('CategorNewCreateButton');
+            }
+
+            if(!$self._categorNewCreateButton){
+
+                console.error('AdministrationPanelProductsCategories.gatherDOMelements(): ' +
+                    'CategorNewCreateButton is missing!');
+                return false;
+            }
+
+            if(!$self._categoryNewNameInput){
+
+                $self._categoryNewNameInput = $('CategoryNewNameInput');
+            }
+
+            if(!$self._categoryNewNameInput){
+
+                console.error('AdministrationPanelProductsCategories.gatherDOMelements(): ' +
+                    'CategoryNewNameInput is missing!');
+                return false;
+            }
+
             if(!$self._productCategoriesSelectBox){
 
                 $self._productCategoriesSelectBox = $('ProductCategoriesSelectBox');
@@ -1088,18 +1109,6 @@ const AdministrationPanelProductsCategories = (function(){
                 return false;
             }
 
-            if(!$self._categoryDetailsNameSaveButton){
-
-                $self._categoryDetailsNameSaveButton = $('CategoryDetailsNameSaveButton');
-            }
-
-            if(!$self._categoryDetailsNameSaveButton){
-
-                console.error('AdministrationPanelProductsCategories.gatherDOMelements(): ' +
-                    'CategoryDetailsNameSaveButton is missing!');
-                return false;
-            }
-
             if(!$self._categoryDetailsParentSelect){
 
                 $self._categoryDetailsParentSelect = $('CategoryDetailsParentSelect');
@@ -1112,18 +1121,6 @@ const AdministrationPanelProductsCategories = (function(){
                 return false;
             }
 
-            if(!$self._categoryDetailsParentSaveButton){
-
-                $self._categoryDetailsParentSaveButton = $('CategoryDetailsParentSaveButton');
-            }
-
-            if(!$self._categoryDetailsParentSaveButton){
-
-                console.error('AdministrationPanelProductsCategories.gatherDOMelements(): ' +
-                    'CategoryDetailsParentSaveButton is missing!');
-                return false;
-            }
-
             if(!$self._categoryDetailsSubcategories){
 
                 $self._categoryDetailsSubcategories = $('CategoryDetailsSubcategories');
@@ -1133,6 +1130,18 @@ const AdministrationPanelProductsCategories = (function(){
 
                 console.error('AdministrationPanelProductsCategories.gatherDOMelements(): ' +
                     'CategoryDetailsSubcategories is missing!');
+                return false;
+            }
+
+            if(!$self._categoryDetailsSaveButton){
+
+                $self._categoryDetailsSaveButton = $('CategoryDetailsSaveButton');
+            }
+
+            if(!$self._categoryDetailsSaveButton){
+
+                console.error('AdministrationPanelProductsCategories.gatherDOMelements(): ' +
+                    'CategoryDetailsSaveButton is missing!');
                 return false;
             }
 
@@ -1157,30 +1166,6 @@ const AdministrationPanelProductsCategories = (function(){
 
                 console.error('AdministrationPanelProductsCategories.gatherDOMelements(): ' +
                     'CategoryDeleteButton is missing!');
-                return false;
-            }
-
-            if(!$self._categorNewCreateButton){
-
-                $self._categorNewCreateButton = $('CategorNewCreateButton');
-            }
-
-            if(!$self._categorNewCreateButton){
-
-                console.error('AdministrationPanelProductsCategories.gatherDOMelements(): ' +
-                    'CategorNewCreateButton is missing!');
-                return false;
-            }
-
-            if(!$self._categoryNewNameInput){
-
-                $self._categoryNewNameInput = $('CategoryNewNameInput');
-            }
-
-            if(!$self._categoryNewNameInput){
-
-                console.error('AdministrationPanelProductsCategories.gatherDOMelements(): ' +
-                    'CategoryNewNameInput is missing!');
                 return false;
             }
 
@@ -1223,19 +1208,9 @@ const AdministrationPanelProductsCategories = (function(){
             Logic.loadCategoryDetails();
         },
 
-        categoryDetailsAllowChange($element){
+        saveCategoryDetails(){
 
-            Logic.categoryDetailsAllowChange($element);
-        },
-
-        saveCategoryDetailsName(){
-
-            Logic.saveCategoryDetailsName();
-        },
-
-        saveCategoryDetailsParent(){
-
-            Logic.saveCategoryDetailsParent();
+            Logic.saveCategoryDetails();
         },
 
         deleteCategory(){
