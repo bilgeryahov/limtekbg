@@ -48,10 +48,10 @@ const AdministrationPanelProductsCategories = (function(){
 
             const $self = this;
 
-            if(!FirebaseDatabaseAndStorageManager){
+            if(!FirebaseDatabaseClient){
 
                 console.error('AdministrationPanelProductsCategories.init(): ' +
-                    'FirebaseDatabaseAndStorageManager is not present!');
+                    'FirebaseDatabaseClient is not present!');
                 return;
             }
 
@@ -135,7 +135,7 @@ const AdministrationPanelProductsCategories = (function(){
             let $path = DevelopmentHelpers.constructPath($pathNodes);
             let $extra = {};
 
-            FirebaseDatabaseAndStorageManager.firebaseGET(
+            FirebaseDatabaseClient.firebaseGET(
                 $path,
                 $extra,
                 function ($error, $data) {
@@ -264,7 +264,7 @@ const AdministrationPanelProductsCategories = (function(){
             let $path = DevelopmentHelpers.constructPath($pathNodes);
             let $extra = {};
 
-            FirebaseDatabaseAndStorageManager.firebaseGET(
+            FirebaseDatabaseClient.firebaseGET(
                 $path,
                 $extra,
                 function ($error, $data) {
@@ -635,7 +635,7 @@ const AdministrationPanelProductsCategories = (function(){
                 $putData.parent_id = $self._categoryDetailsParentSelect.value;
             }
 
-            FirebaseDatabaseAndStorageManager.firebasePUT(
+            FirebaseDatabaseClient.firebasePUT(
                 $path,
                 $putData,
                 function ($error, $data) {
@@ -791,7 +791,7 @@ const AdministrationPanelProductsCategories = (function(){
             }
 
             // Fire the update.
-            FirebaseDatabaseAndStorageManager.firebasePerformMultiLocationUpdate(
+            FirebaseDatabaseClient.firebasePerformMultiLocationUpdate(
                 $locationUpdatePairs,
                 function ($error, $data) {
 
@@ -864,7 +864,7 @@ const AdministrationPanelProductsCategories = (function(){
               display_name : $self._categoryNewNameInput.value
             };
 
-            FirebaseDatabaseAndStorageManager.firebasePOST(
+            FirebaseDatabaseClient.firebasePOST(
                 $path,
                 $postData,
                 function ($error, $data) {
