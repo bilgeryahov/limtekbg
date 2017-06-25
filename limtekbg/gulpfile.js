@@ -2,7 +2,7 @@
  * @file gulpfile.js
  *
  * @author Bilger Yahov <bayahov1@gmail.com>
- * @version 1.0.0
+ * @version 1.1.0
  * @copyright © 2017 Bilger Yahov, all rights reserved.
  */
 
@@ -38,7 +38,8 @@ gulp.task('clean_scss', function(){
 // Copy static files to the folder which will be publicly available.
 gulp.task('copy_content', function(){
 
-    return gulp.src('./App/**')
+    // Skip the redundant files in the CMS-Framework directory.
+    return gulp.src(['./App/**', '!./App/{CMS-Framework,CMS-Framework/**.!(js)}'])
         .pipe(gulp.dest('./Deploy/'));
 });
 
@@ -49,7 +50,7 @@ gulp.task('compile_javascript',  function(){
     // Make sure to take only the EcmaScript 6 files, without Vendor folder.
     const paths = [
         './Deploy/Modules/**/*.js',
-        './Deploy/JavaScript/*.js'
+        './Deploy/CMS-Framework/CMS-Framework/JavaScript/*.js'
     ];
 
     return gulp.src(paths, {base: './'})
@@ -75,7 +76,7 @@ gulp.task('compile_css', function(){
 // Set the correct keys for dev env.
 gulp.task('set_development_environment', function () {
 
-    return gulp.src('./Deploy/JavaScript/EnvironmentHelper.js', { base : './' })
+    return gulp.src('./Deploy/CMS-Framework/CMS-Framework/JavaScript/EnvironmentHelper.js', { base : './' })
         .pipe(replace(configFileLimtek.firebase.placeholder,
             stringifyObject(
                 configFileLimtek.firebase.development,
@@ -88,7 +89,7 @@ gulp.task('set_development_environment', function () {
 // Set the correct keys for live env.
 gulp.task('set_live_environment', function () {
 
-    return gulp.src('./Deploy/JavaScript/EnvironmentHelper.js', { base : './' })
+    return gulp.src('./Deploy/CMS-Framework/CMS-Framework/JavaScript/EnvironmentHelper.js', { base : './' })
         .pipe(replace(configFileLimtek.firebase.placeholder,
             stringifyObject(
                 configFileLimtek.firebase.live,
