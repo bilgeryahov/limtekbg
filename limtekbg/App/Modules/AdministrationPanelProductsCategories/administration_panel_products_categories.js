@@ -476,7 +476,7 @@ const AdministrationPanelProductsCategories = (function(){
             // If there are no categories, with parent the current chosen category.
             if($subcategories.length === 0){
 
-                $subcategories.push('Тази категория няма под-категории');
+                $subcategories.push('Тази категория няма подкатегории');
             }
 
             // Empty the UL first.

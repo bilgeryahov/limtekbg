@@ -81,7 +81,7 @@ const AdministrationPanelTabChoice = (function(){
         chooseTab($tab){
 
             const $self = this;
-            let $displayTab = 'В момента разглеждате раздел - ';
+            let $displayTab = 'В момента работите по раздел - ';
 
             switch ($tab) {
 
