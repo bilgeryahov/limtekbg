@@ -357,7 +357,7 @@ const FirebaseDatabaseAndStorageManager = (function(){
          * }
          *
          * So, simply the object should contain all the paths of the objects to be modified - as keys
-         * and the data that we want to modify - as values.
+         * and the new data  - as values.
          *
          * @param $locationUpdatePairs
          * @param $callback
