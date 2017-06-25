@@ -114,7 +114,7 @@ const FirebaseDatabaseAndStorageManager = (function(){
 
             const $putData = JSON.stringify($data);
             let $apiKey = EnvironmentHelper.getFirebaseSettings().apiKey;
-            let $token = sessionStorage.getItem('LimtekToken-' + $apiKey);
+            let $token = sessionStorage.getItem('FirebaseUserToken-' + $apiKey);
 
             const $request = new Request({
                 url: EnvironmentHelper.getFirebaseSettings().databaseURL + $path + '.json?auth=' + $token,
@@ -146,7 +146,7 @@ const FirebaseDatabaseAndStorageManager = (function(){
                             }
 
                             $apiKey = EnvironmentHelper.getFirebaseSettings().apiKey;
-                            $token = sessionStorage.getItem('LimtekToken-' + $apiKey);
+                            $token = sessionStorage.getItem('FirebaseUserToken-' + $apiKey);
                             $request.options.url = EnvironmentHelper.getFirebaseSettings().databaseURL + $path + '.json?auth=' + $token;
                             $request.send();
                         });
@@ -171,7 +171,7 @@ const FirebaseDatabaseAndStorageManager = (function(){
                     }
 
                     $apiKey = EnvironmentHelper.getFirebaseSettings().apiKey;
-                    $token = sessionStorage.getItem('LimtekToken-' + $apiKey);
+                    $token = sessionStorage.getItem('FirebaseUserToken-' + $apiKey);
                     $request.options.url = EnvironmentHelper.getFirebaseSettings().databaseURL + $path + '.json?auth=' + $token;
                     $request.send();
                 });
@@ -197,7 +197,7 @@ const FirebaseDatabaseAndStorageManager = (function(){
 
             const $postData = JSON.stringify($data);
             let $apiKey = EnvironmentHelper.getFirebaseSettings().apiKey;
-            let $token = sessionStorage.getItem('LimtekToken-' + $apiKey);
+            let $token = sessionStorage.getItem('FirebaseUserToken-' + $apiKey);
 
             const $request = new Request({
                 url: EnvironmentHelper.getFirebaseSettings().databaseURL + $path + '.json?auth=' + $token,
@@ -229,7 +229,7 @@ const FirebaseDatabaseAndStorageManager = (function(){
                             }
 
                             $apiKey = EnvironmentHelper.getFirebaseSettings().apiKey;
-                            $token = sessionStorage.getItem('LimtekToken-' + $apiKey);
+                            $token = sessionStorage.getItem('FirebaseUserToken-' + $apiKey);
                             $request.options.url = EnvironmentHelper.getFirebaseSettings().databaseURL + $path + '.json?auth=' + $token;
                             $request.send();
                         });
@@ -254,7 +254,7 @@ const FirebaseDatabaseAndStorageManager = (function(){
                     }
 
                     $apiKey = EnvironmentHelper.getFirebaseSettings().apiKey;
-                    $token = sessionStorage.getItem('LimtekToken-' + $apiKey);
+                    $token = sessionStorage.getItem('FirebaseUserToken-' + $apiKey);
                     $request.options.url = EnvironmentHelper.getFirebaseSettings().databaseURL + $path + '.json?auth=' + $token;
                     $request.send();
                 });
@@ -278,7 +278,7 @@ const FirebaseDatabaseAndStorageManager = (function(){
         firebaseDELETE($path, $callback){
 
             let $apiKey = EnvironmentHelper.getFirebaseSettings().apiKey;
-            let $token = sessionStorage.getItem('LimtekToken-' + $apiKey);
+            let $token = sessionStorage.getItem('FirebaseUserToken-' + $apiKey);
 
             const $request = new Request({
                 url: EnvironmentHelper.getFirebaseSettings().databaseURL + $path + '.json?auth=' + $token,
@@ -309,7 +309,7 @@ const FirebaseDatabaseAndStorageManager = (function(){
                             }
 
                             $apiKey = EnvironmentHelper.getFirebaseSettings().apiKey;
-                            $token = sessionStorage.getItem('LimtekToken-' + $apiKey);
+                            $token = sessionStorage.getItem('FirebaseUserToken-' + $apiKey);
                             $request.options.url = EnvironmentHelper.getFirebaseSettings().databaseURL + $path + '.json?auth=' + $token;
                             $request.send();
                         });
@@ -334,7 +334,7 @@ const FirebaseDatabaseAndStorageManager = (function(){
                     }
 
                     $apiKey = EnvironmentHelper.getFirebaseSettings().apiKey;
-                    $token = sessionStorage.getItem('LimtekToken-' + $apiKey);
+                    $token = sessionStorage.getItem('FirebaseUserToken-' + $apiKey);
                     $request.options.url = EnvironmentHelper.getFirebaseSettings().databaseURL + $path + '.json?auth=' + $token;
                     $request.send();
                 });
@@ -352,8 +352,8 @@ const FirebaseDatabaseAndStorageManager = (function(){
          * The $locationUpdatePairs parameter should be an object with the following structure:
          *
          * {
-         *      "/products/categories_details/abv123" : "null",
-         *      "/products/categories_details/rty456" : { "display_name" : "Tractors", "parent_id" : null }
+         *      path : new data,
+         *      path : new data
          * }
          *
          * So, simply the object should contain all the paths of the objects to be modified - as keys

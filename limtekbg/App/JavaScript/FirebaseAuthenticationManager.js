@@ -62,7 +62,7 @@ const FirebaseAuthenticationManager = (function(){
 
                     // When the user logs out, make sure to clean his token.
                     let $apiKey = EnvironmentHelper.getFirebaseSettings().apiKey;
-                    sessionStorage.removeItem('LimtekToken-' + $apiKey);
+                    sessionStorage.removeItem('FirebaseUserToken-' + $apiKey);
 
                     $self._currentUser = null;
                     $self._authObserverManager.updateObservers('USER 0');
@@ -198,7 +198,7 @@ const FirebaseAuthenticationManager = (function(){
 
                     // Save the current user's token.
                     let $apiKey = EnvironmentHelper.getFirebaseSettings().apiKey;
-                    sessionStorage.setItem('LimtekToken-' + $apiKey, $token);
+                    sessionStorage.setItem('FirebaseUserToken-' + $apiKey, $token);
 
                     return $callback(null, true);
                 })
