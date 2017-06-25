@@ -1,0 +1,3 @@
+[submodule "limtekbg/App/CMS-Framework"]
+	path = limtekbg/App/CMS-Framework
+	url = https://github.com/bilgeryahov/CMS-Framework.git
