@@ -38,8 +38,8 @@ gulp.task('clean_scss', function(){
 // Copy static files to the folder which will be publicly available.
 gulp.task('copy_content', function(){
 
-    // Skip the redundant files in the CMS-Framework directory.
-    return gulp.src(['./App/**', '!./App/{CMS-Framework,CMS-Framework/**.!(js)}'])
+    // Skip the redundant files in the CMS-Framework and CMS-Modules directories.
+    return gulp.src(['./App/**', '!./App/{CMS-Framework,CMS-Framework/**.!(js)}', '!./App/{CMS-Modules,CMS-Modules/**.!(js|html|scss)}'])
         .pipe(gulp.dest('./Deploy/'));
 });
 
@@ -49,7 +49,7 @@ gulp.task('compile_javascript',  function(){
     // Make sure to take everything from the modules.
     // Make sure to take only the EcmaScript 6 files, without Vendor folder.
     const paths = [
-        './Deploy/Modules/**/*.js',
+        './Deploy/CMS-Modules/CMS-Modules/Modules/**/*.js',
         './Deploy/CMS-Framework/CMS-Framework/JavaScript/*.js'
     ];
 
@@ -64,7 +64,7 @@ gulp.task('compile_css', function(){
     // Make sure to take everything from the modules.
     // Make sure to take only the scss stylesheets, without Vendor folder.
     const paths = [
-        './Deploy/Modules/**/*.scss',
+        './Deploy/CMS-Modules/CMS-Modules/**/*.scss',
         './Deploy/StyleSheets/*.scss'
     ];
 
