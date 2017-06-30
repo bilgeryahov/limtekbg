@@ -17,6 +17,7 @@ const clean  = require('gulp-clean');
 const replace = require('gulp-replace');
 const exec = require('child_process').exec;
 const stringifyObject = require('stringify-object');
+const inject = require('gulp-inject');
 
 // Config file, from which the api keys and db paths are taken.
 const configFileLimtek = require('./configFileLimtek.json');
@@ -174,4 +175,9 @@ gulp.task('check_rights_development', function () {
         return runSequence('clean_content', 'copy_content', 'compile_css', 'compile_javascript', 'clean_scss',
             'set_development_environment');
     });
+});
+
+gulp.task('construct_pages', function () {
+
+
 });
