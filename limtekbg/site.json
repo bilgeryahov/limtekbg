@@ -1,0 +1,20 @@
+{
+  "pages":{
+    "../../../../../App/index.html":[
+      "../../../../../App/CMS-Modules/CMS-Modules/Modules/Head/head.html",
+      "../../../../../App/CMS-Modules/CMS-Modules/Modules/Header/header.html",
+      "../../../../../App/CMS-Modules/CMS-Modules/Modules/NavigationBar/navigation_bar.html",
+      "../../../../../App/CMS-Modules/CMS-Modules/Modules/Footer/footer.html",
+      "../../../../../App/CMS-Modules/CMS-Modules/Modules/QuoteOfTheDay/quote_of_the_day.html",
+      "../../../../../App/CMS-Modules/CMS-Modules/Modules/IndexPageStaticContent/index_page_static_content.html"
+    ],
+    "../../../../../App/deliveries.html":[
+      "../../../../../App/CMS-Modules/CMS-Modules/Modules/Head/head.html",
+      "../../../../../App/CMS-Modules/CMS-Modules/Modules/Header/header.html",
+      "../../../../../App/CMS-Modules/CMS-Modules/Modules/NavigationBar/navigation_bar.html",
+      "../../../../../App/CMS-Modules/CMS-Modules/Modules/Footer/footer.html",
+      "../../../../../App/CMS-Modules/CMS-Modules/Modules/QuoteOfTheDay/quote_of_the_day.html",
+      "../../../../../App/CMS-Modules/CMS-Modules/Modules/DeliveriesPageStaticContent/deliveries_page_static_content.html"
+    ]
+  }
+}
