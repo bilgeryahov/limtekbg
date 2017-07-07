@@ -4,6 +4,3 @@
 [submodule "limtekbg/App/CMS-Modules"]
 	path = limtekbg/App/CMS-Modules
 	url = https://github.com/bilgeryahov/CMS-Modules.git
-[submodule "limtekbg/CMS-Tools"]
-	path = limtekbg/CMS-Tools
-	url = https://github.com/bilgeryahov/CMS-Tools.git
