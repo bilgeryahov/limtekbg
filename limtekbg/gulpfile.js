@@ -18,8 +18,9 @@
 
 const gulp  = require('gulp');
 const configFileLimtek = require('./configFileLimtek.json');
+const site = require('./site.json');
 
-require('@bilgeryahov/deploy/src/gulp-tasks')(configFileLimtek);
+require('@bilgeryahov/deploy/src/gulp-tasks')(configFileLimtek, site.pages);
 
 gulp.task('deploy_dev',['d_dev']);
 gulp.task('deploy_prd',['d_prd']);
