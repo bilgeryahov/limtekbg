@@ -1,20 +1,20 @@
 {
   "pages":{
-    "index.html":[
-      "CMS-Modules/CMS-Modules/Modules/Head/head.html",
-      "CMS-Modules/CMS-Modules/Modules/Header/header.html",
-      "CMS-Modules/CMS-Modules/Modules/NavigationBar/navigation_bar.html",
-      "CMS-Modules/CMS-Modules/Modules/Footer/footer.html",
-      "CMS-Modules/CMS-Modules/Modules/QuoteOfTheDay/quote_of_the_day.html",
-      "CMS-Modules/CMS-Modules/Modules/IndexPageStaticContent/index_page_static_content.html"
+    "index":[
+      "head",
+      "header",
+      "navigation_bar",
+      "footer",
+      "quote_of_the_day",
+      "index_page_static_content"
     ],
-    "deliveries.html":[
-      "CMS-Modules/CMS-Modules/Modules/Head/head.html",
-      "CMS-Modules/CMS-Modules/Modules/Header/header.html",
-      "CMS-Modules/CMS-Modules/Modules/NavigationBar/navigation_bar.html",
-      "CMS-Modules/CMS-Modules/Modules/Footer/footer.html",
-      "CMS-Modules/CMS-Modules/Modules/QuoteOfTheDay/quote_of_the_day.html",
-      "CMS-Modules/CMS-Modules/Modules/DeliveriesPageStaticContent/deliveries_page_static_content.html"
+    "deliveries":[
+      "head",
+      "header",
+      "navigation_bar",
+      "footer",
+      "quote_of_the_day",
+      "deliveries_page_static_content"
     ]
   }
 }
