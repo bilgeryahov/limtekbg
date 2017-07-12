@@ -43,6 +43,14 @@
 		<!-- ContactForm module -->
 		<script type="text/javascript" src="./CMS-Modules/CMS-Modules/Modules/ContactForm/contact_form.js"></script>
 		<link rel="stylesheet" href="./CMS-Modules/CMS-Modules/Modules/ContactForm/contact_form.css"/>
+
+		<!-- CustomMessage module -->
+		<script type="text/javascript" src="./CMS-Modules/CMS-Modules/Modules/CustomMessage/custom_message.js"></script>
+		<link rel="stylesheet" href="./CMS-Modules/CMS-Modules/Modules/CustomMessage/custom_message.css"/>
+
+		<!-- inject:head:html -->
+			<!-- contents of html partials will be injected here -->
+		<!-- endinject -->
 	</head>
     <body>
 		<nav>
@@ -73,5 +81,10 @@
 				<!-- contents of html partials will be injected here -->
 			<!-- endinject -->
 		</footer>
+		<div id="Additional">
+			<!-- inject:custom_message:html -->
+				<!-- contents of html partials will be injected here -->
+			<!-- endinject -->
+		</div>
 	</body>
 </html>
