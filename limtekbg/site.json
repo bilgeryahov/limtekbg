@@ -23,7 +23,8 @@
       "footer",
       "quote_of_the_day",
       "contact_details",
-      "contact_form"
+      "contact_form",
+      "custom_message"
     ]
   }
 }
