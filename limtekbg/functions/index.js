@@ -11,13 +11,9 @@
 
 // Node modules
 const functions  = require('firebase-functions');
-const admin = require('firebase-admin');
 
 // Functions
 const UserActions = require('./UserActions');
-
-// Make sure the functions can use admin privileges.
-admin.initializeApp(functions.config().firebase);
 
 exports.sendMail = functions.https.onRequest((req, res) => {
 
