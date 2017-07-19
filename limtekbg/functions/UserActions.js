@@ -151,7 +151,7 @@ module.exports = {
         //             }
         //
         //             if(obj['success'] === true &&
-        //                                  (obj['hostname'].includes(configDetails.reCAPTCHA.hostName.live) ||
+        //                                  (obj['hostname'].includes(configDetails.reCAPTCHA.hostName.production) ||
         //                                  (obj['hostname'].includes(configDetails.reCAPTCHA.hostName.development)))
         //             ){
         //                 return finishSending();
