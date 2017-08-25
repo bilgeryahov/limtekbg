@@ -1,11 +1,8 @@
 'use strict';
 
-// Node modules
-const https = require('https');
-const querystring = require('querystring');
 const nodemailer = require('nodemailer');
 const configDetails = require('./configFileFirebaseFunctions.json');
-
+const rp = require('request-promise');
 
 /**
  * Exports functions which are menat to expose
@@ -25,17 +22,9 @@ module.exports = {
 
     sendMail(req, res){
 
-        /*
-         * Headers for each response.
-         */
-
         res.header('Access-Control-Allow-Origin', configDetails.AccessControl.AllowOrigin);
         res.header('Access-Control-Allow-Headers', configDetails.AccessControl.AllowHeaders);
         res.header('Access-Control-Allow-Methods', 'PUT, POST, OPTIONS');
-
-        /*
-         * Deal with req method type.
-         */
 
         const allowedMethods = [
             'POST',
@@ -58,10 +47,6 @@ module.exports = {
                 });
             return;
         }
-
-        /*
-         * Start checking the request parameters.
-         */
 
         const allowedParameters = [
             'recaptcha_response',
@@ -107,86 +92,38 @@ module.exports = {
             return;
         }
 
-        // //TODO: Activate recaptcha when it is back.
-        //
-        // /*
-        //  * Deal with reCAPTCHA.
-        //  */
-        //
-        // const recaptchaPOSTdata = querystring.stringify({
-        //     'secret': configDetails.reCAPTCHA.secretKey,
-        //     'response': req.body.recaptcha_response
-        // });
-        //
-        // const recaptchaPOSToptions = {
-        //     hostname: 'www.google.com',
-        //     path: '/recaptcha/api/siteverify',
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/x-www-form-urlencoded',
-        //         'Content-Length': Buffer.byteLength(recaptchaPOSTdata)
-        //     }
-        // };
-        //
-        // const recaptchaPOSTreq = https.request(recaptchaPOSToptions, (recaptchaPOSTres) => {
-        //     let output = '';
-        //     recaptchaPOSTres.setEncoding('utf8');
-        //     recaptchaPOSTres.on('data', (chunk) => {
-        //         output += chunk;
-        //     });
-        //
-        //     recaptchaPOSTres.on('end', () => {
-        //         try{
-        //             let obj = JSON.parse(output);
-        //
-        //             if(!obj.hasOwnProperty('success') || !obj.hasOwnProperty('challenge_ts') ||
-        //                 !obj.hasOwnProperty('hostname')){
-        //                 console.error(obj);
-        //                 res
-        //                     .status(503)
-        //                     .json({
-        //                         error:'reCAPTCHA did not reply with proper message. It misses a property.'
-        //                     });
-        //                 return;
-        //             }
-        //
-        //             if(obj['success'] === true &&
-        //                                  (obj['hostname'].includes(configDetails.reCAPTCHA.hostName.production) ||
-        //                                  (obj['hostname'].includes(configDetails.reCAPTCHA.hostName.development)))
-        //             ){
-        //                 return finishSending();
-        //             }
-        //
-        //             console.error(obj);
-        //             res
-        //                 .status(400)
-        //                 .json({
-        //                     error: 'reCAPTCHA did not pass success and hostname checks.'
-        //                 });
-        //         }
-        //         catch(exc){
-        //             console.error('Exception: ' + exc);
-        //             console.error('Output: ' + output);
-        //             res
-        //                 .status(503)
-        //                 .json({
-        //                     error:'reCAPTCHA did not reply with proper message. Failed while parsing it.'
-        //                 });
-        //         }
-        //     });
-        // });
-        //
-        // recaptchaPOSTreq.on('error', (e) => {
-        //     console.error(e);
-        //     res
-        //         .status(503)
-        //         .json({
-        //             error:'reCAPTCHA request went wrong.'
-        //         });
-        // });
-        //
-        // recaptchaPOSTreq.write(recaptchaPOSTdata);
-        // recaptchaPOSTreq.end();
+	    rp({
+		    uri: 'https://recaptcha.google.com/recaptcha/api/siteverify',
+		    method: 'POST',
+		    formData: {
+			    secret: configDetails.reCAPTCHA.secretKey,
+			    response: req.body.recaptcha_response
+		    },
+		    json: true
+	    }).then(function(result){
+
+            if(result.success &&
+                (result.hostname.includes(configDetails.reCAPTCHA.hostName.development) ||
+	                result.hostname.includes(configDetails.reCAPTCHA.hostName.production))){
+
+                return finishSending();
+            }
+
+            console.error(result);
+            res
+                .status(403)
+                .json({
+                    error:'Recaptcha verification failed.'
+                });
+	    }).catch(function (reason) {
+
+		    console.error(reason);
+		    res
+			    .status(400)
+			    .json({
+				    error:'Recaptcha request failed.'
+			    });
+	    });
 
         const finishSending = function(){
 
@@ -231,9 +168,6 @@ module.exports = {
                     });
             });
         };
-
-        // Todo: Remove when recaptcha is back.
-        return finishSending();
     }
 };
 
