@@ -1,5 +1,3 @@
-Think about Firebase Cloud Function outbounding network issue.
-
 Environment issues:
 From the Development project running 'firebase deploy' would host the development project
 online. This is something preferebly to disallow.
