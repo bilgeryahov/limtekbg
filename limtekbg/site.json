@@ -25,6 +25,9 @@
       "contact_details",
       "contact_form",
       "custom_message"
+    ],
+    "login":[
+      "head"
     ]
   }
 }
