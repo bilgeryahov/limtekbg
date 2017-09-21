@@ -31,6 +31,11 @@
       "head",
       "login",
       "custom_message"
+    ],
+    "administration":[
+      "head",
+      "logout",
+      "custom_message"
     ]
   }
 }
