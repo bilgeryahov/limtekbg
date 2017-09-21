@@ -27,7 +27,9 @@
       "custom_message"
     ],
     "login":[
-      "head"
+      "head",
+      "login",
+      "custom_message"
     ]
   }
 }
