@@ -12,7 +12,7 @@
   "reCAPTCHA": {
     "secretKey" : "6LeNYx8UAAAAAN4l_zsbZN_7lLY10pESj1TAla0_",
     "hostName":{
-      "live":"limtek-production-projec-872c9.firebaseapp.com",
+      "production":"limtek-production-projec-872c9.firebaseapp.com",
       "development":"localhost"
     }
   }

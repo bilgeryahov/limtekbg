@@ -1,47 +1,32 @@
 <!DOCTYPE html>
 <html>
-    <head id="HeadPlaceholder">
-    </head>
-    <body>
-        <header id="HeaderPlaceholder">
-        </header>
-        <section id="MainWrapper">
-            <div id="LoginPlaceholder">
-            </div>
-            <div id="LoaderPlaceholder" style="display: none;">
-            </div>
-        </section>
-        <div id="CustomMessagePlaceholder" class="w3-modal">
-        </div>
-
-        <!-- JavaScript needed for loading of the modules. -->
+    <head>
+        <!-- JavaScript -->
         <script type="text/javascript" src="CMS-Framework/CMS-Framework/JavaScript/Vendor/handlebars-v4.0.5.js"></script>
         <script type="text/javascript" src="CMS-Framework/CMS-Framework/JavaScript/Vendor/MooTools-Core-1.6.0.js"></script>
         <script type="text/javascript" src="CMS-Framework/CMS-Framework/JavaScript/Vendor/MooTools-More-1.6.0.js"></script>
-
-        <!-- Page specific JavaScript -->
         <script type="text/javascript" src="CMS-Framework/CMS-Framework/JavaScript/FirebaseCore.js"></script>
-        <script type="text/javascript" src="CMS-Framework/CMS-Framework/JavaScript/EnvironmentHelper.js"></script>
         <script type="text/javascript" src="CMS-Framework/CMS-Framework/JavaScript/DevelopmentHelpers.js"></script>
-        <script type="text/javascript" src="CMS-Framework/CMS-Framework/JavaScript/Template.js"></script>
-        <script type="text/javascript" src="CMS-Framework/CMS-Framework/JavaScript/FirebaseAuthenticationManager.js"></script>
+        <script type="text/javascript" src="CMS-Framework/CMS-Framework/JavaScript/EnvironmentHelper.js"></script>
         <script type="text/javascript" src="CMS-Framework/CMS-Framework/JavaScript/ObserverPattern.js"></script>
+        <script type="text/javascript" src="CMS-Framework/CMS-Framework/JavaScript/FirebaseAuthenticationManager.js"></script>
         <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
 
-        <!-- CSS, which has to be pre-loaded. -->
+        <!-- CSS -->
         <link rel="stylesheet" href="StyleSheets/Vendor/w3css.css"/>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato"/>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css"/>
         <link rel="stylesheet" href="StyleSheets/default.css"/>
-
-        <!-- Head module -->
-        <script type="text/javascript" src="./CMS-Modules/CMS-Modules/Modules/Head/head.js"></script>
-        <link rel="stylesheet" href="./CMS-Modules/CMS-Modules/Modules/Head/head.css"/>
+        <link rel="stylesheet" href="StyleSheets/login.css"/>
 
         <!-- Header module -->
         <script type="text/javascript" src="./CMS-Modules/CMS-Modules/Modules/Header/header.js"></script>
         <link rel="stylesheet" href="./CMS-Modules/CMS-Modules/Modules/Header/header.css"/>
+
+        <!-- Head module -->
+        <script type="text/javascript" src="./CMS-Modules/CMS-Modules/Modules/Head/head.js"></script>
+        <link rel="stylesheet" href="./CMS-Modules/CMS-Modules/Modules/Head/head.css"/>
 
         <!-- Login module -->
         <script type="text/javascript" src="./CMS-Modules/CMS-Modules/Modules/Login/login.js"></script>
@@ -51,8 +36,28 @@
         <script type="text/javascript" src="./CMS-Modules/CMS-Modules/Modules/CustomMessage/custom_message.js"></script>
         <link rel="stylesheet" href="./CMS-Modules/CMS-Modules/Modules/CustomMessage/custom_message.css"/>
 
-        <!-- Loader module -->
-        <script type="text/javascript" src="./CMS-Modules/CMS-Modules/Modules/Loader/loader.js"></script>
-        <link rel="stylesheet" href="./CMS-Modules/CMS-Modules/Modules/Loader/loader.css"/>
+        <!-- inject:head:html -->
+            <!-- contents of html partials will be injected here -->
+        <!-- endinject -->
+    </head>
+    <body>
+
+        <header>
+            <!-- inject:header:html -->
+                <!-- contents of html partials will be injected here -->
+            <!-- endinject -->
+        </header>
+
+        <section id="MainWrapper">
+            <!-- inject:login:html -->
+                <!-- contents of html partials will be injected here -->
+            <!-- endinject -->
+        </section>
+
+        <div id="Additional">
+            <!-- inject:custom_message:html -->
+                <!-- contents of html partials will be injected here -->
+            <!-- endinject -->
+        </div>
     </body>
 </html>

@@ -1,86 +1,51 @@
 <!DOCTYPE html>
 <html>
-    <head id="HeadPlaceholder">
-    </head>
-    <body>
-        <header class="w3-cell-row">
-            <div class="w3-cell" id="AdministrationPanelDescriptionPlaceholder">
-            </div>
-            <div class="w3-cell" id="LogoutPlaceholder">
-            </div>
-        </header>
-        <section id="MainWrapper">
-            <div id="AdministrationPanelTabChoicePlaceholder">
-            </div>
-            <section class="w3-row">
-                <div class="w3-col m4 l3" id="AdministrationPanelProductsSideBarPlaceholder" style="display: none;">
-                </div>
-                <div class="w3-col m8 l9">
-                    <div id="AdministrationPanelProductsCategoriesPlaceholder" style="display: none;">
-                    </div>
-                    <div id="AdministrationPanelProductsProductsPlaceholder" style="display: none;">
-                    </div>
-                </div>
-            </section>
-        </section>
-        <div id="CustomMessagePlaceholder" class="w3-modal">
-        </div>
-
-        <!-- JavaScript needed for loading of the modules. -->
+    <head>
+        <!-- JavaScript -->
         <script type="text/javascript" src="CMS-Framework/CMS-Framework/JavaScript/Vendor/handlebars-v4.0.5.js"></script>
         <script type="text/javascript" src="CMS-Framework/CMS-Framework/JavaScript/Vendor/MooTools-Core-1.6.0.js"></script>
         <script type="text/javascript" src="CMS-Framework/CMS-Framework/JavaScript/Vendor/MooTools-More-1.6.0.js"></script>
-
-        <!-- Page specific JavaScript -->
         <script type="text/javascript" src="CMS-Framework/CMS-Framework/JavaScript/FirebaseCore.js"></script>
-        <script type="text/javascript" src="CMS-Framework/CMS-Framework/JavaScript/EnvironmentHelper.js"></script>
         <script type="text/javascript" src="CMS-Framework/CMS-Framework/JavaScript/DevelopmentHelpers.js"></script>
-        <script type="text/javascript" src="CMS-Framework/CMS-Framework/JavaScript/Template.js"></script>
-        <script type="text/javascript" src="CMS-Framework/CMS-Framework/JavaScript/FirebaseAuthenticationManager.js"></script>
-        <script type="text/javascript" src="CMS-Framework/CMS-Framework/JavaScript/FirebaseDatabaseClient.js"></script>
+        <script type="text/javascript" src="CMS-Framework/CMS-Framework/JavaScript/EnvironmentHelper.js"></script>
         <script type="text/javascript" src="CMS-Framework/CMS-Framework/JavaScript/ObserverPattern.js"></script>
+        <script type="text/javascript" src="CMS-Framework/CMS-Framework/JavaScript/FirebaseAuthenticationManager.js"></script>
         <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
 
-        <!-- CSS, which has to be pre-loaded. -->
+        <!-- CSS -->
         <link rel="stylesheet" href="StyleSheets/Vendor/w3css.css"/>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato"/>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css"/>
         <link rel="stylesheet" href="StyleSheets/default.css"/>
-
-        <!-- Page specific CSS -->
         <link rel="stylesheet" href="StyleSheets/administration.css"/>
 
         <!-- Head module -->
         <script type="text/javascript" src="./CMS-Modules/CMS-Modules/Modules/Head/head.js"></script>
         <link rel="stylesheet" href="./CMS-Modules/CMS-Modules/Modules/Head/head.css"/>
 
-        <!-- CustomMessage module -->
-        <script type="text/javascript" src="./CMS-Modules/CMS-Modules/Modules/CustomMessage/custom_message.js"></script>
-        <link rel="stylesheet" href="./CMS-Modules/CMS-Modules/Modules/CustomMessage/custom_message.css"/>
-
-        <!-- AdministrationPanelDescription module -->
-        <script type="text/javascript" src="./CMS-Modules/CMS-Modules/Modules/AdministrationPanelDescription/administration_panel_description.js"></script>
-        <link rel="stylesheet" href="./CMS-Modules/CMS-Modules/Modules/AdministrationPanelDescription/administration_panel_description.css"/>
-
         <!-- Logout module -->
         <script type="text/javascript" src="./CMS-Modules/CMS-Modules/Modules/Logout/logout.js"></script>
         <link rel="stylesheet" href="./CMS-Modules/CMS-Modules/Modules/Logout/logout.css"/>
 
-        <!-- AdministrationPanelTabChoice module -->
-        <script type="text/javascript" src="./CMS-Modules/CMS-Modules/Modules/AdministrationPanelTabChoice/administration_panel_tab_choice.js"></script>
-        <link rel="stylesheet" href="./CMS-Modules/CMS-Modules/Modules/AdministrationPanelTabChoice/administration_panel_tab_choice.css"/>
+        <!-- CustomMessage module -->
+        <script type="text/javascript" src="./CMS-Modules/CMS-Modules/Modules/CustomMessage/custom_message.js"></script>
+        <link rel="stylesheet" href="./CMS-Modules/CMS-Modules/Modules/CustomMessage/custom_message.css"/>
 
-        <!-- AdministrationPanelProductsSideBar module -->
-        <script type="text/javascript" src="./CMS-Modules/CMS-Modules/Modules/AdministrationPanelProductsSideBar/administration_panel_products_side_bar.js"></script>
-        <link rel="stylesheet" href="./CMS-Modules/CMS-Modules/Modules/AdministrationPanelProductsSideBar/administration_panel_products_side_bar.css"/>
-
-        <!-- AdministrationPanelProductsCategories module -->
-        <script type="text/javascript" src="./CMS-Modules/CMS-Modules/Modules/AdministrationPanelProductsCategories/administration_panel_products_categories.js"></script>
-        <link rel="stylesheet" href="./CMS-Modules/CMS-Modules/Modules/AdministrationPanelProductsCategories/administration_panel_products_categories.css"/>
-
-        <!-- AdministrationPanelProductsProducts module -->
-        <script type="text/javascript" src="./CMS-Modules/CMS-Modules/Modules/AdministrationPanelProductsProducts/administration_panel_products_products.js"></script>
-        <link rel="stylesheet" href="./CMS-Modules/CMS-Modules/Modules/AdministrationPanelProductsProducts/administration_panel_products_products.css"/>
+        <!-- inject:head:html -->
+            <!-- contents of html partials will be injected here -->
+        <!-- endinject -->
+    </head>
+    <body>
+       <header>
+           <!-- inject:logout:html -->
+            <!-- contents of html partials will be injected here -->
+           <!-- endinject -->
+       </header>
+        <div id="Additional">
+            <!-- inject:custom_message:html -->
+            <!-- contents of html partials will be injected here -->
+            <!-- endinject -->
+        </div>
     </body>
 </html>
