@@ -20,6 +20,10 @@
         <link rel="stylesheet" href="StyleSheets/default.css"/>
         <link rel="stylesheet" href="StyleSheets/login.css"/>
 
+        <!-- Header module -->
+        <script type="text/javascript" src="./CMS-Modules/CMS-Modules/Modules/Header/header.js"></script>
+        <link rel="stylesheet" href="./CMS-Modules/CMS-Modules/Modules/Header/header.css"/>
+
         <!-- Head module -->
         <script type="text/javascript" src="./CMS-Modules/CMS-Modules/Modules/Head/head.js"></script>
         <link rel="stylesheet" href="./CMS-Modules/CMS-Modules/Modules/Head/head.css"/>
@@ -33,10 +37,16 @@
         <link rel="stylesheet" href="./CMS-Modules/CMS-Modules/Modules/CustomMessage/custom_message.css"/>
 
         <!-- inject:head:html -->
-        <!-- contents of html partials will be injected here -->
+            <!-- contents of html partials will be injected here -->
         <!-- endinject -->
     </head>
     <body>
+
+        <header>
+            <!-- inject:header:html -->
+                <!-- contents of html partials will be injected here -->
+            <!-- endinject -->
+        </header>
 
         <section id="MainWrapper">
             <!-- inject:login:html -->
