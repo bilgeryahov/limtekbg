@@ -1,3 +1,6 @@
 Environment issues:
 From the Development project running 'firebase deploy' would host the development project
-online. This is something preferebly to disallow.
+online. This is something preferably to disallow.
+
+CI with Travis CI
+Tests for the modules loaded on each page.
