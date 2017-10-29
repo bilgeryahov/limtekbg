@@ -10,6 +10,7 @@
         <script type="text/javascript" src="CMS-Framework/CMS-Framework/JavaScript/EnvironmentHelper.js"></script>
         <script type="text/javascript" src="CMS-Framework/CMS-Framework/JavaScript/ObserverPattern.js"></script>
         <script type="text/javascript" src="CMS-Framework/CMS-Framework/JavaScript/FirebaseAuthenticationManager.js"></script>
+        <script type="text/javascript" src="CMS-Framework/CMS-Framework/JavaScript/FirebaseDatabaseClient.js"></script>
         <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
 
         <!-- CSS -->
@@ -18,6 +19,7 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css"/>
         <link rel="stylesheet" href="StyleSheets/BackApp/administration.css"/>
+        <link rel="stylesheet" href="StyleSheets/Shared/sharedDefaults.css"/>
 
         <!-- Head module -->
         <script type="text/javascript" src="CMS-Modules/CMS-Modules/Modules/Shared/Head/head.js"></script>
@@ -31,6 +33,10 @@
         <script type="text/javascript" src="CMS-Modules/CMS-Modules/Modules/Shared/CustomMessage/custom_message.js"></script>
         <link rel="stylesheet" href="CMS-Modules/CMS-Modules/Modules/Shared/CustomMessage/custom_message.css"/>
 
+        <!-- DatabaseActionPerformer module -->
+        <script type="text/javascript" src="CMS-Modules/CMS-Modules/Modules/BackApp/DatabaseActionPerformer/database_action_performer.js"></script>
+        <link rel="stylesheet" href="CMS-Modules/CMS-Modules/Modules/BackApp/DatabaseActionPerformer/database_action_performer.css"/>
+
         <!-- inject:head:html -->
             <!-- contents of html partials will be injected here -->
         <!-- endinject -->
@@ -38,9 +44,16 @@
     <body>
        <header>
            <!-- inject:logout:html -->
-            <!-- contents of html partials will be injected here -->
+                <!-- contents of html partials will be injected here -->
            <!-- endinject -->
        </header>
+
+       <section id="MainWrapper">
+           <!-- inject:database_action_performer:html -->
+                <!-- contents of html partials will be injected here -->
+           <!-- endinject -->
+       </section>
+
         <div id="Additional">
             <!-- inject:custom_message:html -->
             <!-- contents of html partials will be injected here -->
