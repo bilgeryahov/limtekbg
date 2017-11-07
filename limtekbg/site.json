@@ -35,8 +35,7 @@
     "administration":[
       "head",
       "logout",
-      "custom_message",
-      "database_action_performer"
+      "custom_message"
     ]
   }
 }
